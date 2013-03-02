@@ -2,6 +2,9 @@
 #                                                                            #
 #   Copyright (C) Likan Mod 2012-2013 <https://github.com/ChaosDevLikan/>    #
 #                                                                            #
-#                                                                            #
+#   Multi_realm_cell                                                         #
+#    its a Massive Network Game Object Server It is derived from             #
+#    Likan Mod ,Prydev ,TrinityCore ,MaNGOS ,ArkCORE ,SkyFireEMU .           # 
+#    Supported Client 3.3.5 ,406 ,434 ,501 .                                 #                                               #
 #                                                                            #                                            
 ##############################################################################
