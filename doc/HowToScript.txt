@@ -1,0 +1,7 @@
+** HOW TO SCRIPT IN C++ **
+
+=========================================================
+WARNING: THIS DOCUMENTATION IS NOT ALWAYS UP TO DATE.
+FOR MORE UP-TO-DATE INFORMATION, CHECK THE TRINITY WIKI.
+=========================================================
+
