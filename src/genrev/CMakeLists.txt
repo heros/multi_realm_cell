@@ -14,13 +14,8 @@
 #  By Likan Developer Core C++, SQL (FUN, WoTLK, Cata Realm) of Genesis Server
 # 
 
-add_subdirectory(genrev)
-
-add_subdirectory(src_cata)
-add_subdirectory(src_mop)
-add_subdirectory(src_wotlk)
-
-if(TOOLS)
-  add_subdirectory(tools)
-endif(TOOLS)
-
+# Need to pass old ${CMAKE_BINARY_DIR} as param because its different at build stage
+add_custom_target(revision.h ALL
+  COMMAND ${CMAKE_COMMAND} -DNO_GIT=${WITHOUT_GIT} -DGIT_EXEC=${GIT_EXECUTABLE} -DBUILDDIR=${CMAKE_BINARY_DIR} -P ${CMAKE_SOURCE_DIR}/cmake/genrev.cmake
+  WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+)
