@@ -1,5 +1,5 @@
 @ECHO off
-mkdir Likan Mod
+mkdir LikanMod
 cd build
 
 if %1!==! goto without
