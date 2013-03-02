@@ -2,7 +2,7 @@
 ## Eclipse
 #################
 
-*.pydevproject
+*.multi_realm_cell
 .project
 .metadata
 bin/
