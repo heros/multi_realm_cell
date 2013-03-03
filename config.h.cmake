@@ -5,6 +5,6 @@
 
 #cmakedefine USE_MULTI_THREAD_MAP
 
-#define VERSION "${MANGOS_VERSION}"
+#define VERSION "${LIKANMOD_VERSION}"
 
 #endif /* HAVE_CONFIG_H */
