@@ -15,10 +15,13 @@
 # 
 
 add_subdirectory(genrev)
+#add_subdirectory(collision)
+#add_subdirectory(shared)
 
 add_subdirectory(src_cata)
 add_subdirectory(src_mop)
 add_subdirectory(src_wotlk)
+#add_subdirectory(core_beta)
 
 if(TOOLS)
   add_subdirectory(tools)
