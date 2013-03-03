@@ -23,13 +23,8 @@ if( SERVERS )
     ${CMAKE_SOURCE_DIR}/src/shared/Debugging/WheatyExceptionReport.cpp
     ${CMAKE_SOURCE_DIR}/src/shared/Debugging/WheatyExceptionReport.h
   )
-#  add_subdirectory(shared)
-#  add_subdirectory(game)
-#  add_subdirectory(collision)
-#  add_subdirectory(authserver)
-#  add_subdirectory(scripts)
-#  add_subdirectory(worldserver)
 
+   add_subdirectory(server)
 
 else()
   if( TOOLS )
