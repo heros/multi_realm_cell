@@ -1,0 +1,18 @@
+﻿Build started 3.3.2013 11:15:22.
+     1>Project "C:\Users\Likan\Documents\GitHub\multi_realm_cell\win\src\genrev\revision.h.vcxproj" on node 5 (build target(s)).
+     1>InitializeBuildStatus:
+         Creating "Win32\Release\revision.h\revision.h.unsuccessfulbuild" because "AlwaysCreate" was specified.
+       CustomBuild:
+         -- 
+             Could not find a proper repository signature (hash) - you may need to pull tags with git fetch -t
+             Continuing anyway - note that the versionstring will be set to "unknown 1970-01-01 00:00:00 (Archived)"
+         Building Custom Rule C:/Users/Likan/Documents/GitHub/multi_realm_cell/src/genrev/CMakeLists.txt
+         CMake does not need to re-run because C:\Users\Likan\Documents\GitHub\multi_realm_cell\win\src\genrev\CMakeFiles\generate.stamp is up-to-date.
+       FinalizeBuildStatus:
+         Deleting file "Win32\Release\revision.h\revision.h.unsuccessfulbuild".
+         Touching "Win32\Release\revision.h\revision.h.lastbuildstate".
+     1>Done Building Project "C:\Users\Likan\Documents\GitHub\multi_realm_cell\win\src\genrev\revision.h.vcxproj" (build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:01.79

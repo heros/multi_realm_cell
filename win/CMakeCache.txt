@@ -159,7 +159,7 @@ LikanMod_BINARY_DIR:STATIC=C:/Users/Likan/Documents/GitHub/multi_realm_cell/win
 LikanMod_SOURCE_DIR:STATIC=C:/Users/Likan/Documents/GitHub/multi_realm_cell
 
 //No need to use alarm to implement socket timeout
-NO_ALARM:BOOL=1
+NO_ALARM:BOOL=ON
 
 //Path to a file.
 OPENSSL_INCLUDE_DIR:PATH=C:/Users/Likan/Documents/GitHub/multi_realm_cell/win/openssl-0.9.8k_WIN32/include
