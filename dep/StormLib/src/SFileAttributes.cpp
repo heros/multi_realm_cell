@@ -32,7 +32,6 @@ typedef struct _MPQ_ATTRIBUTES_HEADER
 int SAttrLoadAttributes(TMPQArchive * ha)
 {
     MPQ_ATTRIBUTES_HEADER AttrHeader;
-    TMPQFile * hf;
     HANDLE hFile = NULL;
     DWORD dwBlockTableSize = ha->pHeader->dwBlockTableSize;
     DWORD dwArraySize;
@@ -47,10 +46,6 @@ int SAttrLoadAttributes(TMPQArchive * ha)
     // If it's not there, then the archive doesn't support attributes
     if(SFileOpenFileEx((HANDLE)ha, ATTRIBUTES_NAME, SFILE_OPEN_ANY_LOCALE, &hFile))
     {
-        // Remember the flags for (attributes)
-        hf = (TMPQFile *)hFile;
-        ha->dwFileFlags2 = hf->pFileEntry->dwFlags;
-
         // Load the content of the attributes file
         SFileReadFile(hFile, &AttrHeader, sizeof(MPQ_ATTRIBUTES_HEADER), &dwBytesRead, NULL);
         if(dwBytesRead != sizeof(MPQ_ATTRIBUTES_HEADER))
@@ -84,7 +79,7 @@ int SAttrLoadAttributes(TMPQArchive * ha)
                 SFileReadFile(hFile, pArrayCRC32, dwArraySize, &dwBytesRead, NULL);
                 if(dwBytesRead == dwArraySize)
                 {
-                     for(i = 0; i < dwBlockTableSize; i++)
+                    for(i = 0; i < dwBlockTableSize; i++)
                         ha->pFileTable[i].dwCrc32 = BSWAP_INT32_UNSIGNED(pArrayCRC32[i]);
                 }
                 else
@@ -182,10 +177,10 @@ int SAttrLoadAttributes(TMPQArchive * ha)
             }
         }
 
-        // 
-        // Note: Version 7.00 of StormLib saved the (attributes) incorrectly. 
+        //
+        // Note: Version 7.00 of StormLib saved the (attributes) incorrectly.
         // Sometimes, number of entries in the (attributes) was 1 item less
-        // than block table size. 
+        // than block table size.
         // If we encounter such table, we will zero all three arrays
         //
 
@@ -268,11 +263,11 @@ int SAttrFileSaveToMpq(TMPQArchive * ha)
 
     // Create the attributes file in the MPQ
     nError = SFileAddFile_Init(ha, ATTRIBUTES_NAME,
-                                   0,
-                                   dwFileSize,
-                                   LANG_NEUTRAL,
-                                   ha->dwFileFlags2 | MPQ_FILE_REPLACEEXISTING,
-                                  &hf);
+                               0,
+                               dwFileSize,
+                               LANG_NEUTRAL,
+                               ha->dwFileFlags2 | MPQ_FILE_REPLACEEXISTING,
+                               &hf);
 
     // Write all parts of the (attributes) file
     if(nError == ERROR_SUCCESS)
@@ -444,7 +439,7 @@ bool WINAPI SFileUpdateFileAttributes(HANDLE hMpq, const char * szFileName)
 
     // Get the file size
     hf = (TMPQFile *)hFile;
-    SFileGetFileInfo(hFile, SFILE_INFO_FILE_SIZE, &dwTotalBytes, sizeof(DWORD));
+    SFileGetFileInfo(hFile, SFILE_INFO_FILE_SIZE, &dwTotalBytes, sizeof(DWORD), NULL);
 
     // Initialize the CRC32 and MD5 contexts
     md5_init(&md5_state);

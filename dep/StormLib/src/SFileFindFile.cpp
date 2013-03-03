@@ -69,7 +69,7 @@ bool CheckWildCard(const char * szString, const char * szWildCard)
             szString++;
         }
 
-        // If there is '*', means zero or more chars. We have to 
+        // If there is '*', means zero or more chars. We have to
         // find the sequence after '*'
         if(*szWildCard == '*')
         {
@@ -151,9 +151,9 @@ static DWORD GetSearchTableItems(TMPQArchive * ha)
 }
 
 static bool FileWasFoundBefore(
-    TMPQArchive * ha,
-    TMPQSearch * hs,
-    TFileEntry * pFileEntry)
+        TMPQArchive * ha,
+        TMPQSearch * hs,
+        TFileEntry * pFileEntry)
 {
     TFileEntry * pEntry;
     char * szRealFileName = pFileEntry->szFileName;
@@ -376,7 +376,7 @@ HANDLE WINAPI SFileFindFirstFile(HANDLE hMpq, const char * szMask, SFILE_FIND_DA
     if(nError == ERROR_SUCCESS)
     {
         memset(hs, 0, sizeof(TMPQSearch));
-        strcpy(&hs->szSearchMask[0], szMask);
+        strcpy(hs->szSearchMask, szMask);
         hs->dwFlagMask = MPQ_FILE_EXISTS;
         hs->ha = ha;
 
@@ -406,7 +406,7 @@ HANDLE WINAPI SFileFindFirstFile(HANDLE hMpq, const char * szMask, SFILE_FIND_DA
         FreeMPQSearch(hs);
         SetLastError(nError);
     }
-    
+
     // Return the result value
     return (HANDLE)hs;
 }

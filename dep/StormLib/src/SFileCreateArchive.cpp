@@ -102,12 +102,12 @@ bool WINAPI SFileCreateArchive2(const TCHAR * szMpqName, PSFILE_CREATE_MPQ pCrea
 
     // Verify if all variables in SFILE_CREATE_MPQ are correct
     if((pCreateInfo->cbSize == 0 || pCreateInfo->cbSize > sizeof(SFILE_CREATE_MPQ)) ||
-       (pCreateInfo->dwMpqVersion > MPQ_FORMAT_VERSION_4)                        ||
-       (pCreateInfo->pvUserData != NULL || pCreateInfo->cbUserData != 0)            ||
-       (pCreateInfo->dwAttrFlags & ~MPQ_ATTRIBUTE_ALL)                              ||
-       (pCreateInfo->dwSectorSize & (pCreateInfo->dwSectorSize - 1))                ||
-       (pCreateInfo->dwRawChunkSize & (pCreateInfo->dwRawChunkSize - 1))            ||
-       (pCreateInfo->dwMaxFileCount < 4))
+            (pCreateInfo->dwMpqVersion > MPQ_FORMAT_VERSION_4)                        ||
+            (pCreateInfo->pvUserData != NULL || pCreateInfo->cbUserData != 0)            ||
+            (pCreateInfo->dwAttrFlags & ~MPQ_ATTRIBUTE_ALL)                              ||
+            (pCreateInfo->dwSectorSize & (pCreateInfo->dwSectorSize - 1))                ||
+            (pCreateInfo->dwRawChunkSize & (pCreateInfo->dwRawChunkSize - 1))            ||
+            (pCreateInfo->dwMaxFileCount < 4))
     {
         SetLastError(ERROR_INVALID_PARAMETER);
         return false;
@@ -150,14 +150,14 @@ bool WINAPI SFileCreateArchive2(const TCHAR * szMpqName, PSFILE_CREATE_MPQ pCrea
     dwHashTableSize = GetHashTableSizeForFileCount(dwMaxFileCount);
 
     // Retrieve the file size and round it up to 0x200 bytes
-    FileStream_GetSize(pStream, MpqPos);
+    FileStream_GetSize(pStream, &MpqPos);
     MpqPos = (MpqPos + 0x1FF) & (ULONGLONG)0xFFFFFFFFFFFFFE00ULL;
     if(!FileStream_SetSize(pStream, MpqPos))
         nError = GetLastError();
 
-#ifdef _DEBUG    
+#ifdef _DEBUG
     // Debug code, used for testing StormLib
-//  dwBlockTableSize = dwHashTableSize * 2;
+    //  dwBlockTableSize = dwHashTableSize * 2;
 #endif
 
     // Create the archive handle
@@ -248,7 +248,7 @@ bool WINAPI SFileCreateArchive2(const TCHAR * szMpqName, PSFILE_CREATE_MPQ pCrea
         SetLastError(nError);
         ha = NULL;
     }
-    
+
     // Return the values
     *phMpq = (HANDLE)ha;
     return (nError == ERROR_SUCCESS);

@@ -1,3 +1,6 @@
+project(StormLib)
+cmake_minimum_required(VERSION 2.6)
+
 set(SRC_FILES
            src/adpcm/adpcm.cpp
            src/huffman/huff.cpp
@@ -10,6 +13,7 @@ set(SRC_FILES
            src/sparse/sparse.cpp
            src/FileStream.cpp
            src/SBaseCommon.cpp
+           src/SBaseDumpData.cpp
            src/SBaseFileTable.cpp
            src/SCompression.cpp
            src/SFileAddFile.cpp
@@ -230,26 +234,31 @@ set(ZLIB_BZIP2_FILES
            src/zlib/zutil.c
 )
 
-set(TEST_SRC_FILES
-           test/Test.cpp
-)
+# set(TEST_SRC_FILES
+#            test/Test.cpp
+# )
 
 add_definitions(-D_7ZIP_ST -DBZ_STRICT_ANSI)
 
 if(WIN32)
     if(MSVC)
+        message(STATUS "Using MSVC")
         add_definitions(-D_7ZIP_ST -DWIN32)
+    else()
+        message(STATUS "Using mingw")
     endif()
     set(SRC_ADDITIONAL_FILES ${ZLIB_BZIP2_FILES} ${TOMCRYPT_FILES} ${TOMMATH_FILES})
     set(LINK_LIBS wininet)
 endif()
 
 if(APPLE)
+    message(STATUS "Using Mac OS X port")
     set(LINK_LIBS z bz2)
     set(SRC_ADDITIONAL_FILES ${TOMCRYPT_FILES} ${TOMMATH_FILES})
 endif()
 
 if (${CMAKE_SYSTEM_NAME} STREQUAL Linux)
+    message(STATUS "Using Linux port")
     option(WITH_LIBTOMCRYPT "Use system LibTomCrypt library" OFF)
     if(WITH_LIBTOMCRYPT)
         set(LINK_LIBS z bz2 tomcrypt)
@@ -259,14 +268,37 @@ if (${CMAKE_SYSTEM_NAME} STREQUAL Linux)
     endif()
 endif()
 
-add_library(storm STATIC ${SRC_FILES} ${SRC_ADDITIONAL_FILES})
+add_library(storm SHARED ${SRC_FILES} ${SRC_ADDITIONAL_FILES})
 target_link_libraries(storm ${LINK_LIBS})
 
+# option(WITH_TEST "Compile Test application" OFF)
+# if(WITH_TEST)
+#      add_executable(storm_test ${TEST_SRC_FILES})
+#      target_link_libraries(storm_test storm)
+# endif()
+
+# option(WITH_STATIC "Compile static linked library" OFF)
+# if(WITH_STATIC)
+#     add_library(StormLib_static STATIC ${SRC_FILES} ${SRC_ADDITIONAL_FILES})
+#     target_link_libraries(StormLib_static ${LINK_LIBS})
+#     set_target_properties(StormLib_static PROPERTIES OUTPUT_NAME StormLib)
+# endif()
+
+if(APPLE)
+    set_target_properties(storm PROPERTIES FRAMEWORK true)
+    set_target_properties(storm PROPERTIES PUBLIC_HEADER "src/StormLib.h src/StormPort.h")
+    set_target_properties(storm PROPERTIES LINK_FLAGS "-framework Carbon")
+endif()
+
 if(UNIX)
-    set_target_properties(storm PROPERTIES SOVERSION 0)
+    set_target_properties(storm PROPERTIES VERSION 8.20.0)
+    set_target_properties(storm PROPERTIES SOVERSION 8.20)
 endif()
 
 # On Win32, build StormLib.dll since we don't want to clash with Storm.dll
 if(WIN32)
     set_target_properties(storm PROPERTIES OUTPUT_NAME StormLib)
 endif()
+
+install(TARGETS storm RUNTIME DESTINATION bin LIBRARY DESTINATION lib ARCHIVE DESTINATION lib FRAMEWORK DESTINATION /Library/Frameworks)
+install(FILES src/StormLib.h src/StormPort.h DESTINATION include)

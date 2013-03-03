@@ -139,15 +139,16 @@ LCID WINAPI SFileSetLocale(LCID lcNewLocale)
 //   phMpq      - Pointer to store open archive handle
 
 bool WINAPI SFileOpenArchive(
-    const TCHAR * szMpqName,
-    DWORD dwPriority,
-    DWORD dwFlags,
-    HANDLE * phMpq)
+        const TCHAR * szMpqName,
+        DWORD dwPriority,
+        DWORD dwFlags,
+        HANDLE * phMpq)
 {
     TFileStream * pStream = NULL;       // Open file stream
     TMPQArchive * ha = NULL;            // Archive handle
+    TFileEntry * pFileEntry;
     ULONGLONG FileSize = 0;             // Size of the file
-    int nError = ERROR_SUCCESS;   
+    int nError = ERROR_SUCCESS;
 
     // Verify the parameters
     if(szMpqName == NULL || *szMpqName == 0 || phMpq == NULL)
@@ -165,11 +166,11 @@ bool WINAPI SFileOpenArchive(
         if(pStream == NULL)
             nError = GetLastError();
     }
-    
+
     // Allocate the MPQhandle
     if(nError == ERROR_SUCCESS)
     {
-        FileStream_GetSize(pStream, FileSize);
+        FileStream_GetSize(pStream, &FileSize);
         if((ha = STORM_ALLOC(TMPQArchive, 1)) == NULL)
             nError = ERROR_NOT_ENOUGH_MEMORY;
     }
@@ -265,7 +266,7 @@ bool WINAPI SFileOpenArchive(
     if(nError == ERROR_SUCCESS)
     {
         // Dump the header
-//      DumpMpqHeader(ha->pHeader);
+        //      DumpMpqHeader(ha->pHeader);
 
         // W3x Map Protectors use the fact that War3's Storm.dll ignores the MPQ user data,
         // and probably ignores the MPQ format version as well. The trick is to
@@ -326,7 +327,6 @@ bool WINAPI SFileOpenArchive(
     if(nError == ERROR_SUCCESS && (ha->dwFlags & MPQ_FLAG_PROTECTED) == 0)
     {
         TFileEntry * pFileTableEnd = ha->pFileTable + ha->pHeader->dwBlockTableSize;
-        TFileEntry * pFileEntry = ha->pFileTable;
 //      ULONGLONG ArchiveSize = 0;
         ULONGLONG RawFilePos;
 
@@ -356,8 +356,8 @@ bool WINAPI SFileOpenArchive(
                 }
 
                 // Also, we remember end of the file
-//              if(RawFilePos > ArchiveSize)
-//                  ArchiveSize = RawFilePos;
+                //              if(RawFilePos > ArchiveSize)
+                //                  ArchiveSize = RawFilePos;
             }
         }
     }
@@ -365,6 +365,11 @@ bool WINAPI SFileOpenArchive(
     // Load the internal listfile and include it to the file table
     if(nError == ERROR_SUCCESS && (dwFlags & MPQ_OPEN_NO_LISTFILE) == 0)
     {
+        // Save the flags for (listfile)
+        pFileEntry = GetFileEntryLocale(ha, LISTFILE_NAME, LANG_NEUTRAL);
+        if(pFileEntry != NULL)
+            ha->dwFileFlags1 = pFileEntry->dwFlags;
+
         // Ignore result of the operation. (listfile) is optional.
         SFileAddListFile((HANDLE)ha, NULL);
     }
@@ -372,6 +377,11 @@ bool WINAPI SFileOpenArchive(
     // Load the "(attributes)" file and merge it to the file table
     if(nError == ERROR_SUCCESS && (dwFlags & MPQ_OPEN_NO_ATTRIBUTES) == 0)
     {
+        // Save the flags for (attributes)
+        pFileEntry = GetFileEntryLocale(ha, ATTRIBUTES_NAME, LANG_NEUTRAL);
+        if(pFileEntry != NULL)
+            ha->dwFileFlags2 = pFileEntry->dwFlags;
+
         // Ignore result of the operation. (attributes) is optional.
         SAttrLoadAttributes(ha);
     }
