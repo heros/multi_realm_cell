@@ -1,0 +1,137 @@
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/svnroot/prydevserver/!svn/ver/201/Core/PDS_w_Autobalance/dep/acelite/ace/SSL
+END
+SSL_Asynch_BIO.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/svnroot/prydevserver/!svn/ver/201/Core/PDS_w_Autobalance/dep/acelite/ace/SSL/SSL_Asynch_BIO.cpp
+END
+SSL_SOCK_Connector.h
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/svnroot/prydevserver/!svn/ver/201/Core/PDS_w_Autobalance/dep/acelite/ace/SSL/SSL_SOCK_Connector.h
+END
+SSL_SOCK_Acceptor.inl
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/svnroot/prydevserver/!svn/ver/201/Core/PDS_w_Autobalance/dep/acelite/ace/SSL/SSL_SOCK_Acceptor.inl
+END
+SSL_SOCK_Acceptor.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/svnroot/prydevserver/!svn/ver/201/Core/PDS_w_Autobalance/dep/acelite/ace/SSL/SSL_SOCK_Acceptor.cpp
+END
+SSL_SOCK_Stream.h
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/svnroot/prydevserver/!svn/ver/201/Core/PDS_w_Autobalance/dep/acelite/ace/SSL/SSL_SOCK_Stream.h
+END
+SSL_Asynch_BIO.h
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/svnroot/prydevserver/!svn/ver/201/Core/PDS_w_Autobalance/dep/acelite/ace/SSL/SSL_Asynch_BIO.h
+END
+SSL_SOCK_Acceptor.h
+K 25
+svn:wc:ra_dav:version-url
+V 97
+/svnroot/prydevserver/!svn/ver/201/Core/PDS_w_Autobalance/dep/acelite/ace/SSL/SSL_SOCK_Acceptor.h
+END
+SSL_Context.inl
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/svnroot/prydevserver/!svn/ver/201/Core/PDS_w_Autobalance/dep/acelite/ace/SSL/SSL_Context.inl
+END
+SSL_Context.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/svnroot/prydevserver/!svn/ver/201/Core/PDS_w_Autobalance/dep/acelite/ace/SSL/SSL_Context.cpp
+END
+SSL_Export.h
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svnroot/prydevserver/!svn/ver/201/Core/PDS_w_Autobalance/dep/acelite/ace/SSL/SSL_Export.h
+END
+SSL_Context.h
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/svnroot/prydevserver/!svn/ver/201/Core/PDS_w_Autobalance/dep/acelite/ace/SSL/SSL_Context.h
+END
+sslconf.h
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svnroot/prydevserver/!svn/ver/201/Core/PDS_w_Autobalance/dep/acelite/ace/SSL/sslconf.h
+END
+SSL_SOCK.inl
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svnroot/prydevserver/!svn/ver/201/Core/PDS_w_Autobalance/dep/acelite/ace/SSL/SSL_SOCK.inl
+END
+SSL_SOCK.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svnroot/prydevserver/!svn/ver/201/Core/PDS_w_Autobalance/dep/acelite/ace/SSL/SSL_SOCK.cpp
+END
+SSL_Asynch_Stream.inl
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/svnroot/prydevserver/!svn/ver/201/Core/PDS_w_Autobalance/dep/acelite/ace/SSL/SSL_Asynch_Stream.inl
+END
+SSL_Asynch_Stream.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/svnroot/prydevserver/!svn/ver/201/Core/PDS_w_Autobalance/dep/acelite/ace/SSL/SSL_Asynch_Stream.cpp
+END
+SSL_SOCK.h
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svnroot/prydevserver/!svn/ver/201/Core/PDS_w_Autobalance/dep/acelite/ace/SSL/SSL_SOCK.h
+END
+SSL_Asynch_Stream.h
+K 25
+svn:wc:ra_dav:version-url
+V 97
+/svnroot/prydevserver/!svn/ver/201/Core/PDS_w_Autobalance/dep/acelite/ace/SSL/SSL_Asynch_Stream.h
+END
+SSL_SOCK_Connector.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/svnroot/prydevserver/!svn/ver/201/Core/PDS_w_Autobalance/dep/acelite/ace/SSL/SSL_SOCK_Connector.cpp
+END
+SSL_SOCK_Connector.inl
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/svnroot/prydevserver/!svn/ver/201/Core/PDS_w_Autobalance/dep/acelite/ace/SSL/SSL_SOCK_Connector.inl
+END
+SSL_SOCK_Stream.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 97
+/svnroot/prydevserver/!svn/ver/201/Core/PDS_w_Autobalance/dep/acelite/ace/SSL/SSL_SOCK_Stream.cpp
+END
+SSL_SOCK_Stream.inl
+K 25
+svn:wc:ra_dav:version-url
+V 97
+/svnroot/prydevserver/!svn/ver/201/Core/PDS_w_Autobalance/dep/acelite/ace/SSL/SSL_SOCK_Stream.inl
+END

@@ -1,0 +1,95 @@
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/svnroot/prydevserver/!svn/ver/201/Core/PDS_w_Autobalance/dep/acelite/ace/QoS
+END
+QoS_Session_Factory.h
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/svnroot/prydevserver/!svn/ver/201/Core/PDS_w_Autobalance/dep/acelite/ace/QoS/QoS_Session_Factory.h
+END
+QoS_Manager.h
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/svnroot/prydevserver/!svn/ver/201/Core/PDS_w_Autobalance/dep/acelite/ace/QoS/QoS_Manager.h
+END
+QoS_Decorator.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/svnroot/prydevserver/!svn/ver/201/Core/PDS_w_Autobalance/dep/acelite/ace/QoS/QoS_Decorator.cpp
+END
+QoS_Decorator.h
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/svnroot/prydevserver/!svn/ver/201/Core/PDS_w_Autobalance/dep/acelite/ace/QoS/QoS_Decorator.h
+END
+QoS_Session.h
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/svnroot/prydevserver/!svn/ver/201/Core/PDS_w_Autobalance/dep/acelite/ace/QoS/QoS_Session.h
+END
+README
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/svnroot/prydevserver/!svn/ver/201/Core/PDS_w_Autobalance/dep/acelite/ace/QoS/README
+END
+ACE_QoS_Export.h
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/svnroot/prydevserver/!svn/ver/201/Core/PDS_w_Autobalance/dep/acelite/ace/QoS/ACE_QoS_Export.h
+END
+SOCK_Dgram_Mcast_QoS.inl
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/svnroot/prydevserver/!svn/ver/201/Core/PDS_w_Autobalance/dep/acelite/ace/QoS/SOCK_Dgram_Mcast_QoS.inl
+END
+SOCK_Dgram_Mcast_QoS.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/svnroot/prydevserver/!svn/ver/201/Core/PDS_w_Autobalance/dep/acelite/ace/QoS/SOCK_Dgram_Mcast_QoS.cpp
+END
+QoS_Session_Impl.inl
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/svnroot/prydevserver/!svn/ver/201/Core/PDS_w_Autobalance/dep/acelite/ace/QoS/QoS_Session_Impl.inl
+END
+QoS_Session_Impl.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/svnroot/prydevserver/!svn/ver/201/Core/PDS_w_Autobalance/dep/acelite/ace/QoS/QoS_Session_Impl.cpp
+END
+SOCK_Dgram_Mcast_QoS.h
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/svnroot/prydevserver/!svn/ver/201/Core/PDS_w_Autobalance/dep/acelite/ace/QoS/SOCK_Dgram_Mcast_QoS.h
+END
+QoS_Session_Impl.h
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/svnroot/prydevserver/!svn/ver/201/Core/PDS_w_Autobalance/dep/acelite/ace/QoS/QoS_Session_Impl.h
+END
+QoS_Session_Factory.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/svnroot/prydevserver/!svn/ver/201/Core/PDS_w_Autobalance/dep/acelite/ace/QoS/QoS_Session_Factory.cpp
+END
+QoS_Manager.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/svnroot/prydevserver/!svn/ver/201/Core/PDS_w_Autobalance/dep/acelite/ace/QoS/QoS_Manager.cpp
+END

@@ -30,6 +30,7 @@ if( SERVERS )
 #  add_subdirectory(scripts)
 #  add_subdirectory(worldserver)
 
+
 else()
   if( TOOLS )
     add_subdirectory(collision)
