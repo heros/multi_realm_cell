@@ -5,6 +5,6 @@
 #   Multi_realm_cell                                                         #
 #    its a Massive Network Game Object Server It is derived from             #
 #    Likan Mod ,Prydev ,TrinityCore ,MaNGOS ,ArkCORE ,SkyFireEMU .           # 
-#    Supported Client 3.3.5 ,406 ,434 ,501 .                                 #                                               #
+#    Supported Client 3.3.5 ,406 ,434 ,501 .                                 #
 #                                                                            #                                            
 ##############################################################################
