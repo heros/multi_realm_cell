@@ -20,8 +20,8 @@ endif()
 
 if( SERVERS )
   set(sources_Debugging
-    ${CMAKE_SOURCE_DIR}/src/shared/Debugging/WheatyExceptionReport.cpp
-    ${CMAKE_SOURCE_DIR}/src/shared/Debugging/WheatyExceptionReport.h
+    ${CMAKE_SOURCE_DIR}/src/src_wotlk/shared/Debugging/WheatyExceptionReport.cpp
+    ${CMAKE_SOURCE_DIR}/src/src_wotlk/shared/Debugging/WheatyExceptionReport.h
   )
 
    add_subdirectory(server)
