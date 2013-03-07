@@ -1,0 +1,39 @@
+
+
+fireland
+.tele 720 718,75 -868,749938964844 424,999969482422 -633,333312988281
+
+
+pandaria 				 .go 8752,86 6679,16 -3664,37 870
+
+Vashj'ir 				 .go -6775.67 4666.52 -213.31 0
+Vashj'ir - Nespirah 			 .go -6596.58 4100.27 -426.99 0
+Vashj'ir - L'ghorek 			 .go -6278.08 6847.85 -830.30 0
+Tol Barad 				 .go -636.29 853.30 287.39 732
+Lost Isle 				 .go 2395.86 2219.85 4.42 648
+Lost Isle (post-eruption) 		 .go 1738.74 2059.36 267.64 659
+Lost Isle (town in a box closed)	 .go 936.40 2339.27 6.94 648
+Lost Isle (town in a box opened) 	 .go 941.95 2313.61 5.77 661
+Grim Batol (overworld)			 .go -627.52 -175.76 272.13 670
+Grim Batol (interior/raid)		 .go -1161.35 -798.59 835.05 671
+Blackwing Descent 			 .go -318.66 -222.44 193.43 669
+Blackrock Caverns 			 .go 214.40 718.86 105.50 645
+Aszhara Naga City 			 .go 3546.8 -5287.96 109.935 1
+Goblin Obeservatory (Azshara/overworld)	 .go -10082.2 -5656.43 6.24787 1
+Hyjal (overworld)			 .go 4674.88 -3638.37 965.264 1
+Firelands (raid) 			 .go 112.84 71.32 -23.54 720
+Deepholme (Dungeon) 			 .go 1094 877 338 725
+Deepholme (Zone) 			 .go 334.65 155.76 49.24 646
+Halls of Origination 			 .go -70.62 366.17 89.78 644
+Throne of the Tides			 .go -589.89 809.07 245.33 643
+Tol Barad 				 .go -636.29 853.30 287.39 732
+Giant Crater 				 .go 2046.37 1596.42 342.65 731
+Gilneas 	 		         .go -1774 2450 64 654
+Gilneas (overworld)	 		 .go -987.449 1585.69 53.4298 0
+Twilight Highlands 			 .go -4875.32 -4117.62 412.55 0
+Strange slab of land 			 .go -6099.69 -5100.36 116.46 0
+Pleasure Palace 			 .go 3289.19 -4530.02 266.90 1
+Skywall 				 .go -355.88 -2.78 637.66 657
+Kezan 					 .go -8000 1500 250 648
+The Maelstrom 			         .go 728.65 814.11 101.10 730 
+Thall!					 .go 859.40 1157.53 -4.18 730
