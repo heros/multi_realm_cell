@@ -1,0 +1,6 @@
+patch -p0 < patches/Antimat.patch
+patch -p0 < patches/pvp_rank.patch
+patch -p0 < patches/kick_ban_mute_announce.patch
+patch -p0 < patches/Gamble.patch 
+
+patch -p1 < patches/Gamble.patch 

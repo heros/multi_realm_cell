@@ -14,21 +14,23 @@
 #  By Likan Developer Core C++, SQL (FUN, WoTLK, Cata Realm) of Genesis Server
 # 
 
-if(CMAKE_COMPILER_IS_GNUCXX)
-  add_definitions(-fno-delete-null-pointer-checks)
-endif()
+#if(CMAKE_COMPILER_IS_GNUCXX)
+#  add_definitions(-fno-delete-null-pointer-checks)
+#endif()
 
-if( SERVERS )
-  set(sources_Debugging
-    ${CMAKE_SOURCE_DIR}/src/src_wotlk/shared/Debugging/WheatyExceptionReport.cpp
-    ${CMAKE_SOURCE_DIR}/src/src_wotlk/shared/Debugging/WheatyExceptionReport.h
-  )
+#if( SERVERS )
+#  set(sources_Debugging
+#    ${CMAKE_SOURCE_DIR}/src/src_wotlk/shared/Debugging/WheatyExceptionReport.cpp
+#    ${CMAKE_SOURCE_DIR}/src/src_wotlk/shared/Debugging/WheatyExceptionReport.h
+#  )
 
-   add_subdirectory(server)
+#   add_subdirectory(server)
 
-else()
-  if( TOOLS )
-    add_subdirectory(collision)
-    add_subdirectory(shared)
-  endif()
-endif()
+#else()
+#  if( TOOLS )
+#    add_subdirectory(collision)
+#    add_subdirectory(shared)
+#  endif()
+#endif()
+
+# this is old core project whit dead developent 
