@@ -1,0 +1,216 @@
+Základní
+
+.acct - Ukáže vstupní level ACC.
+.commands - Ukáže pøíkazy dostupné pro váš gmlevel.
+.dismount - Sundá vás z mounta.
+.help - Ukáže vám instrukce.
+.server info - Ukáže revizi serveru, poèet hráèu, max. hráèu.
+.lockaccount [on/off] - Zamkne nebo odemkne ACC.
+.password [$old_password $new_password $new_password] - Zmìní heslo pro váš úèet.
+.save - Uloží postavu.
+.showhonor - Ukáže váš honor ranking.
+.start - Teleportuje vás k Innkeperovi (funguje jako Hearthstone i když nemá).
+.gm ingame - Zobrazí vám online Game Mastery.
+
+Portování
+.goname [$charactername] - Teleportujete se za vybranou postavou.
+.namego [$charactername] - Teleportace vybraný postavy k sobì.
+.tele [#location] - Teleportujete se na zadanou lokaci.
+.tele add [$name] - Pøidáte jméno (napø. .add tele mùjtele) a pak dáte .tele mùjtele a teleportuje vás to na tu pozici kde jste stály.
+.tele del [$name] - Smaže tele (napø. .tele del mùjtele).
+.tele group [#location] - Teleportuje partu na vybranou lokaci.
+.tele name [#playername #location] - Teleportujete hráèe na zadanou lokaci.
+.groupgo [$charactername] - Teleportujete vybranou postavu a celou jeho partu k sobì.
+.recall [$playername] - Když se nìkam Teleportujete a pak se chcete vrátit staèí zadat tento pøíkaz nebo mùžete oznaèit postavu a vrátit ji.
+
+Uèení
+.learn [#parameter] - Oznaèenou postavu nauèíte spell.
+.learn all - Nauèí všechny spelly oznaèenou postavu.
+.learn all_lang - Nauèíte se všechny jazyky oznaèenou postavu.
+.learn all_crafts - Nauèíte se všechny profese + recepty oznaèenou postavu.
+.learn all_myclass - Nauèíte se všechny spelly a talenty pouze k povolání jaký má oznaèená postava.
+.learn all_myspells - Nauèíte se všechny dostupné spelly pouze k povolání jaký má oznaèená postava.
+.learn all_mytalents - Nauèíte se všechny dostupné talenty pouze k povolání jaký má oznaèená postava.
+.learn all_default [#playername] - Nauèíte se náhodne vìci.
+.learn all_gm - Nauèíte se všechny spelly pro GM.
+.learn all_recipes [#profname] - Nauèí všechny recepty k urèený profesy.
+.unlearn [#startspell #endspell] - Odnauèí spell oznaèeného hráèe. Zadejte ID spellu.
+.setskill [#skill #level (#max)] - Pøidá oznaèenému hráèovi skill na profesi. Pøíklad: najdete skill napø. mining - .lookup skill mining - vyjede vám èíslo a to zadáte: .setskill èíslo 370 375 a oznaèený hráè bude mít 370/375 skill v mining.
+.levelup [$playername,#numberoflevels] - Zvýší/ubere level podle výbìru. Nebo zadáte jméno postavy a za to level (na dálku).
+.maxskill - Dá všechny skilly na maximum (ne profese!)
+
+Vyhledávání
+.lookup spell [$namepart] - Vyhledá zadaný spell a jeho ID.
+.lookup quest [$namepart] - Vyhledá zadaný quest a jeho ID.
+.lookup skill [$namepart] - Vyhledá zadaný skill a jeho ID.
+.lookup object [$objname] - Vyhledá zadaný go a jeho ID.
+.lookup itemset [$itemname] - Vyhledá zadaný itemset a jeho ID.
+.lookup item [$itemname] - Vyhledá zadaný item a jeho ID.
+.lookup creature [$namepart] - Vyhledá zadanou kreaturu a jeho ID.
+.lookup faction [$name] - Zadejte faction name a vyhledá se id. (napø. Aldor).
+.lookup tele [$substring] - Vyhledá všechny lokace z .tele.
+.lookup area [$namepart] - Looks up an area by $namepart, and returns all matches with their area ID's.
+.lookup event - Vypíše zadaný event a jeho ID.
+.lookup player account [$account ($limit)] - Vyhledá zadaný account
+.lookup player email [$email ($limit)] - 
+.plimit [#num|-1|-2|-3|reset|player|moderator|gamemaster|administrator] - Ukáže limit na serveru.
+.gps - Zobrazí pozici x,y,z,map,zone kde právì jste.
+
+Reset
+.reset honor [Playername] - Resetne všechny honory na oznaèené postavì.
+.reset level [Playername] - Resetne level na 1 vèetnì resetu statù a talentù.
+.reset spells [Playername] - Smaže všechny neoriginální spelly z spellbook. Mùžete dát i když je postava offline.
+.reset stats [Playername] - Resetne staty.
+.reset talents [Playername] - Smaže všechny talenty oznaèené postavì. Mùžete dát i když je postava offline.
+.reset achievements [$playername] - Resetne všechny achievementy na oznaèené postavì. Mùžete dát i když je postava offline.
+.reset all [all spells,all talents] - Resetuje vše.
+
+Modify
+#rate v rozmezí 0.1 až 10.
+.modify aspeed [#rate] - Upraví všechny rychlosti: bìhání,plavání,bìhání pozadu,plavání pozadu na oznaèeném hráèovi. Pokud není hráè oznaèený, tak upraví vám.
+.modify bit [#field #bit] - Toggle the #bit bit of the #field field for the selected player. If no player is selected, modify your character.
+.modify bwalk [#rate] - Upraví vybranou rychlost vzad na oznaèeném hráèovi. Pokud není hráè oznaèený, tak upraví vám.
+.modify energy [#energy] - Upraví vybranou energii na oznaèeném hráèovi. Pokud není hráè oznaèený, tak upraví vám.
+.modify runicpower [#newrunicpower] - Upraví vybraný runic power na oznaèeném hráèovi. Pokud není hráè oznaèený, tak upraví vám.
+.modify faction [#factionid #flagid #npcflagid #dynamicflagid] -
+.modify money [#money] - Pøidá nebo smaže peníze na oznaèeném hráèovi. Pokud není hráè oznaèený, tak upraví vám.
+.modify mount [#id #speed] - Mount #id #speed Display selected player as mounted at #id creature and set speed to #speed value.
+.modify hp [#newhp] - Upraví vybraný životy na oznaèeném hráèovi. Pokud není hráè oznaèený, tak upraví vám.
+.modify mana [#newmana] - Upraví vybranou manu na oznaèeném hráèovi. Pokud není hráè oznaèený, tak upraví vám.
+.modify rage [#newrage] - Upraví vybranou rage na oznaèeném hráèovi. Pokud není hráè oznaèený, tak upraví vám.
+.modify scale - Zvýší velikost v rozmezí 0.1 až 3. 
+.modify speed [#rate] - Upraví vybranou rychlost na oznaèeném hráèovi.
+.modify spell - ?
+.modify swim [#rate] - Upraví vybranou rychlost plavání na oznaèeném hráèovi.
+.modify titles [#mask .titles #mask] -
+.modify honor [$amount] - Pøidá honory na oznaèenému hráèovi.
+.modify morph [#displayid] - Zmìní se v zadaný model -> oznaèený hráè.
+.demorph - Promìna zpátky do pùvodu.
+.modify arena [#value] - Pøidá arena pointy na oznaèenýmu hráèovi. Pokud není hráè oznaèený, tak upraví vám.
+.modify drunk [#value] - Upraví vybranou opilost [0(smaže opilost)-100(maximální opilost)] na oznaèeném hráèovi. Pokud není hráè oznaèený, tak upraví vám.
+.modify rep [#repId (#repvalue | $rankname (#delta)] -
+.modify phase [#phasemask] - Selected character phasemask changed to #phasemask with related world vision update. Change active until in game phase changed, or GM-mode enable/disable, or re-login. Character pts pasemask update to same value.
+.gm fly [on/off] - Zapne nebo vypne létání na oznaèeném hráèovi.
+
+Ovladání NPC
+.addmove [#creature_guid (#waittime)] -
+.list creature [#creature_id (#max_count)] -
+.npc additem [#itemId <#maxcount><#incrtime><#extendedcost>r] - Pøidáte item do vendora. Mùžete také pøidat cenu <#maxcount>.
+.npc delitem [#itemId] - Smažete item oznaèenýmu vendorovi.
+.npc add [#creatureid] - Pøidáte kreaturu. Staèí získat její èíslo (ID) tøeba z creature_template.
+.npc delete - Smažete kreaturu ze svìta.
+.npc info - Ukáže detaily pro oznaèenou kreaturu. (GUID, Faction, NPC flags, Entry ID, Model ID, Level, Health (current/maximum) atd..
+.npc whisper [#playerguid #text] - Oznaèíte NPC a mùžete za nìj psát.
+.npc playemote [#emoteid] - Oznaèená kreatura zaène napø. tancovat dle zadání emoteid.
+.respawn - Oživí všechny kreatury blízko vás.
+.npc spawntime [#time] - Pøidáte èas za jak dlouho po zabití NPC se má znovu objevit.
+.npc subname [$Name] - Zmìníte podjméno oznaèenýmu NPC. Pøíkaz je vypnut.
+.npc changelevel [#level] - Zmìníte level oznaøený kreatuøe. #level v rozmezí 1 až 63.
+.npc spawndist [#dist0] -
+.npc setmovetype [(#creature_guid) stay/random/way (NODEL)]
+.npc setmodel [#displayid] - Zmìníte model id
+.npc move [#creature_guid] - Posunete kreaturu, že zadáte její guid a když dáte ten pøíkaz zobrazí se kreatura tam kde stojíte.
+.npc name [$name] - Zmìníte jméno oznaèený kreatury nebo postavy. Pøíkaz je vypnut.
+.npc textemote [#emoteid] - Napíšete emote na oznaèené kreatuøe.
+.npc say - Napíšete normální text za oznaèenou kreaturu.
+.npc allowmove - Zapnete nebo vypnete pohybování pro oznaèenou kreaturu.
+.npc flag [#npcflag] - Zmìníte oznaèené kreatuøe jestli má být napø. vendor,innkeeper,.. ID najdete ZDE
+.npc addweapon - nefunguje
+.npc factionid [#factionid] - Zmìníte oznaèené kreatuøe frakci napø. na neutral.
+.npc phase [#phasemask] - Selected unit or pet phasemask changed to #phasemask with related world vision update for players. In creature case state saved to DB and persistent. In pet case change active until in game phase changed for owner, owner re-login, or GM-mode enable/disable..
+
+Objekty
+.go object [#object_guid] - Teleport vaší postavy do gameobjectu staèí zadat guid.
+.gobject add [#id <spawntimeSecs>] - Pøidáte gameobject že napíšete jeho id. Mùžete i za to napsat kdy se má objevit.
+.gobject delete [#go_guid] - Smažete gameobject tak že zadáte jeho guid.
+.go grid [#gridX #gridY (#mapId)] -
+.go xy [#mapid] -
+.go xyz [#mapid] - 
+.go zonexy [#zone] - 
+.gobject move [#goguid (#x #y #z)] - Posunete gameobject že napíšete jeho guid a za to souøadnice.
+.go trigger [#trigger_id] - 
+.go graveyard [#graveyardId] -
+.go creature [#creature_guid] - 
+.goobject phase [#guid #phasemask] - Gameobject with DB guid #guid phasemask changed to #phasemask with related world vision update for players. Gameobject state saved to DB and persistent.
+.gobject turn [#goguid] - 
+.gobject target [#go_id|#go_name_part] - Vypíše info o gameobjektu na který ukazujete myší.
+.gobject near [#distance] - Vypíše info o gameobjektech blízko vás.
+.list object [#gameobject_id (#max_count)] - 
+
+.go 269.36  1427.72  170.19 757
+Eventy
+.event [#event_id] - Ukáže podrobnosti o vybraném Eventu.
+.event activelist [#event_id] - Ukáže aktivní Eventy.
+.event start [#event_id] - Spustí vybraný Event (zmìny se neuloží v DB).
+.event stop [#event_id] - Zastaví vybraný Event (zmìny se neuloží v DB).
+
+Instance
+.instance unbind all - All of the selected player's binds will be cleared.
+.instance savedata - Uloží aktuální hráèovu mapu pro InstanceData do DB.
+.instance stats - Zobrazí statistiky o instancích.
+.instance listbinds - Lists the binds of the selected player.
+
+Cast
+.cast [#spellid] - Hození spellu na toho koho máte oznaèenýho.
+.cast target [#spellid] -
+.cast back [#spellid] -
+.cast self [#spellid] -
+.cast dist - 
+
+Debug
+.debug update [#field #value] -
+.debug setvalue [#field #value #isInt] -
+.debug getbvalue [#field #isInt] -
+.debug standstate [#emoteid] - Zmìníte emote vaší postavy.
+.debug anim [#emoteid] - Spustíte emote vaší postavy.
+.debug playsound [#soundid] - Zapnete vybranou muziku je jich 5000. Funguje pouze na sebe.
+.debug bg - Toggle debug mode for battlegrounds. In debug mode GM can start battleground with single player.
+.debug arena - Toggle debug mode for arenas. In debug mode GM can start arena with single player.
+
+Ovladaní hráèù / game masterù
+.gm [on/off] - Zapne nebo vypne GM mód.
+.gm visible [on/off] - Zapne nebo vypne neviditelnost, nikdo vás neuvidí.
+.gm chat [on/off] - Zapne nebo vypne GM chat.
+.server motd - Zmìna zprávy, která se ukazuje každému hráèi pøi pøihlášení.
+.server shutdown [seconds] - Nastavte poèet sekund a až èas vyprèí server spadne.
+.server idleshutdown [#delay|cancel] - Schození serveru #delay (sekundy) nebo cancel (zrušení).
+.server restart - 
+.server idlerestart - 
+.additem [#itemid/[#itemname]/#shift-click-item-link #itemcount] - Pøidáte oznaèený postavì item do inventáøe.
+.additemset [#itemsetid] - Pøidáte itemy z itemsetu do inventáøe oznaèený postavì.
+.list item [#item_id (#max_count)] -
+.bank - Ukáže vás bank invetáø.
+.guid - Zobrazí GUID oznaèený postavy.
+.honor add [$amount] - Pøidá honory oznaèenýmu hráèovi.
+.honor addkill - Pøidá oznaèenému hráèovi kill.
+.honor update - Aktualizuje honory.
+.itemmove [#sourceslotid #destinationslotid] - Posunute item z slotu #sourceslotid do #destinationslotid ve vašem inventáøi.
+.saveall - Uloží všechny postavy ve høe.
+.sendmail [#playername #subject #text] - Posílání mailu hráèovi.
+.pinfo [$player_name] [rep] - Ukáže vám informace (napø. IP) na oznaèeném hráèovi.
+.aura [#spellid] - Pøidáte si spell na sebe (napø. Nether Draka aniž byste ho mìli v inventáøi).
+.unaura [#spellid] - Smaže auru.
+.revive - Oživí oznaèeného hráèe.
+.die - Zabije oznaèeného hráèe.
+.ticket [off/on,#num,$character_name] - Zapnete nebo vypnete tickety, zobrazíte tickety u hráèe nebo poèet ticketù.
+.delticket [all,#num,$character_name] - Smazání všech ticketù .delticket all, nebo podle èísla nebo postavy.
+.whispers [on/off] - Zapne nebo vypne whispování.
+.security [$name #level] - Nastavení bezpeènostní úrovnì hráèe. #level v rozmezí 0 až 5.
+.hidearea [#areaid] - Skryje vybranou oblast oznaèenému hráèi.
+.showarea [#areaid] - Odkryje vybranou oblast oznaèenému hráèovi.
+.hover [#flag] - Zapne nebo vypne vznášení postavy. 1 zapnuto, 0 vypnuto.
+.movegens -
+.combatstop - Když na vás útoèí mob, staèí napsat tento pøíkaz a už nebude.
+.flusharenapoints - Obnoví Arena Pointy všem hráèùm a zaèné nový víkend.
+
+Questy
+.quest add [#quest_id] - Pøidá vybraný Quest na oznaèeného hráèe.
+.quest remove [#quest_id] - Smaže vybraný Quest oznáèenému hráèovi, který je neaktivní nebo nedokonèený.
+.quest complete - Dokonèí všechny questy na oznaèeném hráèovi.
+
+Guildy
+.guild create [$GuildLeaderName $GuildName] - Vytvoøíte guildu tak že zadáte $GuildJméno a $GuildLeaderJméno.
+.guild delete [$GuildName] - Smažete vybranou guildu.
+.guild invite [$CharacterName $GuildName] - Pøidáte postavu do guildy.
+.guild rank [$CharacterName #Rank] - Zmìníte postavé rank v guildì.
+.guild uninvite [$CharacterName] - Vymažete postavu z vybrané guildy.
