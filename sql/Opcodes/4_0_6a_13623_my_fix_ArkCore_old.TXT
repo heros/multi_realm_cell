@@ -1,0 +1,14 @@
+SMSG_FORCE_SWIM_SPEED_CHANGE = 0x0F5A0, // 4.0.6a 13623
+
+
+
+
+MSG_MOVE_START_SWIM_CHEAT (0x26C0)
+
+
+
+
+opcode SMSG_UNKNOWN_1276 (0x0093)                 
+SMSG_UNKNOWN_1276                                = 0x1023A, // 4.0.6a 13623
+
+opcode SMSG_SPLINE_MOVE_UNSET_FLYING (0x7688)
