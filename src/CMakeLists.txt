@@ -15,17 +15,18 @@
 # 
 
 # Needs to link against likanmod_worldd.lib
-if(WIN32)
-  link_directories(
-    ${CMAKE_BINARY_DIR}/src/likanmod/${CMAKE_CFG_INTDIR}
-  )
-  include_directories(
-    ${CMAKE_SOURCE_DIR}/dep/include # For Win32
-  )
-endif()
+#if(WIN32)
+#  link_directories(
+#    ${CMAKE_BINARY_DIR}/src/likanmod/${CMAKE_CFG_INTDIR}
+#  )
+#  include_directories(
+#    ${CMAKE_SOURCE_DIR}/dep/include # For Win32
+#  )
+#endif()
+
 ##############################
 
-add_subdirectory(genrev)
+#add_subdirectory(genrev)
 
 ##############################
 
@@ -34,7 +35,7 @@ add_subdirectory(src_mop)
 add_subdirectory(src_wotlk)
 ##############################
 
-if(TOOLS)
-  add_subdirectory(tools)
-endif(TOOLS)
+#if(TOOLS)
+#  add_subdirectory(tools)
+#endif(TOOLS)
 ##############################

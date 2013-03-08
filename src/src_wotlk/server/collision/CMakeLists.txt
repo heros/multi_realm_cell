@@ -34,7 +34,9 @@ set(collision_STAT_SRCS
   ${sources_localdir}
 )
 
+#fix
 include_directories(
+  ${CMAKE_SOURCE_DIR}
   ${CMAKE_SOURCE_DIR}/dep_tc/g3dlite/include
   ${CMAKE_SOURCE_DIR}/src/src_wotlk/server/shared
   ${CMAKE_SOURCE_DIR}/src/src_wotlk/server/shared/Debugging
