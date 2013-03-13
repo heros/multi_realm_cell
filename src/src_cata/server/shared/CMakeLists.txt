@@ -1,12 +1,18 @@
-# Copyright (C) 2008-2013 TrinityCore <http://www.trinitycore.org/>
+# 
+# Copyright (C) Likan Mod   (https://github.com/ChaosDevLikan/)
+# Copyright (C) Prydev      (http://sourceforge.net/projects/prydevserver) 
+# Copyright (C) TrinityCore (http://www.trinitycore.org)
+# Copyright (C) MaNGOS      (http://www.getmangos.com)
+# Copyright (C) ArkCORE     (http://www.arkania.net)
+# Copyright (C) SkyFireEMU  (http://www.projectskyfire.org)
+# 
+# World of Warcraft
+# You can edit but you can not delete this copyright.
+# Genesis Emulator - Genesis Database 
+# 
+# 
+#  By Likan Developer Core C++, SQL (FUN, WoTLK, Cata Realm) of Genesis Server
 #
-# This file is free software; as a special exception the author gives
-# unlimited permission to copy and/or distribute it, with or without
-# modifications, as long as this notice is preserved.
-#
-# This program is distributed in the hope that it will be useful, but
-# WITHOUT ANY WARRANTY, to the extent permitted by law; without even the
-# implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
 if( USE_COREPCH )
   include_directories(${CMAKE_CURRENT_BINARY_DIR})
@@ -21,8 +27,18 @@ file(GLOB_RECURSE sources_Logging Logging/*.cpp Logging/*.h)
 file(GLOB_RECURSE sources_Packets Packets/*.cpp Packets/*.h)
 file(GLOB_RECURSE sources_Threading Threading/*.cpp Threading/*.h)
 file(GLOB_RECURSE sources_Utilities Utilities/*.cpp Utilities/*.h)
-
 file(GLOB sources_localdir *.cpp *.h)
+
+source_group(CMake FILES CMakeLists.txt)
+source_group(Configuration FILES ${sources_Configuration})
+source_group(PrecompiledHeaders FILES ${sources_PrecompiledHeaders})
+source_group(Cryptography FILES ${sources_Cryptography})
+source_group(Database FILES ${sources_Database})
+source_group(Dynamic FILES ${sources_Dynamic})
+source_group(Logging FILES ${sources_Logging})
+source_group(Packets FILES ${sources_Packets})
+source_group(Threading FILES ${sources_Threading})
+source_group(Utilities FILES ${sources_Utilities})
 
 #
 # Build shared sourcelist

@@ -450,7 +450,7 @@ CREATE TABLE `realmlist` (
 
 LOCK TABLES `realmlist` WRITE;
 /*!40000 ALTER TABLE `realmlist` DISABLE KEYS */;
-INSERT INTO `realmlist` VALUES (1,'Trinity','127.0.0.1','127.0.0.1','255.255.255.0',8085,1,0,1,0,0,15595);
+INSERT INTO `realmlist` VALUES (1,'Genesis','127.0.0.1','127.0.0.1','255.255.255.0',8085,1,0,1,0,0,15595);
 /*!40000 ALTER TABLE `realmlist` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -490,3 +490,15 @@ UNLOCK TABLES;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
 -- Dump completed on 2013-02-26 23:48:17
+
+-- 
+-- 
+-- 
+
+
+
+
+
+-- 
+-- 
+-- 

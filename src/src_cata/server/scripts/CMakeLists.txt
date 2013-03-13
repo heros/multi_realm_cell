@@ -10,6 +10,41 @@
 
 # Enable precompiled headers when using the GCC compiler.
 
+if( USE_SCRIPTPCH )
+  include_directories(
+    ${CMAKE_CURRENT_BINARY_DIR}
+  )
+endif()
+
+file(GLOB_RECURSE sources_PrecompiledHeaders PrecompiledHeaders/*.cpp PrecompiledHeaders/*.h)
+file(GLOB_RECURSE sources_Custom Custom/*.cpp Custom/*.h)
+file(GLOB_RECURSE sources_EasternKingdoms EasternKingdoms/*.cpp EasternKingdoms/*.h)
+file(GLOB_RECURSE sources_Events Events/*.cpp Events/*.h)
+file(GLOB_RECURSE sources_Kalimdor Kalimdor/*.cpp Kalimdor/*.h)
+file(GLOB_RECURSE sources_Outland Outland/*.cpp Outland/*.h)
+file(GLOB_RECURSE sources_Northrend Northrend/*.cpp Northrend/*.h)
+file(GLOB_RECURSE sources_Commands Commands/*.cpp Commands/*.h)
+file(GLOB_RECURSE sources_Examples Examples/*.cpp Examples/*.h)
+file(GLOB_RECURSE sources_OutdoorPvP OutdoorPvP/*.cpp OutdoorPvP/*.h)
+file(GLOB_RECURSE sources_Spells Spells/*.cpp Spells/*.h)
+file(GLOB_RECURSE sources_World World/*.cpp World/*.h)
+
+source_group(CMake FILES CMakeLists.txt)
+source_group(PrecompiledHeaders FILES ${sources_PrecompiledHeaders})
+source_group(Custom FILES ${sources_Custom})
+source_group(EasternKingdoms FILES ${sources_EasternKingdoms})
+source_group(Events FILES ${sources_Events})
+source_group(Kalimdor FILES ${sources_Kalimdor})
+source_group(Outland FILES ${sources_Outland})
+source_group(Northrend FILES ${sources_Northrend})
+source_group(OutdoorPvP FILES ${sources_OutdoorPvP})
+source_group(Commands FILES ${sources_Commands})
+source_group(Examples FILES ${sources_Examples})
+source_group(Spells FILES ${sources_Spells})
+source_group(World FILES ${sources_World}
+
+)
+
 if (USE_SCRIPTPCH)
   set(scripts_STAT_PCH_HDR PrecompiledHeaders/ScriptPCH.h)
   set(scripts_STAT_PCH_SRC PrecompiledHeaders/ScriptPCH.cpp)

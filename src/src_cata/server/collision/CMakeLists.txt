@@ -1,21 +1,34 @@
-# Copyright (C) 2008-2013 TrinityCore <http://www.trinitycore.org/>
-#
-# This file is free software; as a special exception the author gives
-# unlimited permission to copy and/or distribute it, with or without
-# modifications, as long as this notice is preserved.
-#
-# This program is distributed in the hope that it will be useful, but
-# WITHOUT ANY WARRANTY, to the extent permitted by law; without even the
-# implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+# 
+# Copyright (C) Likan Mod   (https://github.com/ChaosDevLikan/)
+# Copyright (C) Prydev      (http://sourceforge.net/projects/prydevserver) 
+# Copyright (C) TrinityCore (http://www.trinitycore.org)
+# Copyright (C) MaNGOS      (http://www.getmangos.com)
+# Copyright (C) ArkCORE     (http://www.arkania.net)
+# Copyright (C) SkyFireEMU  (http://www.projectskyfire.org)
+# 
+# World of Warcraft
+# You can edit but you can not delete this copyright.
+# Genesis Emulator - Genesis Database 
+# 
+# 
+#  By Likan Developer Core C++, SQL (FUN, WoTLK, Cata Realm) of Genesis Server
+# 
 
 if( USE_COREPCH )
   include_directories(${CMAKE_CURRENT_BINARY_DIR})
 endif()
 
 file(GLOB_RECURSE sources_Management Management/*.cpp Management/*.h)
+file(GLOB_RECURSE sources_PrecompiledHeaders PrecompiledHeaders/*.cpp PrecompiledHeaders/*.h)
 file(GLOB_RECURSE sources_Maps Maps/*.cpp Maps/*.h)
 file(GLOB_RECURSE sources_Models Models/*.cpp Models/*.h)
 file(GLOB sources_localdir *.cpp *.h)
+
+source_group(CMake FILES CMakeLists.txt)
+source_group(Management FILES ${sources_Management})
+source_group(PrecompiledHeaders FILES ${sources_PrecompiledHeaders})
+source_group(Maps FILES ${sources_Maps})
+source_group(Models FILES ${sources_Models})
 
 if (USE_COREPCH)
   set(collision_STAT_PCH_HDR PrecompiledHeaders/collisionPCH.h)
