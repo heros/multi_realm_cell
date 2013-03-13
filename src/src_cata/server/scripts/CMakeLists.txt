@@ -184,16 +184,15 @@ add_library(scripts STATIC
 
 add_dependencies(scripts revision.h)
 
-#fix
 # Generate precompiled header
-#if (USE_SCRIPTPCH)
-#  add_cxx_pch(scripts ${scripts_STAT_PCH_HDR} ${scripts_STAT_PCH_SRC})
-#endif()
-
-if( USE_SCRIPTPCH )
-  if(CMAKE_COMPILER_IS_GNUCXX)
-    add_precompiled_header(scripts ${CMAKE_CURRENT_SOURCE_DIR}/PrecompiledHeaders/ScriptPCH.h)
-  elseif(MSVC)
-    add_native_precompiled_header(scripts ${CMAKE_CURRENT_SOURCE_DIR}/PrecompiledHeaders/ScriptPCH)
-  endif()
+if (USE_SCRIPTPCH)
+  add_cxx_pch(scripts ${scripts_STAT_PCH_HDR} ${scripts_STAT_PCH_SRC})
 endif()
+
+#if( USE_SCRIPTPCH )
+#  if(CMAKE_COMPILER_IS_GNUCXX)
+#    add_precompiled_header(scripts ${CMAKE_CURRENT_SOURCE_DIR}/PrecompiledHeaders/ScriptPCH.h)
+#  elseif(MSVC)
+#    add_native_precompiled_header(scripts ${CMAKE_CURRENT_SOURCE_DIR}/PrecompiledHeaders/ScriptPCH)
+#  endif()
+#endif()

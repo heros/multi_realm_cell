@@ -14,8 +14,14 @@
 #  By Likan Developer Core C++, SQL (FUN, WoTLK, Cata Realm) of Genesis Server
 #
 
-if( USE_COREPCH )
-  include_directories(${CMAKE_CURRENT_BINARY_DIR})
+#if( USE_COREPCH )
+#  include_directories(${CMAKE_CURRENT_BINARY_DIR})
+#endif()
+
+#fix
+if (USE_COREPCH)
+  set(shared_STAT_PCH_HDR PrecompiledHeaders/sharedPCH.h)
+  set(shared_STAT_PCH_SRC PrecompiledHeaders/sharedPCH.cpp)
 endif()
 
 file(GLOB_RECURSE sources_Configuration Configuration/*.cpp Configuration/*.h)
@@ -44,11 +50,6 @@ source_group(Utilities FILES ${sources_Utilities})
 # Build shared sourcelist
 #
 
-#fix
-#if (USE_COREPCH)
-#  set(shared_STAT_PCH_HDR PrecompiledHeaders/sharedPCH.h)
-#  set(shared_STAT_PCH_SRC PrecompiledHeaders/sharedPCH.cpp)
-#endif()
 
 if( USE_COREPCH AND MSVC )
   set(shared_STAT_SRCS
@@ -105,16 +106,15 @@ target_link_libraries(shared
   ${ACE_LIBRARY}
 )
 
-#fix
 # Generate precompiled header
-#if (USE_COREPCH)
-#  add_cxx_pch(shared ${shared_STAT_PCH_HDR} ${shared_STAT_PCH_SRC})
-#endif ()
+if (USE_COREPCH)
+  add_cxx_pch(shared ${shared_STAT_PCH_HDR} ${shared_STAT_PCH_SRC})
+endif ()
 
-if( USE_COREPCH )
-  if(CMAKE_COMPILER_IS_GNUCXX)
-    add_precompiled_header(shared ${CMAKE_CURRENT_SOURCE_DIR}/PrecompiledHeaders/sharedPCH.h)
-  elseif(MSVC)
-    add_native_precompiled_header(shared ${CMAKE_CURRENT_SOURCE_DIR}/PrecompiledHeaders/sharedPCH)
-  endif()
-endif()
+#if( USE_COREPCH )
+#  if(CMAKE_COMPILER_IS_GNUCXX)
+#    add_precompiled_header(shared ${CMAKE_CURRENT_SOURCE_DIR}/PrecompiledHeaders/sharedPCH.h)
+#  elseif(MSVC)
+#    add_native_precompiled_header(shared ${CMAKE_CURRENT_SOURCE_DIR}/PrecompiledHeaders/sharedPCH)
+#  endif()
+#endif()

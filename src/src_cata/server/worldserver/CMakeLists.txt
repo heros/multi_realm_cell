@@ -223,16 +223,16 @@ elseif( WIN32 )
   install(FILES worldserver.conf.dist DESTINATION "${CMAKE_INSTALL_PREFIX}")
 endif()
 
-#fix
-# Generate precompiled header
-#if( USE_COREPCH )
-#  add_cxx_pch(worldserver ${worldserver_PCH_HDR} ${worldserver_PCH_SRC})
-#endif()
 
+# Generate precompiled header
 if( USE_COREPCH )
-  if(CMAKE_COMPILER_IS_GNUCXX)
-    add_precompiled_header(worldserver ${CMAKE_CURRENT_SOURCE_DIR}/PrecompiledHeaders/worldPCH.h)
-  elseif(MSVC)
-    add_native_precompiled_header(worldserver ${CMAKE_CURRENT_SOURCE_DIR}/PrecompiledHeaders/worldPCH)
-  endif()
+  add_cxx_pch(worldserver ${worldserver_PCH_HDR} ${worldserver_PCH_SRC})
 endif()
+
+#if( USE_COREPCH )
+#  if(CMAKE_COMPILER_IS_GNUCXX)
+#    add_precompiled_header(worldserver ${CMAKE_CURRENT_SOURCE_DIR}/PrecompiledHeaders/worldPCH.h)
+#  elseif(MSVC)
+#    add_native_precompiled_header(worldserver ${CMAKE_CURRENT_SOURCE_DIR}/PrecompiledHeaders/worldPCH)
+#  endif()
+#endif()
