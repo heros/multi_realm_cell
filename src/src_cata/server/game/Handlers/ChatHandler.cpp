@@ -179,7 +179,7 @@ void WorldSession::HandleMessagechatOpcode(WorldPacket& recvData)
             else
             {
                 // send in universal language in two side iteration allowed mode
-                if (sWorld->getBoolConfig(CONFIG_ALLOW_TWO_SIDE_INTERACTION_CHAT))
+                if (HasPermission(RBAC_PERM_TWO_SIDE_INTERACTION_CHAT))
                     lang = LANG_UNIVERSAL;
                 else
                 {
@@ -328,17 +328,15 @@ void WorldSession::HandleMessagechatOpcode(WorldPacket& recvData)
 
             Player* receiver = sObjectAccessor->FindPlayerByName(to);
             if (!receiver || (!HasPermission(RBAC_PERM_CAN_FILTER_WHISPERS) &&
-                receiver->GetSession()->HasPermission(RBAC_PERM_CAN_FILTER_WHISPERS) &&
                 !receiver->isAcceptWhispers() && !receiver->IsInWhisperWhiteList(sender->GetGUID())))
             {
                 SendPlayerNotFoundNotice(to);
                 return;
             }
 
-            if (GetPlayer()->GetTeam() != receiver->GetTeam() &&
-                (!sWorld->getBoolConfig(CONFIG_ALLOW_TWO_SIDE_INTERACTION_CHAT) ||
-                !HasPermission(RBAC_PERM_TWO_SIDE_INTERACTION_CHAT) ||
-                !receiver->GetSession()->HasPermission(RBAC_PERM_TWO_SIDE_INTERACTION_CHAT)))
+            // @todo: check only sender permission and add receiver to whiteList if receiver does not have the permission
+            if (GetPlayer()->GetTeam() != receiver->GetTeam() && !HasPermission(RBAC_PERM_TWO_SIDE_INTERACTION_CHAT) &&
+                !receiver->GetSession()->HasPermission(RBAC_PERM_TWO_SIDE_INTERACTION_CHAT))
             {
                 SendWrongFactionNotice();
                 return;
