@@ -136,6 +136,8 @@ int Master::Run()
 	sLog->outInfo(LOG_FILTER_WORLDSERVER, "Author name : Likan");
 	sLog->outInfo(LOG_FILTER_WORLDSERVER, "                                              ");
 
+	sLog->outInfo(LOG_FILTER_WORLDSERVER, "For updates visit : https://github.com/ChaosDevLikan/multi_realm_cell");
+
     sLog->outInfo(LOG_FILTER_WORLDSERVER, "<Ctrl-C> to stop.\n");
     sLog->outWarn(LOG_FILTER_WORLDSERVER, "%s (Library: %s)", OPENSSL_VERSION_TEXT, SSLeay_version(SSLEAY_VERSION));
 
