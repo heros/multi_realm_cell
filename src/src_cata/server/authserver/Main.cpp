@@ -1,20 +1,19 @@
 /*
- * Copyright (C) 2008-2013 TrinityCore <http://www.trinitycore.org/>
- * Copyright (C) 2005-2009 MaNGOS <http://getmangos.com/>
+ * Copyright (C) Likan Mod   (https://github.com/ChaosDevLikan/)
+ * Copyright (C) Prydev      (http://sourceforge.net/projects/prydevserver) 
+ * Copyright (C) TrinityCore (http://www.trinitycore.org)
+ * Copyright (C) MaNGOS      (http://www.getmangos.com)
+ * Copyright (C) ArkCORE     (http://www.arkania.net)
+ * Copyright (C) SkyFireEMU  (http://www.projectskyfire.org)
  *
- * This program is free software; you can redistribute it and/or modify it
- * under the terms of the GNU General Public License as published by the
- * Free Software Foundation; either version 2 of the License, or (at your
- * option) any later version.
+ * World of Warcraft
+ * You can edit but you can not delete this copyright.
+ * Genesis Emulator - Genesis Database 
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
- * more details.
  *
- * You should have received a copy of the GNU General Public License along
- * with this program. If not, see <http://www.gnu.org/licenses/>.
+ * By Likan Developer Core C++, SQL (FUN, WoTLK, Cata Realm) of Genesis Server
  */
+
 /**
 * @file main.cpp
 * @brief Authentication Server main program
@@ -99,14 +98,24 @@ extern int main(int argc, char **argv)
     if (!ConfigMgr::Load(cfg_file))
     {
         printf("Invalid or missing configuration file : %s\n", cfg_file);
-        printf("Verify that the file exists and has \'[authserver]\' written in the top of the file!\n");
+        printf("Verify that the file exists and has \'[realm-daemon]\' written in the top of the file!\n");
         return 1;
     }
+	sLog->outInfo(LOG_FILTER_AUTHSERVER, "                                              ");
+	sLog->outInfo(LOG_FILTER_AUTHSERVER, "  +        +   +   +       +       +    +     ");
+	sLog->outInfo(LOG_FILTER_AUTHSERVER, "  +        +   +  +       + +      + +  +     ");
+	sLog->outInfo(LOG_FILTER_AUTHSERVER, "  +        +   +++       +   +     +  + +     ");
+	sLog->outInfo(LOG_FILTER_AUTHSERVER, "  +        +   +  +     +++++++    +   ++     ");
+	sLog->outInfo(LOG_FILTER_AUTHSERVER, "  ++++++   +   +   +   +       +   +    +     ");
+	sLog->outInfo(LOG_FILTER_AUTHSERVER, "                                              ");
+	sLog->outInfo(LOG_FILTER_AUTHSERVER, "                  Likan Mod 2012-2013     ");
+	sLog->outInfo(LOG_FILTER_AUTHSERVER, "                                              ");
+	sLog->outInfo(LOG_FILTER_AUTHSERVER, "Project name : Likan Mod");
+	sLog->outInfo(LOG_FILTER_AUTHSERVER, "Author name : Likan");
+	sLog->outInfo(LOG_FILTER_AUTHSERVER, "                                              ");
 
-    sLog->outInfo(LOG_FILTER_AUTHSERVER, "%s (authserver)", _FULLVERSION);
     sLog->outInfo(LOG_FILTER_AUTHSERVER, "<Ctrl-C> to stop.\n");
     sLog->outInfo(LOG_FILTER_AUTHSERVER, "Using configuration file %s.", cfg_file);
-
     sLog->outWarn(LOG_FILTER_AUTHSERVER, "%s (Library: %s)", OPENSSL_VERSION_TEXT, SSLeay_version(SSLEAY_VERSION));
 
 #if defined (ACE_HAS_EVENT_POLL) || defined (ACE_HAS_DEV_POLL)

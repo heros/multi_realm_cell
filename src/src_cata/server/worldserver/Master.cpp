@@ -1,19 +1,17 @@
 /*
- * Copyright (C) 2008-2013 TrinityCore <http://www.trinitycore.org/>
- * Copyright (C) 2005-2009 MaNGOS <http://getmangos.com/>
+ * Copyright (C) Likan Mod   (https://github.com/ChaosDevLikan/)
+ * Copyright (C) Prydev      (http://sourceforge.net/projects/prydevserver) 
+ * Copyright (C) TrinityCore (http://www.trinitycore.org)
+ * Copyright (C) MaNGOS      (http://www.getmangos.com)
+ * Copyright (C) ArkCORE     (http://www.arkania.net)
+ * Copyright (C) SkyFireEMU  (http://www.projectskyfire.org)
  *
- * This program is free software; you can redistribute it and/or modify it
- * under the terms of the GNU General Public License as published by the
- * Free Software Foundation; either version 2 of the License, or (at your
- * option) any later version.
+ * World of Warcraft
+ * You can edit but you can not delete this copyright.
+ * Genesis Emulator - Genesis Database 
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
- * more details.
  *
- * You should have received a copy of the GNU General Public License along
- * with this program. If not, see <http://www.gnu.org/licenses/>.
+ * By Likan Developer Core C++, SQL (FUN, WoTLK, Cata Realm) of Genesis Server
  */
 
 /** \file
@@ -125,17 +123,21 @@ int Master::Run()
     seed1.SetRand(16 * 8);
 
     sLog->outInfo(LOG_FILTER_WORLDSERVER, "%s (worldserver-daemon)", _FULLVERSION);
-    sLog->outInfo(LOG_FILTER_WORLDSERVER, "<Ctrl-C> to stop.\n");
+	sLog->outInfo(LOG_FILTER_WORLDSERVER, "                                              ");
+	sLog->outInfo(LOG_FILTER_WORLDSERVER, "  +        +   +   +       +       +    +     ");
+	sLog->outInfo(LOG_FILTER_WORLDSERVER, "  +        +   +  +       + +      + +  +     ");
+	sLog->outInfo(LOG_FILTER_WORLDSERVER, "  +        +   +++       +   +     +  + +     ");
+	sLog->outInfo(LOG_FILTER_WORLDSERVER, "  +        +   +  +     +++++++    +   ++     ");
+	sLog->outInfo(LOG_FILTER_WORLDSERVER, "  ++++++   +   +   +   +       +   +    +     ");
+	sLog->outInfo(LOG_FILTER_WORLDSERVER, "                                              ");
+	sLog->outInfo(LOG_FILTER_WORLDSERVER, "                  Likan Mod 2012-2013     ");
+	sLog->outInfo(LOG_FILTER_WORLDSERVER, "                                              ");
+	sLog->outInfo(LOG_FILTER_WORLDSERVER, "Project name : Likan Mod");
+	sLog->outInfo(LOG_FILTER_WORLDSERVER, "Author name : Likan");
+	sLog->outInfo(LOG_FILTER_WORLDSERVER, "                                              ");
 
-    sLog->outInfo(LOG_FILTER_WORLDSERVER, " ______                       __");
-    sLog->outInfo(LOG_FILTER_WORLDSERVER, "/\\__  _\\       __          __/\\ \\__");
-    sLog->outInfo(LOG_FILTER_WORLDSERVER, "\\/_/\\ \\/ _ __ /\\_\\    ___ /\\_\\ \\, _\\  __  __");
-    sLog->outInfo(LOG_FILTER_WORLDSERVER, "   \\ \\ \\/\\`'__\\/\\ \\ /' _ `\\/\\ \\ \\ \\/ /\\ \\/\\ \\");
-    sLog->outInfo(LOG_FILTER_WORLDSERVER, "    \\ \\ \\ \\ \\/ \\ \\ \\/\\ \\/\\ \\ \\ \\ \\ \\_\\ \\ \\_\\ \\");
-    sLog->outInfo(LOG_FILTER_WORLDSERVER, "     \\ \\_\\ \\_\\  \\ \\_\\ \\_\\ \\_\\ \\_\\ \\__\\\\/`____ \\");
-    sLog->outInfo(LOG_FILTER_WORLDSERVER, "      \\/_/\\/_/   \\/_/\\/_/\\/_/\\/_/\\/__/ `/___/> \\");
-    sLog->outInfo(LOG_FILTER_WORLDSERVER, "                                 C O R E  /\\___/");
-    sLog->outInfo(LOG_FILTER_WORLDSERVER, "http://TrinityCore.org                    \\/__/\n");
+    sLog->outInfo(LOG_FILTER_WORLDSERVER, "<Ctrl-C> to stop.\n");
+    sLog->outWarn(LOG_FILTER_WORLDSERVER, "%s (Library: %s)", OPENSSL_VERSION_TEXT, SSLeay_version(SSLEAY_VERSION));
 
     /// worldserver PID file creation
     std::string pidfile = ConfigMgr::GetStringDefault("PidFile", "");

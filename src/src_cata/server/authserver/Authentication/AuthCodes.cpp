@@ -1,18 +1,17 @@
 /*
- * Copyright (C) 2008-2013 TrinityCore <http://www.trinitycore.org/>
+ * Copyright (C) Likan Mod   (https://github.com/ChaosDevLikan/)
+ * Copyright (C) Prydev      (http://sourceforge.net/projects/prydevserver) 
+ * Copyright (C) TrinityCore (http://www.trinitycore.org)
+ * Copyright (C) MaNGOS      (http://www.getmangos.com)
+ * Copyright (C) ArkCORE     (http://www.arkania.net)
+ * Copyright (C) SkyFireEMU  (http://www.projectskyfire.org)
  *
- * This program is free software; you can redistribute it and/or modify it
- * under the terms of the GNU General Public License as published by the
- * Free Software Foundation; either version 2 of the License, or (at your
- * option) any later version.
+ * World of Warcraft
+ * You can edit but you can not delete this copyright.
+ * Genesis Emulator - Genesis Database 
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
- * more details.
  *
- * You should have received a copy of the GNU General Public License along
- * with this program. If not, see <http://www.gnu.org/licenses/>.
+ * By Likan Developer Core C++, SQL (FUN, WoTLK, Cata Realm) of Genesis Server
  */
 
 #include "AuthCodes.h"
@@ -22,13 +21,26 @@ namespace AuthHelper
 {
     static RealmBuildInfo const PostBcAcceptedClientBuilds[] =
     {
+        {16650, 5, 2, 0, ' '},
+        {16309, 5, 1, 0, ' '},
+        {16048, 5, 0, 5, ' '},
+        {16016, 5, 0, 4, ' '},
         {15595, 4, 3, 4, ' '},
+        {15254, 4, 3, 3, ' '},
+		{15211, 4, 3, 2, ' '},
+        {15005, 4, 3, 0, ' '},
         {14545, 4, 2, 2, ' '},
+        {14480, 4, 2, 0, ' '},
+        {13914, 4, 1, 0, ' '},
         {13623, 4, 0, 6, 'a'},
+        {13596, 4, 0, 6, ' '},
+        {12340, 3, 3, 5, 'a'},
+        {13329, 4, 0, 3, ' '},
         {12340, 3, 3, 5, 'a'},
         {11723, 3, 3, 3, 'a'},
         {11403, 3, 3, 2, ' '},
         {11159, 3, 3, 0, 'a'},
+        {10958, 3, 3, 0, ' '},
         {10505, 3, 2, 2, 'a'},
         {9947,  3, 1, 3, ' '},
         {8606,  2, 4, 3, ' '},

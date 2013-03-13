@@ -1,5 +1,5 @@
 ################################################
-# Trinity Core World Server configuration file #
+# Likan Mod World Server configuration file #
 ################################################
 [worldserver]
 
@@ -72,7 +72,7 @@ DataDir = "."
 #                     Logs directory must exists, or log file creation will be disabled.
 #        Default:     "" - (Log files will be stored in the current path)
 
-LogsDir = ""
+LogsDir = "logy_world/"
 
 #
 #    LoginDatabaseInfo
@@ -89,9 +89,9 @@ LogsDir = ""
 #                     "127.0.0.1;3306;trinity;trinity;world"      - (WorldDatabaseInfo)
 #                     "127.0.0.1;3306;trinity;trinity;characters" - (CharacterDatabaseInfo)
 
-LoginDatabaseInfo     = "127.0.0.1;3306;trinity;trinity;auth"
-WorldDatabaseInfo     = "127.0.0.1;3306;trinity;trinity;world"
-CharacterDatabaseInfo = "127.0.0.1;3306;trinity;trinity;characters"
+LoginDatabaseInfo     = "127.0.0.1;3306;root;root;auth_434"
+WorldDatabaseInfo     = "127.0.0.1;3306;root;root;world_434"
+CharacterDatabaseInfo = "127.0.0.1;3306;root;root;characters_434"
 
 #
 #    LoginDatabase.WorkerThreads
@@ -285,8 +285,8 @@ mmap.enablePathFinding = 0
 #                     1 - (Enabled, vmap.enableHeight)
 #                     0 - (Disabled)
 
-vmap.enableLOS    = 1
-vmap.enableHeight = 1
+vmap.enableLOS    = 0
+vmap.enableHeight = 0
 
 #
 #    vmap.enableIndoorCheck
@@ -294,7 +294,7 @@ vmap.enableHeight = 1
 #        Default:     1 - (Enabled)
 #                     0 - (Disabled, somewhat less CPU usage)
 
-vmap.enableIndoorCheck = 1
+vmap.enableIndoorCheck = 0
 
 #
 #    DetectPosCollision
@@ -395,7 +395,7 @@ PersistentCharacterCleanFlags = 0
 #        Example:     "./world.pid" - (Enabled)
 #        Default:     ""            - (Disabled)
 
-PidFile = ""
+PidFile = "logy_world/./world.pid"
 
 #
 #    PacketLogFile
@@ -404,7 +404,7 @@ PidFile = ""
 #        Example:     "World.bin" - (Enabled)
 #        Default:     ""          - (Disabled)
 
-PacketLogFile = ""
+PacketLogFile = "World.bin"
 
 #
 #    ChatLogs.Channel
@@ -412,7 +412,7 @@ PacketLogFile = ""
 #        Default:     0 - (Disabled)
 #                     1 - (Enabled)
 
-ChatLogs.Channel = 0
+ChatLogs.Channel = 1
 
 #
 #    ChatLogs.Whisper
@@ -420,7 +420,7 @@ ChatLogs.Channel = 0
 #        Default:     0 - (Disabled)
 #                     1 - (Enabled)
 
-ChatLogs.Whisper = 0
+ChatLogs.Whisper = 1
 
 #
 #    ChatLogs.SysChan
@@ -428,7 +428,7 @@ ChatLogs.Whisper = 0
 #        Default:     0 - (Disabled)
 #                     1 - (Enabled)
 
-ChatLogs.SysChan = 0
+ChatLogs.SysChan = 1
 
 #
 #    ChatLogs.Party
@@ -437,7 +437,7 @@ ChatLogs.SysChan = 0
 #                     1 - (Enabled)
 
 
-ChatLogs.Party = 0
+ChatLogs.Party = 1
 
 #
 #    ChatLogs.Raid
@@ -446,7 +446,7 @@ ChatLogs.Party = 0
 #                     1 - (Enabled)
 
 
-ChatLogs.Raid = 0
+ChatLogs.Raid = 1
 
 #
 #    ChatLogs.Guild
@@ -454,7 +454,7 @@ ChatLogs.Raid = 0
 #        Default:     0 - (Disabled)
 #                     1 - (Enabled)
 
-ChatLogs.Guild = 0
+ChatLogs.Guild = 1
 
 #
 #    ChatLogs.Public
@@ -462,7 +462,7 @@ ChatLogs.Guild = 0
 #        Default:     0 - (Disabled)
 #                     1 - (Enabled)
 
-ChatLogs.Public = 0
+ChatLogs.Public = 1
 
 #
 #    ChatLogs.Addon
@@ -470,7 +470,7 @@ ChatLogs.Public = 0
 #        Default:     0 - (Disabled)
 #                     1 - (Enabled)
 
-ChatLogs.Addon = 0
+ChatLogs.Addon = 1
 
 #
 #    ChatLogs.BattleGround
@@ -478,7 +478,7 @@ ChatLogs.Addon = 0
 #        Default:     0 - (Disabled)
 #                     1 - (Enabled)
 
-ChatLogs.BattleGround = 0
+ChatLogs.BattleGround = 1
 
 # Extended Logging system configuration moved to end of file (on purpose)
 #
@@ -497,7 +497,7 @@ ChatLogs.BattleGround = 0
 #                     16 - (FFA_PVP, Free for all pvp mode like arena PvP in all zones except rest
 #                          activated places and sanctuaries)
 
-GameType = 0
+GameType = 1
 
 #
 #    RealmZone
@@ -532,7 +532,7 @@ GameType = 0
 #                     28 - (QA Server     - any language)
 #                     29 - (CN9           - basic-Latin at create, any at login)
 
-RealmZone = 1
+RealmZone = 8
 
 #
 #    StrictPlayerNames
@@ -1041,7 +1041,7 @@ BeepAtStart = 1
 #        Example:     "Welcome to John\'s Server@This server runs on Trinity Core."
 #        Default:     "Welcome to a Trinity Core server."
 
-Motd = "Welcome to a Trinity Core server."
+Motd = "No nazdar"
 
 #
 #    Server.LoginInfo
@@ -1099,7 +1099,7 @@ AccountInstancesPerHour = 5
 #                     Check auth.rbac_groups for correct ids
 #         Default:    "" (No group)
 
-RBAC.DefaultGroups = ""
+RBAC.DefaultGroups = "1"
 
 #
 ###################################################################################################
@@ -1180,7 +1180,7 @@ Warden.BanDuration = 86400
 #        Default:     0 - (Disabled)
 #                     1 - (Enabled)
 
-AllowTwoSide.Interaction.Calendar = 0
+AllowTwoSide.Interaction.Calendar = 1
 
 #
 #    AllowTwoSide.Interaction.Channel
@@ -1188,7 +1188,7 @@ AllowTwoSide.Interaction.Calendar = 0
 #        Default:     0 - (Disabled)
 #                     1 - (Enabled)
 
-AllowTwoSide.Interaction.Channel = 0
+AllowTwoSide.Interaction.Channel = 1
 
 #
 #    AllowTwoSide.Interaction.Group
@@ -1196,7 +1196,7 @@ AllowTwoSide.Interaction.Channel = 0
 #        Default:     0 - (Disabled)
 #                     1 - (Enabled)
 
-AllowTwoSide.Interaction.Group = 0
+AllowTwoSide.Interaction.Group = 1
 
 #
 #    AllowTwoSide.Interaction.Guild
@@ -1204,7 +1204,7 @@ AllowTwoSide.Interaction.Group = 0
 #        Default:     0 - (Disabled)
 #                     1 - (Enabled)
 
-AllowTwoSide.Interaction.Guild = 0
+AllowTwoSide.Interaction.Guild = 1
 
 #
 #    AllowTwoSide.Interaction.Auction
@@ -1212,7 +1212,7 @@ AllowTwoSide.Interaction.Guild = 0
 #        Default:     0 - (Disabled)
 #                     1 - (Enabled)
 
-AllowTwoSide.Interaction.Auction = 0
+AllowTwoSide.Interaction.Auction = 1
 
 #
 #    AllowTwoSide.Trade
@@ -1220,7 +1220,7 @@ AllowTwoSide.Interaction.Auction = 0
 #        Default:     0 - (Disabled)
 #                     1 - (Enabled)
 
-AllowTwoSide.Trade = 0
+AllowTwoSide.Trade = 1
 
 #
 #    TalentsInspecting
@@ -1584,7 +1584,7 @@ GM.StartLevel = 1
 #        Default:     0 - (Disabled)
 #                     1 - (Enabled)
 
-GM.AllowInvite = 0
+GM.AllowInvite = 1
 
 #
 #    GM.LowerSecurity
@@ -1593,7 +1593,7 @@ GM.AllowInvite = 0
 #        Default:     0 - (Disabled)
 #                     1 - (Enabled)
 
-GM.LowerSecurity = 0
+GM.LowerSecurity = 1
 
 #
 #    GM.TicketSystem.ChanceOfGMSurvey
@@ -1979,7 +1979,7 @@ Die.Command.Mode = 1
 #        Default:     0 - (Disabled)
 #                     1 - (Enabled)
 
-AutoBroadcast.On = 0
+AutoBroadcast.On = 1
 
 #
 #    AutoBroadcast.Center
@@ -1995,7 +1995,7 @@ AutoBroadcast.Center = 0
 #        Description: Timer (in milliseconds) for auto broadcasts.
 #        Default:     60000 - (60 seconds)
 
-AutoBroadcast.Timer = 60000
+AutoBroadcast.Timer = 600000
 
 #
 ###################################################################################################
@@ -2016,7 +2016,7 @@ Battleground.CastDeserter = 1
 #        Default:     0 - (Disabled)
 #                     1 - (Enabled)
 
-Battleground.QueueAnnouncer.Enable = 0
+Battleground.QueueAnnouncer.Enable = 1
 
 #
 #    Battleground.QueueAnnouncer.PlayerOnly
@@ -2024,7 +2024,7 @@ Battleground.QueueAnnouncer.Enable = 0
 #        Default:     0 - (System message, Anyone can see it)
 #                     1 - (Private, Only queued players can see it)
 
-Battleground.QueueAnnouncer.PlayerOnly = 0
+Battleground.QueueAnnouncer.PlayerOnly = 1
 
 #
 #    Battleground.InvitationType
@@ -2060,7 +2060,7 @@ BattleGround.PremadeGroupWaitForMatch = 1800000
 #        Default:     0 - (Disabled)
 #                     1 - (Enabled)
 
-Battleground.GiveXPForKills = 0
+Battleground.GiveXPForKills = 1
 
 #
 #    Battleground.Random.ResetHour
@@ -2161,7 +2161,7 @@ Arena.RatedUpdateTimer = 5000
 #        Default:     0 - (Disabled)
 #                     1 - (Enabled)
 
-Arena.AutoDistributePoints = 0
+Arena.AutoDistributePoints = 1
 
 #
 #    Arena.AutoDistributeInterval
@@ -2177,7 +2177,7 @@ Arena.AutoDistributeInterval = 7
 #        Default:     0 - (Disabled)
 #                     1 - (Enabled)
 
-Arena.QueueAnnouncer.Enable = 0
+Arena.QueueAnnouncer.Enable = 1
 
 #
 #    Arena.ArenaSeason.ID
@@ -2222,7 +2222,7 @@ Arena.ArenaStartMatchmakerRating = 1500
 #        Default:     0 - (Disabled)
 #                     1 - (Enabled)
 
-ArenaLog.ExtendedInfo = 0
+ArenaLog.ExtendedInfo = 1
 
 #
 ###################################################################################################
@@ -2606,7 +2606,7 @@ UI.ShowQuestLevelsInDialogs = 0
 #                         Example:  536870912 (512 mb)
 #
 
-Appender.Console=1,3,0
+Appender.Console=1,3,0,13 11 9 5 3 1
 Appender.Server=2,2,0,Server.log,w
 Appender.GM=2,2,0,GM.log
 Appender.DBErrors=2,2,0,DBErrors.log
@@ -2723,7 +2723,7 @@ Loggers=Root Chat DBErrors GM RA Warden Character Load WorldServer Opcodes
 #        Default:     0 - (Disabled)
 #                     1 - (Enabled)
 
-Log.Async.Enable = 0
+Log.Async.Enable = 1
 
 #
 ###################################################################################################
