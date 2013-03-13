@@ -19,7 +19,7 @@ set(Detour_STAT_SRCS
 
 if(WIN32)
   include_directories(
-    ${CMAKE_SOURCE_DIR}/dep/zlib
+    ${CMAKE_SOURCE_DIR}/dep_tc/zlib
   )
 endif()
 

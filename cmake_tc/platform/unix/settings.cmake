@@ -32,7 +32,7 @@ endif()
 
 # configure uninstaller
 configure_file(
-  "${CMAKE_SOURCE_DIR}/cmake/platform/cmake_uninstall.in.cmake"
+  "${CMAKE_SOURCE_DIR}/cmake_tc/platform/cmake_uninstall.in.cmake"
   "${CMAKE_BINARY_DIR}/cmake_uninstall.cmake"
   @ONLY
 )
@@ -45,7 +45,7 @@ add_custom_target(uninstall
 message(STATUS "UNIX: Created uninstall target")
 
 if(CMAKE_C_COMPILER MATCHES "gcc")
-  include(${CMAKE_SOURCE_DIR}/cmake/compiler/gcc/settings.cmake)
+  include(${CMAKE_SOURCE_DIR}/cmake_tc/compiler/gcc/settings.cmake)
 elseif(CMAKE_C_COMPILER MATCHES "icc")
-  include(${CMAKE_SOURCE_DIR}/cmake/compiler/icc/settings.cmake)
+  include(${CMAKE_SOURCE_DIR}/cmake_tc/compiler/icc/settings.cmake)
 endif()
