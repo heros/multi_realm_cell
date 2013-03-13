@@ -55,3 +55,7 @@ endif()
 if(TOOLS)
   add_subdirectory(libmpq)
 endif()
+
+if(TOOLS)
+  add_subdirectory(StormLib)
+endif()
