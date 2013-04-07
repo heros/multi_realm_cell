@@ -70,19 +70,27 @@ bool Player::UpdateStats(Stats stat)
 
     switch (stat)
     {
+		case STAT_STRENGTH:
+			UpdateAllRatings();
+            UpdateAllCritPercentages();
+            break;
         case STAT_AGILITY:
+			UpdateAllRatings();
             UpdateArmor();
             UpdateAllCritPercentages();
             UpdateDodgePercentage();
             break;
         case STAT_STAMINA:
+			UpdateAllRatings();
             UpdateMaxHealth();
             break;
         case STAT_INTELLECT:
+			UpdateAllRatings();
             UpdateMaxPower(POWER_MANA);
             UpdateAllSpellCritChances();
             UpdateArmor();                                  //SPELL_AURA_MOD_RESISTANCE_OF_INTELLECT_PERCENT, only armor currently
-            break;
+            UpdateSpellPower();
+			break;
         case STAT_SPIRIT:
             break;
         default:
@@ -90,11 +98,23 @@ bool Player::UpdateStats(Stats stat)
     }
 
     if (stat == STAT_STRENGTH)
+	{
         UpdateAttackPowerAndDamage(false);
+	if (HasAuraTypeWithMiscvalue(SPELL_AURA_MOD_RANGED_ATTACK_POWER, stat))
+            UpdateAttackPowerAndDamage(true);
+	}
     else if (stat == STAT_AGILITY)
     {
         UpdateAttackPowerAndDamage(false);
         UpdateAttackPowerAndDamage(true);
+    }
+	 else
+    {
+        // Need update (exist AP from stat auras)
+        if (HasAuraTypeWithMiscvalue(SPELL_AURA_MOD_ATTACK_POWER, stat))
+            UpdateAttackPowerAndDamage(false);
+        if (HasAuraTypeWithMiscvalue(SPELL_AURA_MOD_RANGED_ATTACK_POWER, stat))
+            UpdateAttackPowerAndDamage(true);
     }
 
     UpdateSpellDamageAndHealingBonus();
@@ -148,6 +168,7 @@ bool Player::UpdateAllStats()
     // calls UpdateAttackPowerAndDamage() in UpdateArmor for SPELL_AURA_MOD_ATTACK_POWER_OF_ARMOR
     UpdateAttackPowerAndDamage(true);
     UpdateMaxHealth();
+	UpdateSpellPower();
 
     for (uint8 i = POWER_MANA; i < MAX_POWERS; ++i)
         UpdateMaxPower(Powers(i));
@@ -211,29 +232,37 @@ void Player::UpdateArmor()
     UpdateAttackPowerAndDamage();                           // armor dependent auras update for SPELL_AURA_MOD_ATTACK_POWER_OF_ARMOR
 }
 
+void Player::UpdateSpellPower()
+{
+    uint32 spellPowerFromIntellect = uint32(GetStat(STAT_INTELLECT) - GetCreateStat(STAT_INTELLECT));
+
+    //apply only the diff between the last and the new value.
+    ApplyModUInt32Value(PLAYER_FIELD_MOD_HEALING_DONE_POS, spellPowerFromIntellect, true);
+    for (int i = SPELL_SCHOOL_HOLY; i < MAX_SPELL_SCHOOL; ++i)
+        ApplyModUInt32Value(PLAYER_FIELD_MOD_DAMAGE_DONE_POS + i, spellPowerFromIntellect, true);
+	
+	//spellPowerFromIntellect = _spellPowerFromIntellect; 
+    //_spellPowerFromIntellect = spellPowerFromIntellect;
+}
+
 float Player::GetHealthBonusFromStamina()
 {
-    // Taken from PaperDollFrame.lua - 4.3.4.15595
-    float ratio = 10.0f;
-    if (gtOCTHpPerStaminaEntry const* hpBase = sGtOCTHpPerStaminaStore.LookupEntry((getClass() - 1) * GT_MAX_LEVEL + getLevel() - 1))
-        ratio = hpBase->ratio;
-
     float stamina = GetStat(STAT_STAMINA);
-    float baseStam = std::min(20.0f, stamina);
+
+    float baseStam = stamina < 20.0f ? stamina : 20.0f;
     float moreStam = stamina - baseStam;
 
-    return baseStam + moreStam * ratio;
+    return baseStam + (moreStam*14.0f);
 }
 
 float Player::GetManaBonusFromIntellect()
 {
-    // Taken from PaperDollFrame.lua - 4.3.4.15595
     float intellect = GetStat(STAT_INTELLECT);
 
-    float baseInt = std::min(20.0f, intellect);
+    float baseInt = intellect < 20.0f ? intellect : 20.0f;
     float moreInt = intellect - baseInt;
 
-    return baseInt + (moreInt * 15.0f);
+    return baseInt + (moreInt*15.0f);
 }
 
 void Player::UpdateMaxHealth()
@@ -267,27 +296,97 @@ void Player::UpdateAttackPowerAndDamage(bool ranged)
     float val2 = 0.0f;
     float level = float(getLevel());
 
-    ChrClassesEntry const* entry = sChrClassesStore.LookupEntry(getClass());
+	ChrClassesEntry const* entry = sChrClassesStore.LookupEntry(getClass());
     UnitMods unitMod = ranged ? UNIT_MOD_ATTACK_POWER_RANGED : UNIT_MOD_ATTACK_POWER;
 
     uint16 index = UNIT_FIELD_ATTACK_POWER;
+    uint16 index_mult = UNIT_FIELD_ATTACK_POWER_MULTIPLIER;
 
     if (ranged)
     {
         index = UNIT_FIELD_RANGED_ATTACK_POWER;
-        val2 = (level + std::max(GetStat(STAT_AGILITY) - 10.0f, 0.0f)) * entry->RAPPerAgility;
+        index_mult = UNIT_FIELD_RANGED_ATTACK_POWER_MULTIPLIER;
+
+        switch (getClass())
+        {
+            case CLASS_HUNTER:
+                val2 = level * 2.0f + GetStat(STAT_AGILITY) * 2.0f - 20.0f;
+                break;
+            case CLASS_ROGUE:
+            case CLASS_WARRIOR:
+                val2 = level + GetStat(STAT_AGILITY) - 10.0f;
+                break;
+            case CLASS_DRUID:
+                switch (GetShapeshiftForm())
+                {
+//                    case FORM_CAT:
+//                    case FORM_BEAR:
+//                        val2 = 0.0f;
+//                       break;
+//                    default:
+//                        val2 = GetStat(STAT_AGILITY) - 10.0f;
+//                       break;
+//                }
+					case FORM_CAT:
+						val2 = level + GetStat(STAT_AGILITY) - 20.0f;
+						break;
+                    case FORM_BEAR:
+                        val2 = level + GetStat(STAT_AGILITY) - 20.0f;
+                        break;
+                }
+                break;
+            default:
+                val2 = GetStat(STAT_AGILITY) - 10.0f;
+                break;
+        }
     }
     else
     {
-        float strengthValue = std::max((GetStat(STAT_STRENGTH) - 10.0f) * entry->APPerStrenth, 0.0f);
-        float agilityValue = std::max((GetStat(STAT_AGILITY) - 10.0f) * entry->APPerAgility, 0.0f);
-
-        SpellShapeshiftFormEntry const* form = sSpellShapeshiftFormStore.LookupEntry(GetShapeshiftForm());
-        // Directly taken from client, SHAPESHIFT_FLAG_AP_FROM_STRENGTH ?
-        if (form && form->flags1 & 0x20)
-            agilityValue += std::max((GetStat(STAT_AGILITY) - 10.0f) * entry->APPerStrenth, 0.0f);
-
-        val2 = strengthValue + agilityValue;
+        switch (getClass())
+        {
+            case CLASS_WARRIOR:
+            case CLASS_PALADIN:
+            case CLASS_DEATH_KNIGHT:
+                val2 = (level * 3.0f) + (GetStat(STAT_STRENGTH) * 2.0f) - 20.0f;
+                break;
+            case CLASS_ROGUE:
+                val2 = (level * 2.0f) + GetStat(STAT_STRENGTH) + GetStat(STAT_AGILITY) - 20.0f;
+                break;
+            case CLASS_HUNTER:
+                val2 = (level * 2.0f) + GetStat(STAT_STRENGTH) + GetStat(STAT_AGILITY) - 20.0f;
+                break;
+            case CLASS_SHAMAN:
+                val2 = (level * 2.0f) + (GetStat(STAT_STRENGTH) - 10.0f) + ((GetStat(STAT_AGILITY) * 2) - 20.0f);
+                break;
+            case CLASS_DRUID:
+            {
+                switch (GetShapeshiftForm())
+                {
+                    case FORM_CAT:
+                        val2 = (level * 1.5f) + (GetStat(STAT_STRENGTH) - 20.0f) + ((GetStat(STAT_AGILITY) * 2) - 40.0f);
+                        break;
+                    case FORM_BEAR:
+                        val2 = (level * 3.0f) + (GetStat(STAT_STRENGTH) - 30.0f) + ((GetStat(STAT_AGILITY) * 2) - 40.0f);
+                        break;
+                    case FORM_MOONKIN:
+                        val2 = (level * 1.0f) + (GetStat(STAT_STRENGTH) - 10.0f) + ((GetStat(STAT_AGILITY) * 2) - 20.0f);
+                        break;
+                    default:
+                        val2 = GetStat(STAT_STRENGTH) * 2.0f - 20.0f;
+                        break;
+                }
+                break;
+            }
+            case CLASS_MAGE:
+                val2 =  GetStat(STAT_STRENGTH) - 10.0f;
+                break;
+            case CLASS_PRIEST:
+                val2 = GetStat(STAT_STRENGTH) - 10.0f;
+                break;
+            case CLASS_WARLOCK:
+                val2 = GetStat(STAT_STRENGTH) - 10.0f;
+                break;
+        }
     }
 
     SetModifierValue(unitMod, BASE_VALUE, val2);
@@ -296,18 +395,51 @@ void Player::UpdateAttackPowerAndDamage(bool ranged)
     float attPowerMod = GetModifierValue(unitMod, TOTAL_VALUE);
 
     //add dynamic flat mods
-    if (!ranged)
+    if (ranged)
     {
+        if ((getClassMask() & CLASSMASK_WAND_USERS) == 0)
+        {
+            AuraEffectList const& mRAPbyStat = GetAuraEffectsByType(SPELL_AURA_MOD_RANGED_ATTACK_POWER);
+            for (AuraEffectList::const_iterator i = mRAPbyStat.begin(); i != mRAPbyStat.end(); ++i)
+            {
+                int32 temp = int32(GetStat(Stats((*i)->GetMiscValue())) * (*i)->GetAmount() / 100.0f);
+                if (temp > 0)
+                    attPowerMod += temp;
+                else
+                    attPowerMod -= temp;
+            }
+        }
+    }
+    else
+    {
+        AuraEffectList const& mAPbyStat = GetAuraEffectsByType(SPELL_AURA_MOD_ATTACK_POWER);
+        for (AuraEffectList::const_iterator i = mAPbyStat.begin(); i != mAPbyStat.end(); ++i)
+        {
+            int32 temp = int32(GetStat(Stats((*i)->GetMiscValue())) * (*i)->GetAmount() / 100.0f);
+            if (temp > 0)
+                attPowerMod += temp;
+            else
+                attPowerMod -= temp;
+        }
+
         AuraEffectList const& mAPbyArmor = GetAuraEffectsByType(SPELL_AURA_MOD_ATTACK_POWER_OF_ARMOR);
         for (AuraEffectList::const_iterator iter = mAPbyArmor.begin(); iter != mAPbyArmor.end(); ++iter)
+        {
             // always: ((*i)->GetModifier()->m_miscvalue == 1 == SPELL_SCHOOL_MASK_NORMAL)
-            attPowerMod += int32(GetArmor() / (*iter)->GetAmount());
+            int32 temp = int32(GetArmor() / (*iter)->GetAmount());
+            if (temp > 0)
+                attPowerMod += temp;
+            else
+                attPowerMod -= temp;
+        }
     }
 
+    float attPowerMultiplier = (GetModifierValue(unitMod, TOTAL_PCT) + (1 - GetModifierValue(unitMod, TOTAL_PCT)))- 1.0f;
+
     SetInt32Value(index, (uint32)base_attPower);            //UNIT_FIELD_(RANGED)_ATTACK_POWER field
+    SetFloatValue(index_mult, attPowerMultiplier);          //UNIT_FIELD_(RANGED)_ATTACK_POWER_MULTIPLIER field
 
     Pet* pet = GetPet();                                //update pet's AP
-    Guardian* guardian = GetGuardianPet();
     //automatically update weapon damage after attack power modification
     if (ranged)
     {
@@ -323,44 +455,57 @@ void Player::UpdateAttackPowerAndDamage(bool ranged)
         if (getClass() == CLASS_SHAMAN || getClass() == CLASS_PALADIN)                      // mental quickness
             UpdateSpellDamageAndHealingBonus();
 
-        if (pet && pet->IsPetGhoul()) // At melee attack power change for DK pet
+        if (pet && pet->IsPetGhoul()) // At ranged attack change for hunter pet
             pet->UpdateAttackPowerAndDamage();
-
-        if (guardian && guardian->IsSpiritWolf()) // At melee attack power change for Shaman feral spirit
-            guardian->UpdateAttackPowerAndDamage();
     }
 }
+
 
 void Player::CalculateMinMaxDamage(WeaponAttackType attType, bool normalized, bool addTotalPct, float& min_damage, float& max_damage)
 {
     UnitMods unitMod;
+	UnitMods attPowerMod_pos = UNIT_MOD_ATTACK_POWER;
+	UnitMods attPowerMod_neg = UNIT_MOD_ATTACK_POWER;
 
     switch (attType)
     {
         case BASE_ATTACK:
         default:
             unitMod = UNIT_MOD_DAMAGE_MAINHAND;
+            attPowerMod_pos = UNIT_MOD_ATTACK_POWER;
+            attPowerMod_neg = UNIT_MOD_ATTACK_POWER;
             break;
         case OFF_ATTACK:
             unitMod = UNIT_MOD_DAMAGE_OFFHAND;
+            attPowerMod_pos = UNIT_MOD_ATTACK_POWER;
+            attPowerMod_neg = UNIT_MOD_ATTACK_POWER;
             break;
         case RANGED_ATTACK:
             unitMod = UNIT_MOD_DAMAGE_RANGED;
+            attPowerMod_pos = UNIT_MOD_ATTACK_POWER_RANGED;
+            attPowerMod_neg = UNIT_MOD_ATTACK_POWER_RANGED;
             break;
     }
 
-    float att_speed = GetAPMultiplier(attType, normalized);
+    float att_speed = GetAPMultiplier(attType,normalized);
 
-    float base_value  = GetModifierValue(unitMod, BASE_VALUE) + GetTotalAttackPowerValue(attType) / 14.0f * att_speed;
+    float base_value  = GetModifierValue(unitMod, BASE_VALUE) + GetTotalAttackPowerValue(attType)/ 14.0f * att_speed;
     float base_pct    = GetModifierValue(unitMod, BASE_PCT);
     float total_value = GetModifierValue(unitMod, TOTAL_VALUE);
     float total_pct   = addTotalPct ? GetModifierValue(unitMod, TOTAL_PCT) : 1.0f;
 
     float weapon_mindamage = GetWeaponDamageRange(attType, MINDAMAGE);
     float weapon_maxdamage = GetWeaponDamageRange(attType, MAXDAMAGE);
-
-    if (IsInFeralForm())                                    //check if player is druid and in cat or bear forms
+	 
+	if (IsInFeralForm())                                    //check if player is druid and in cat or bear forms
     {
+		uint8 lvl = getLevel();
+        if (lvl > 60)
+            lvl = 60;
+
+        weapon_mindamage = lvl*0.85f*att_speed;
+        weapon_maxdamage = lvl*1.25f*att_speed;
+
         float weaponSpeed = BASE_ATTACK_TIME / 1000.f;
         if (Item* weapon = GetWeaponForAttack(BASE_ATTACK, true))
             weaponSpeed =  weapon->GetTemplate()->Delay / 1000;
@@ -376,6 +521,7 @@ void Player::CalculateMinMaxDamage(WeaponAttackType attType, bool normalized, bo
             weapon_maxdamage = weapon_mindamage / weaponSpeed + weapon_maxdamage / 2.5;
         }
     }
+
     else if (!CanUseAttackType(attType))      //check if player not in form but still can't use (disarm case)
     {
         //cannot use ranged/off attack, set values to 0
@@ -388,13 +534,6 @@ void Player::CalculateMinMaxDamage(WeaponAttackType attType, bool normalized, bo
         weapon_mindamage = BASE_MINDAMAGE;
         weapon_maxdamage = BASE_MAXDAMAGE;
     }
-    /*
-    TODO: Is this still needed after ammo has been removed?
-    else if (attType == RANGED_ATTACK)                       //add ammo DPS to ranged damage
-    {
-        weapon_mindamage += ammo * att_speed;
-        weapon_maxdamage += ammo * att_speed;
-    }*/
 
     min_damage = ((base_value + weapon_mindamage) * base_pct + total_value) * total_pct;
     max_damage = ((base_value + weapon_maxdamage) * base_pct + total_value) * total_pct;
@@ -423,6 +562,13 @@ void Player::UpdateDamagePhysical(WeaponAttackType attType)
             SetStatFloatValue(UNIT_FIELD_MAXRANGEDDAMAGE, maxdamage);
             break;
     }
+}
+// TODO: Make the Cata changes for these. As of 4.0.1 the system changed, check wowwiki.
+void Player::UpdateDefenseBonusesMod()
+{
+    UpdateBlockPercentage();
+    UpdateParryPercentage();
+    UpdateDodgePercentage();
 }
 
 void Player::UpdateBlockPercentage()
@@ -488,6 +634,44 @@ void Player::UpdateAllCritPercentages()
     UpdateCritPercentage(RANGED_ATTACK);
 }
 
+void Player::UpdateMastery()
+{
+    if (!CanUseMastery())
+    {
+        SetFloatValue(PLAYER_MASTERY, 0.0f);
+        return;
+    }
+
+    float value = GetTotalAuraModifier(SPELL_AURA_MASTERY);
+    value += GetRatingBonusValue(CR_MASTERY);
+    SetFloatValue(PLAYER_MASTERY, value);
+
+    TalentTabEntry const* talentTab = sTalentTabStore.LookupEntry(GetPrimaryTalentTree(GetActiveSpec()));
+    if (!talentTab)
+        return;
+
+    bool lastDummyEffect = true;
+    for (uint32 i = 0; i < MAX_MASTERY_SPELLS; ++i)
+    {
+        if (!talentTab->MasterySpellId[i])
+            continue;
+
+        if (Aura* aura = GetAura(talentTab->MasterySpellId[i]))
+        {
+            for (uint32 j = MAX_SPELL_EFFECTS; j > 0; --j)
+            {
+                if (!aura->HasEffect(j - 1))
+                    continue;
+
+                if (!lastDummyEffect)
+                    aura->GetEffect(j - 1)->SetAmount(int32(value * aura->GetSpellInfo()->Effects[j - 1].BonusCoefficient));
+                else
+                    lastDummyEffect = false;
+            }
+        }
+    }
+}
+
 const float m_diminishing_k[MAX_CLASSES] =
 {
     0.9560f,  // Warrior
@@ -539,14 +723,14 @@ void Player::UpdateParryPercentage()
 
 void Player::UpdateDodgePercentage()
 {
-    const float dodge_cap[MAX_CLASSES] =
+    float const dodge_cap[MAX_CLASSES] =
     {
-        65.631440f,     // Warrior
-        65.631440f,     // Paladin
+        88.129021f,     // Warrior
+        88.129021f,     // Paladin
         145.560408f,    // Hunter
         145.560408f,    // Rogue
         150.375940f,    // Priest
-        65.631440f,     // DK
+        88.129021f,     // DK
         145.560408f,    // Shaman
         150.375940f,    // Mage
         150.375940f,    // Warlock
@@ -556,6 +740,9 @@ void Player::UpdateDodgePercentage()
 
     float diminishing = 0.0f, nondiminishing = 0.0f;
     GetDodgeFromAgility(diminishing, nondiminishing);
+    // Modify value from defense skill (only bonus from defense rating diminishes)
+    nondiminishing += (GetSkillValue(SKILL_DEFENSE) - GetMaxSkillValueForLevel()) * 0.04f;
+    diminishing += (int32(GetRatingBonusValue(CR_DEFENSE_SKILL))) * 0.04f;
     // Dodge from SPELL_AURA_MOD_DODGE_PERCENT aura
     nondiminishing += GetTotalAuraModifier(SPELL_AURA_MOD_DODGE_PERCENT);
     // Dodge from rating

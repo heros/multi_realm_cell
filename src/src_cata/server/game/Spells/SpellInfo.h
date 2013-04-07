@@ -21,6 +21,7 @@
 #include "SharedDefines.h"
 #include "Util.h"
 #include "DBCStructure.h"
+#include "Object.h"
 #include "SpellAuraDefines.h"
 
 class Unit;
@@ -237,6 +238,7 @@ public:
     int32     DieSides;
     float     RealPointsPerLevel;
     int32     BasePoints;
+	float     BonusCoefficient;
     float     PointsPerComboPoint;
     float     ValueMultiplier;
     float     DamageMultiplier;

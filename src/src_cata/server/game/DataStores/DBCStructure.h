@@ -1223,6 +1223,9 @@ struct ItemReforgeEntry
     float SourceMultiplier;
     uint32 FinalStat;
     float FinalMultiplier;
+	//float     Scaling1;                                     // 2        m_Scaling1 - always 0.4.
+    //uint32    DestinationStat;                              // 3        m_DestinationStat
+    //float     Scaling2;                                     // 4        m_Scaling2 - always 1.
 };
 
 // common struct for:
@@ -1680,7 +1683,7 @@ struct SpellEffectEntry
     uint32    EffectApplyAuraName;                          // 3         m_effectAura
     uint32    EffectAmplitude;                              // 4         m_effectAuraPeriod
     int32     EffectBasePoints;                             // 5         m_effectBasePoints (don't must be used in spell/auras explicitly, must be used cached Spell::m_currentBasePoints)
-    float     EffectBonusMultiplier;                        // 6         m_effectBonus
+	float     EffectBonusMultiplier;                        // 6         m_effectBonus
     float     EffectDamageMultiplier;                       // 7         m_effectChainAmplitude
     uint32    EffectChainTarget;                            // 8         m_effectChainTargets
     int32     EffectDieSides;                               // 9         m_effectDieSides
@@ -2068,6 +2071,8 @@ struct TalentEntry
     //uint64  allowForPet;                                  // 17       m_categoryMask its a 64 bit mask for pet 1<<m_categoryEnumID in CreatureFamily.dbc
 };
 
+#define MAX_MASTERY_SPELLS 2
+
 struct TalentTabEntry
 {
     uint32  TalentTabID;                                    // 0
@@ -2080,6 +2085,7 @@ struct TalentTabEntry
     //char* description;                                    // 7
     //uint32 rolesMask;                                     // 8 4.0.0
     //uint32 MasterySpells[2];                              // 9-10 passive mastery bonus spells?
+	uint32 MasterySpellId[MAX_MASTERY_SPELLS];              // 9-10 passive mastery bonus spells
 };
 
 struct TalentTreePrimarySpellsEntry
