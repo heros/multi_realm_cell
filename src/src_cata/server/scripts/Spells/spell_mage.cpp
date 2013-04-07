@@ -66,7 +66,10 @@ enum MageSpells
 
     SPELL_MAGE_IMPROVED_MANA_GEM_TRIGGERED       = 83098,
 
-    SPELL_MAGE_FINGERS_OF_FROST                  = 44544
+    SPELL_MAGE_FINGERS_OF_FROST                  = 44544,
+
+	SPELL_MAGE_GLYPH_OF_ICE_BARRIER              = 63095,
+    SPELL_MAGE_CAUTERIZE_DAMAGE                  = 87023
 };
 
 enum MageIcons
@@ -989,6 +992,219 @@ class spell_mage_water_elemental_freeze : public SpellScriptLoader
        }
 };
 
+//skyfire
+
+// Frost Warding
+class spell_mage_frost_warding_trigger : public SpellScriptLoader
+{
+public:
+    spell_mage_frost_warding_trigger() : SpellScriptLoader("spell_mage_frost_warding_trigger") { }
+
+    class spell_mage_frost_warding_trigger_AuraScript : public AuraScript
+    {
+        PrepareAuraScript(spell_mage_frost_warding_trigger_AuraScript);
+
+        enum Spells
+        {
+            SPELL_MAGE_FROST_WARDING_TRIGGERED = 57776,
+            SPELL_MAGE_FROST_WARDING_R1 = 28332,
+        };
+
+        bool Validate(SpellInfo const* /*spellEntry*/)
+        {
+            return sSpellMgr->GetSpellInfo(SPELL_MAGE_FROST_WARDING_TRIGGERED)
+                && sSpellMgr->GetSpellInfo(SPELL_MAGE_FROST_WARDING_R1);
+        }
+
+        void Absorb(AuraEffect* aurEff, DamageInfo & dmgInfo, uint32 & absorbAmount)
+        {
+            Unit* target = GetTarget();
+            if (AuraEffect* talentAurEff = target->GetAuraEffectOfRankedSpell(SPELL_MAGE_FROST_WARDING_R1, EFFECT_0))
+            {
+                int32 chance = talentAurEff->GetSpellInfo()->Effects[EFFECT_1].CalcValue();
+
+                if (roll_chance_i(chance))
+                {
+                    absorbAmount = dmgInfo.GetDamage();
+                    int32 bp = absorbAmount;
+                    target->CastCustomSpell(target, SPELL_MAGE_FROST_WARDING_TRIGGERED, &bp, NULL, NULL, true, NULL, aurEff);
+                }
+            }
+        }
+
+        void Register()
+        {
+             OnEffectAbsorb += AuraEffectAbsorbFn(spell_mage_frost_warding_trigger_AuraScript::Absorb, EFFECT_0);
+        }
+    };
+
+    AuraScript* GetAuraScript() const
+    {
+        return new spell_mage_frost_warding_trigger_AuraScript();
+    }
+};
+/*
+class spell_mage_incanters_absorbtion_base_AuraScript : public AuraScript
+{
+public:
+    enum Spells
+    {
+        SPELL_MAGE_INCANTERS_ABSORBTION_TRIGGERED = 44413,
+        SPELL_MAGE_INCANTERS_ABSORBTION_R1 = 44394,
+    };
+*/
+//  bool Validate(SpellInfo const* /*spellEntry*/)
+/*   {
+        return sSpellMgr->GetSpellInfo(SPELL_MAGE_INCANTERS_ABSORBTION_TRIGGERED)
+            && sSpellMgr->GetSpellInfo(SPELL_MAGE_INCANTERS_ABSORBTION_R1);
+    }
+*/
+//  void Trigger(AuraEffect* aurEff, DamageInfo& /*dmgInfo*/, uint32& absorbAmount)
+/*   {
+        Unit* target = GetTarget();
+
+        if (AuraEffect* talentAurEff = target->GetAuraEffectOfRankedSpell(SPELL_MAGE_INCANTERS_ABSORBTION_R1, EFFECT_0))
+        {
+           // Store the normal spellpower to prevent the nonstop aura stacking
+            int32 bp = CalculatePctN(absorbAmount, talentAurEff->GetAmount());
+
+            // If we dont get just the intellect spellpower, the aura will stack forever
+            uint32 baseSpellPower = target->ToPlayer()->GetBaseSpellPower();
+
+            if (AuraEffect* incanterTriggered = target->GetAuraEffect(SPELL_MAGE_INCANTERS_ABSORBTION_TRIGGERED, 0, target->GetGUID()))
+            {
+                // The aura will stack up to a value of 20% of the mage's spell power
+                incanterTriggered->ChangeAmount(std::min<int32>(incanterTriggered->GetAmount() + bp, CalculatePctN(baseSpellPower, 20)));
+
+                // Refresh and return to prevent replacing the aura
+                incanterTriggered->GetBase()->RefreshDuration();
+
+               return;
+            }
+            else // No incanters absorption aura
+            {
+                target->CastCustomSpell(target, SPELL_MAGE_INCANTERS_ABSORBTION_TRIGGERED, &bp, NULL, NULL, true, NULL, aurEff);
+          }
+     }
+ }
+};
+*/
+// Incanter's Absorption
+class spell_mage_incanters_absorbtion_absorb : public SpellScriptLoader
+{
+public:
+    spell_mage_incanters_absorbtion_absorb() : SpellScriptLoader("spell_mage_incanters_absorbtion_absorb") { }
+
+    class spell_mage_incanters_absorbtion_absorb_AuraScript : public spell_mage_incanters_absorbtion_base_AuraScript
+    {
+        PrepareAuraScript(spell_mage_incanters_absorbtion_absorb_AuraScript);
+
+        void Register()
+        {
+             AfterEffectAbsorb += AuraEffectAbsorbFn(spell_mage_incanters_absorbtion_absorb_AuraScript::Trigger, EFFECT_0);
+        }
+    };
+
+    AuraScript* GetAuraScript() const
+    {
+        return new spell_mage_incanters_absorbtion_absorb_AuraScript();
+    }
+};
+
+// Incanter's Absorption
+class spell_mage_incanters_absorbtion_manashield : public SpellScriptLoader
+{
+public:
+    spell_mage_incanters_absorbtion_manashield() : SpellScriptLoader("spell_mage_incanters_absorbtion_manashield") { }
+
+    class spell_mage_incanters_absorbtion_manashield_AuraScript : public spell_mage_incanters_absorbtion_base_AuraScript
+    {
+        PrepareAuraScript(spell_mage_incanters_absorbtion_manashield_AuraScript);
+
+        void Register()
+        {
+             AfterEffectManaShield += AuraEffectManaShieldFn(spell_mage_incanters_absorbtion_manashield_AuraScript::Trigger, EFFECT_0);
+        }
+    };
+
+    AuraScript* GetAuraScript() const
+    {
+        return new spell_mage_incanters_absorbtion_manashield_AuraScript();
+    }
+};
+
+// 86948, 86949 Cauterize talent aura
+class spell_mage_cauterize : public SpellScriptLoader
+{
+public:
+    spell_mage_cauterize() : SpellScriptLoader("spell_mage_cauterize") {}
+
+    class spell_mage_cauterize_AuraScript : public AuraScript
+    {
+        PrepareAuraScript(spell_mage_cauterize_AuraScript);
+
+        int32 absorbChance;
+
+        bool Validate(SpellInfo const* /*spellEntry*/)
+        {
+            if (!sSpellMgr->GetSpellInfo(SPELL_MAGE_CAUTERIZE_DAMAGE))
+                return false;
+
+            return true;
+        }
+
+        bool Load()
+        {
+            if (GetCaster()->GetTypeId() != TYPEID_PLAYER)
+                return false;
+
+            absorbChance = GetSpellInfo()->Effects[0].BasePoints;
+            return true;
+        }
+
+        void CalculateAmount(AuraEffect const* /*aurEff*/, int32& amount, bool& /*canBeRecalculated*/)
+        {
+            // Set absorbtion amount to unlimited
+            amount = -1;
+        }
+
+        void Absorb(AuraEffect* aurEff, DamageInfo& dmgInfo, uint32& absorbAmount)
+        {
+            Unit* caster = GetCaster();
+
+            if (!caster)
+                return;
+
+            int32 remainingHealth = caster->GetHealth() - dmgInfo.GetDamage();
+            int32 cauterizeHeal = caster->CountPctFromMaxHealth(40);
+
+            if (caster->ToPlayer()->HasSpellCooldown(SPELL_MAGE_CAUTERIZE_DAMAGE))
+                return;
+
+            if (!roll_chance_i(absorbChance))
+                return;
+
+            if (remainingHealth <= 0)
+            {
+                absorbAmount = dmgInfo.GetDamage();
+                caster->CastCustomSpell(caster, SPELL_MAGE_CAUTERIZE_DAMAGE, NULL,&cauterizeHeal, NULL, true, NULL, aurEff);
+                caster->ToPlayer()->AddSpellCooldown(SPELL_MAGE_CAUTERIZE_DAMAGE, 0, time(NULL) + 60);
+            }
+        }
+
+        void Register()
+        {
+            DoEffectCalcAmount += AuraEffectCalcAmountFn(spell_mage_cauterize_AuraScript::CalculateAmount, EFFECT_0, SPELL_AURA_SCHOOL_ABSORB);
+            OnEffectAbsorb += AuraEffectAbsorbFn(spell_mage_cauterize_AuraScript::Absorb, EFFECT_0);
+        }
+    };
+
+    AuraScript* GetAuraScript() const
+    {
+        return new spell_mage_cauterize_AuraScript();
+    }
+};
+
 void AddSC_mage_spell_scripts()
 {
     new spell_mage_blast_wave();
@@ -1010,4 +1226,9 @@ void AddSC_mage_spell_scripts()
     new spell_mage_replenish_mana();
     new spell_mage_summon_water_elemental();
     new spell_mage_water_elemental_freeze();
+	//skyfire
+    new spell_mage_frost_warding_trigger();
+//  new spell_mage_incanters_absorbtion_absorb();
+    new spell_mage_incanters_absorbtion_manashield();
+    new spell_mage_cauterize();
 }

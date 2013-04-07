@@ -60,7 +60,10 @@ enum WarlockSpells
     SPELL_WARLOCK_SIPHON_LIFE_HEAL                  = 63106,
     SPELL_WARLOCK_SOULSHATTER                       = 32835,
     SPELL_WARLOCK_UNSTABLE_AFFLICTION               = 30108,
-    SPELL_WARLOCK_UNSTABLE_AFFLICTION_DISPEL        = 31117
+    SPELL_WARLOCK_UNSTABLE_AFFLICTION_DISPEL        = 31117,
+	//skyfire
+	WARLOCK_DRAIN_SOUL                              = 79264,
+    WARLOCK_NETHER_WARD                             = 91713
 };
 
 enum WarlockSpellIcons
@@ -1017,6 +1020,150 @@ class spell_warl_unstable_affliction : public SpellScriptLoader
         }
 };
 
+//skyfire
+
+// Fear
+// Spell Id: 5782
+class spell_warl_fear : public SpellScriptLoader
+{
+    public:
+        spell_warl_fear() : SpellScriptLoader("spell_warl_fear") { }
+
+        class spell_warl_fear_AuraScript : public AuraScript
+        {
+            PrepareAuraScript(spell_warl_fear_AuraScript);
+
+            void OnRemove(AuraEffect const* /*aurEff*/, AuraEffectHandleModes /*mode*/)
+            {
+                // Check for Improved Fear
+                if (AuraEffect* aurEff = GetCaster()->GetAuraEffect(SPELL_AURA_DUMMY, SPELLFAMILY_WARLOCK, 98, 0))
+                {
+                    uint32 spellId = 0;
+                    switch (aurEff->GetId())
+                    {
+                        case 53759:
+                            spellId = 60947;
+                            break;
+                        case 53754:
+                            spellId = 60946;
+                            break;
+                    }
+                    if (spellId)
+                        GetCaster()->CastSpell(GetTarget(), spellId, true);
+                }
+            }
+
+            void Register()
+            {
+                AfterEffectRemove += AuraEffectRemoveFn(spell_warl_fear_AuraScript::OnRemove, EFFECT_0, SPELL_AURA_MOD_FEAR, AURA_EFFECT_HANDLE_REAL);
+            }
+        };
+
+        AuraScript* GetAuraScript() const
+        {
+            return new spell_warl_fear_AuraScript();
+        }
+};
+
+// Drain Life
+// Drain Life: Soulburn
+// Spell Id: 689
+// Spell Id: 89420
+class spell_warl_drain_life : public SpellScriptLoader
+{
+public:
+    spell_warl_drain_life() : SpellScriptLoader("spell_warl_drain_life") { }
+
+    class spell_warl_drain_life_AuraScript : public AuraScript
+    {
+        PrepareAuraScript(spell_warl_drain_life_AuraScript);
+
+        void OnPeriodic(AuraEffect const* /*aurEff*/)
+        {
+            int32 bp = 2; // Normal, restore 2% of health
+
+            // Check for Death's Embrace
+            if (AuraEffect const* aurEff = GetCaster()->GetAuraEffect(SPELL_AURA_DUMMY, SPELLFAMILY_WARLOCK, 3223, 0))
+                if (GetCaster()->HealthBelowPct(25))
+                    bp += int32(aurEff->GetAmount());
+
+            GetCaster()->CastCustomSpell(GetCaster(), 89653, &bp, NULL, NULL, true);
+        }
+
+        void Register()
+        {
+            OnEffectPeriodic += AuraEffectPeriodicFn(spell_warl_drain_life_AuraScript::OnPeriodic, EFFECT_0, SPELL_AURA_PERIODIC_DAMAGE);
+        }
+    };
+
+    AuraScript* GetAuraScript() const
+    {
+        return new spell_warl_drain_life_AuraScript();
+    }
+};
+
+class spell_warl_drain_soul : public SpellScriptLoader
+{
+public:
+    spell_warl_drain_soul() : SpellScriptLoader("spell_warl_drain_soul") { } // 1120
+
+    class spell_warl_drain_soul_AuraScript : public AuraScript
+    {
+        PrepareAuraScript(spell_warl_drain_soul_AuraScript)
+
+        void OnPeriodic(AuraEffect const* /*aurEff*/) {}
+
+        void OnRemove(AuraEffect const* aurEff, AuraEffectHandleModes /*mode*/)
+        {
+            if (Unit* caster = aurEff->GetBase()->GetCaster())
+            {
+                caster->CastSpell(caster, WARLOCK_DRAIN_SOUL, true);
+            }
+        }
+
+        void Register()
+        {
+            OnEffectRemove += AuraEffectRemoveFn(spell_warl_drain_soul_AuraScript::OnRemove, EFFECT_0, SPELL_AURA_PERIODIC_DAMAGE, AURA_EFFECT_HANDLE_REAL);
+            OnEffectPeriodic += AuraEffectPeriodicFn(spell_warl_drain_soul_AuraScript::OnPeriodic, EFFECT_0, SPELL_AURA_PERIODIC_DAMAGE);
+        }
+    };
+
+    AuraScript* GetAuraScript() const
+    {
+        return new spell_warl_drain_soul_AuraScript();
+    }
+};
+
+// 687, 28176 Demon armor and Fel armor swap controller
+class spell_warl_nether_ward_swap_supressor: public SpellScriptLoader
+{
+public:
+    spell_warl_nether_ward_swap_supressor() : SpellScriptLoader("spell_warl_nether_ward_swap_supressor") {}
+
+    class spell_warl_nether_ward_swap_supressor_SpellScript : public SpellScript
+    {
+        PrepareSpellScript(spell_warl_nether_ward_swap_supressor_SpellScript);
+
+        void PreventSwapApplicationOnCaster(WorldObject*& target)
+        {
+            // If the warlock doesnt have the Nether Ward talent,
+            // do not allow the swap effect to hit the warlock
+            if (!GetCaster()->HasAura(WARLOCK_NETHER_WARD))
+                target = NULL;
+        }
+
+        void Register()
+        {
+            OnObjectTargetSelect += SpellObjectTargetSelectFn(spell_warl_nether_ward_swap_supressor_SpellScript::PreventSwapApplicationOnCaster, EFFECT_2, TARGET_UNIT_CASTER);
+        }
+    };
+
+    SpellScript* GetSpellScript() const
+    {
+        return new spell_warl_nether_ward_swap_supressor_SpellScript();
+    }
+};
+
 void AddSC_warlock_spell_scripts()
 {
     new spell_warl_bane_of_doom();
@@ -1039,4 +1186,9 @@ void AddSC_warlock_spell_scripts()
     new spell_warl_siphon_life();
     new spell_warl_soulshatter();
     new spell_warl_unstable_affliction();
+	//skyfire
+    new spell_warl_fear();
+    new spell_warl_drain_life();
+    new spell_warl_drain_soul();
+    new spell_warl_nether_ward_swap_supressor();
 }

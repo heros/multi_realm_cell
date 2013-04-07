@@ -50,6 +50,13 @@ enum PriestSpells
     SPELL_PRIEST_SHADOW_WORD_DEATH                  = 32409,
     SPELL_PRIEST_T9_HEALING_2P                      = 67201,
     SPELL_PRIEST_VAMPIRIC_TOUCH_DISPEL              = 64085,
+	//skyfire
+	PRIEST_SPELL_REVELATIONS                        = 88627,
+    PRIEST_SPELL_RENEW                                = 139,
+    PRIEST_SPELL_SANCTUARY_4YD_DUMMY                = 88667,
+    PRIEST_SPELL_SANCTUARY_4YD_HEAL                 = 88668,
+    PRIEST_SPELL_SANCTUARY_8YD_DUMMY                = 88685,
+    PRIEST_SPELL_SANCTUARY_8YD_HEAL                 = 88686,
 };
 
 enum PriestSpellIcons
@@ -795,6 +802,321 @@ class spell_pri_vampiric_touch : public SpellScriptLoader
         }
 };
 
+//skyfire
+/*
+// Power Word: Fortitude
+// Spell Id: 21562
+class spell_pri_power_word_fortitude : public SpellScriptLoader
+{
+    public:
+        spell_pri_power_word_fortitude() : SpellScriptLoader("spell_pri_power_word_fortitude") { }
+
+        class spell_pri_power_word_fortitude_SpellScript : public SpellScript
+        {
+            PrepareSpellScript(spell_pri_power_word_fortitude_SpellScript);
+*/
+//          void HandleDummy(SpellEffIndex /*effIndex*/)
+/*           {
+                if (Unit* caster = GetCaster())
+                {
+                    std::list<Unit*> PartyMembers;
+                    caster->GetPartyMembers(PartyMembers);
+                    if (PartyMembers.size() > 1)
+                        caster->CastSpell(GetHitUnit(), 79105, true); // Power Word : Fortitude (Raid)
+                    else
+                        caster->CastSpell(GetHitUnit(), 79104, true); // Power Word : Fortitude (Caster)
+                }
+            }
+
+            void Register()
+            {
+                OnEffectHitTarget += SpellEffectFn(spell_pri_power_word_fortitude_SpellScript::HandleDummy, EFFECT_0, SPELL_EFFECT_DUMMY);
+            }
+        };
+
+        SpellScript* GetSpellScript() const
+        {
+            return new spell_pri_power_word_fortitude_SpellScript;
+        }
+};
+*/
+// 81208, 81206 Chakra: Serenity and Chakra: Sanctuary spell swap supressor
+class spell_pri_chakra_swap_supressor: public SpellScriptLoader
+{
+public:
+    spell_pri_chakra_swap_supressor() : SpellScriptLoader("spell_pri_chakra_swap_supressor") {}
+
+    class spell_pri_chakra_swap_supressor_SpellScript : public SpellScript
+    {
+        PrepareSpellScript(spell_pri_chakra_swap_supressor_SpellScript);
+
+        void PreventSwapApplicationOnCaster(WorldObject*& target)
+        {
+            // If the caster has the Revelations talent (88627) The chakra: serenity aura (81208) and the chakra: sanctuary
+            // (81206) swaps the Holy Word: Chastise spell (the one that you learn when you spec into the holy tree)
+            // for a Holy Word: Serenity spell (88684) or a Holy Word: Sanctuary (88684), if the caster doesnt have the
+            // talent, lets just block the swap effect.
+            if (!GetCaster()->HasAura(PRIEST_SPELL_REVELATIONS))
+                target = NULL;
+        }
+
+        void Register()
+        {
+            OnObjectTargetSelect += SpellObjectTargetSelectFn(spell_pri_chakra_swap_supressor_SpellScript::PreventSwapApplicationOnCaster, EFFECT_2, TARGET_UNIT_CASTER);
+        }
+    };
+
+    SpellScript* GetSpellScript() const
+    {
+        return new spell_pri_chakra_swap_supressor_SpellScript();
+    }
+};
+
+// 81585 Chakra: Serenity, Renew spell duration reset
+class spell_pri_chakra_serenity_proc : public SpellScriptLoader
+{
+public:
+    spell_pri_chakra_serenity_proc() : SpellScriptLoader("spell_pri_chakra_serenity_proc") {}
+
+    class spell_pri_chakra_serenity_proc_SpellScript : public SpellScript
+    {
+        PrepareSpellScript(spell_pri_chakra_serenity_proc_SpellScript);
+
+        void HandleScriptEffect(SpellEffIndex /*effIndex*/)
+        {
+            Unit* target = GetHitUnit();
+
+            if (!target)
+                return;
+
+            if (Aura* renew = target->GetAura(PRIEST_SPELL_RENEW, GetCaster()->GetGUID()))
+                renew->RefreshDuration();
+        }
+
+        void Register()
+        {
+            OnEffectHitTarget += SpellEffectFn(spell_pri_chakra_serenity_proc_SpellScript::HandleScriptEffect, EFFECT_0, SPELL_EFFECT_SCRIPT_EFFECT);
+        }
+    };
+
+    SpellScript* GetSpellScript() const
+    {
+        return new spell_pri_chakra_serenity_proc_SpellScript();
+    }
+};
+
+// 88685, 88687 Chakra: Sanctuary GTAoe effect
+class spell_pri_chakra_sanctuary_heal: public SpellScriptLoader
+{
+public:
+    spell_pri_chakra_sanctuary_heal() : SpellScriptLoader("spell_pri_chakra_sanctuary_heal") {}
+
+    class spell_pri_chakra_sanctuary_heal_SpellScript : public SpellScript
+    {
+        PrepareSpellScript(spell_pri_chakra_sanctuary_heal_SpellScript);
+
+        float x, y, z;
+
+        bool Load()
+        {
+            if (GetCaster()->GetTypeId() != TYPEID_PLAYER)
+                return false;
+
+            GetExplTargetDest()->GetPosition(x, y, z);
+            return true;
+        }
+
+        void HandleExtraEffect()
+        {
+            if (GetSpellInfo()->Id == PRIEST_SPELL_SANCTUARY_8YD_DUMMY)
+                GetCaster()->CastSpell(x, y, z, PRIEST_SPELL_SANCTUARY_4YD_DUMMY, true);
+        }
+
+        void Register()
+        {
+            AfterCast += SpellCastFn(spell_pri_chakra_sanctuary_heal_SpellScript::HandleExtraEffect);
+        }
+    };
+
+    class spell_pri_chakra_sanctuary_heal_AuraScript : public AuraScript
+    {
+        PrepareAuraScript(spell_pri_chakra_sanctuary_heal_AuraScript);
+
+        bool Load()
+        {
+            if (GetCaster()->GetTypeId() != TYPEID_PLAYER)
+                return false;
+
+            return true;
+        }
+
+        void HandlePeriodicDummy(AuraEffect const* /*aurEff*/)
+        {
+            Unit* caster = GetCaster();
+            DynamicObject* dynObj = caster->GetDynObject(GetSpellInfo()->Id);
+
+            if(caster && dynObj && caster->GetMapId() == dynObj->GetMapId())
+            {
+                float x, y, z;
+                dynObj->GetPosition(x, y, z);
+
+                switch(GetSpellInfo()->Id)
+                {
+                    case PRIEST_SPELL_SANCTUARY_8YD_DUMMY:
+                    {
+                        caster->CastSpell(x, y, z, PRIEST_SPELL_SANCTUARY_8YD_HEAL, true);
+                        break;
+                    }
+                    case PRIEST_SPELL_SANCTUARY_4YD_DUMMY:
+                    {
+                        caster->CastSpell(x, y, z, PRIEST_SPELL_SANCTUARY_4YD_HEAL, true);
+                        break;
+                    }
+                }
+            }
+        }
+
+        void Register()
+        {
+            OnEffectPeriodic += AuraEffectPeriodicFn(spell_pri_chakra_sanctuary_heal_AuraScript::HandlePeriodicDummy, EFFECT_1, SPELL_AURA_PERIODIC_DUMMY);
+        }
+    };
+
+    SpellScript* GetSpellScript() const
+    {
+        return new spell_pri_chakra_sanctuary_heal_SpellScript();
+    }
+    AuraScript* GetAuraScript() const
+    {
+        return new spell_pri_chakra_sanctuary_heal_AuraScript();
+    }
+};
+
+class DistanceCheck : public std::unary_function<Unit*, bool>
+{
+    public:
+        explicit DistanceCheck(float _x, float _y) : x(_x), y(_y) { }
+        bool operator()(WorldObject* object)
+        {
+            return object->GetExactDist2d(x, y) <= 3.0f;
+        }
+
+    private:
+        float x, y;
+};
+// Used to prevent the 8yd heal from occuring if the target is in the 4yd one range
+class spell_pri_chakra_sanctuary_heal_target_selector: public SpellScriptLoader
+{
+public:
+    spell_pri_chakra_sanctuary_heal_target_selector() : SpellScriptLoader("spell_pri_chakra_sanctuary_heal_target_selector") {}
+
+    class spell_pri_chakra_sanctuary_heal_target_selector_SpellScript : public SpellScript
+    {
+        PrepareSpellScript(spell_pri_chakra_sanctuary_heal_target_selector_SpellScript);
+
+        float x, y;
+
+        bool Load()
+        {
+            if (GetCaster()->GetTypeId() != TYPEID_PLAYER)
+                return false;
+
+            GetExplTargetDest()->GetPosition(x, y);
+            return true;
+        }
+
+        void FilterTargets(std::list<WorldObject*>& unitList)
+        {
+            unitList.remove_if(DistanceCheck(x, y));
+        }
+
+        void Register()
+        {
+            OnObjectAreaTargetSelect += SpellObjectAreaTargetSelectFn(spell_pri_chakra_sanctuary_heal_target_selector_SpellScript::FilterTargets, EFFECT_0, TARGET_UNIT_DEST_AREA_ALLY);
+        }
+    };
+
+    SpellScript* GetSpellScript() const
+    {
+        return new spell_pri_chakra_sanctuary_heal_target_selector_SpellScript();
+    }
+};
+
+// Mind Spike
+// Spell Id: 73510
+class spell_pri_mind_spike : public SpellScriptLoader
+{
+    public:
+        spell_pri_mind_spike() : SpellScriptLoader("spell_pri_mind_spike") { }
+
+        class spell_pri_mind_spike_SpellScript : public SpellScript
+        {
+            PrepareSpellScript(spell_pri_mind_spike_SpellScript);
+
+            void HandleDummy(SpellEffIndex /*effIndex*/)
+            {
+                Unit* target = GetHitUnit();
+
+                if (!target)
+                    return;
+
+                target->RemoveAurasByType(SPELL_AURA_PERIODIC_DAMAGE, GetCaster()->GetGUID());
+                target->RemoveAurasByType(SPELL_AURA_PERIODIC_LEECH, GetCaster()->GetGUID());
+            }
+
+            void Register()
+            {
+                OnEffectHitTarget += SpellEffectFn(spell_pri_mind_spike_SpellScript::HandleDummy, EFFECT_2, SPELL_EFFECT_DUMMY);
+            }
+        };
+
+        SpellScript* GetSpellScript() const
+        {
+            return new spell_pri_mind_spike_SpellScript;
+        }
+};
+
+// Mind Blast
+// Spell Id: 8092
+class spell_pri_mind_blast : public SpellScriptLoader
+{
+    public:
+        spell_pri_mind_blast() : SpellScriptLoader("spell_pri_mind_blast") { }
+
+        class spell_pri_mind_blast_SpellScript : public SpellScript
+        {
+            PrepareSpellScript(spell_pri_mind_blast_SpellScript);
+
+            void HandleAfterHit()
+            {
+                Unit* target = GetHitUnit();
+                Unit* caster = GetCaster();
+
+                if (!caster || !target)
+                    return;
+
+                // Remove Mind Spike debuff
+                target->RemoveAurasDueToSpell(87178, GetCaster()->GetGUID());
+
+                // Improved Mind blast - Mind Trauma cast
+                if (AuraEffect* improvedMindBlast = caster->GetDummyAuraEffect(SPELLFAMILY_PRIEST, 95, EFFECT_1))
+                    if (caster->GetShapeshiftForm() == FORM_SHADOW)
+                        if (roll_chance_i(improvedMindBlast->GetAmount()))
+                            caster->CastSpell(target, 48301, true);
+            }
+
+            void Register()
+            {
+                AfterHit += SpellHitFn(spell_pri_mind_blast_SpellScript::HandleAfterHit);
+            }
+        };
+
+        SpellScript* GetSpellScript() const
+        {
+            return new spell_pri_mind_blast_SpellScript;
+        }
+};
+
 void AddSC_priest_spell_scripts()
 {
     new spell_pri_divine_aegis();
@@ -814,4 +1136,12 @@ void AddSC_priest_spell_scripts()
     new spell_pri_shadow_word_death();
     new spell_pri_shadowform();
     new spell_pri_vampiric_touch();
+	//skyfire
+//  new spell_pri_power_word_fortitude();
+    new spell_pri_chakra_swap_supressor();
+    new spell_pri_chakra_serenity_proc();
+    new spell_pri_chakra_sanctuary_heal();
+    new spell_pri_chakra_sanctuary_heal_target_selector();
+    new spell_pri_mind_spike();
+    new spell_pri_mind_blast();
 }

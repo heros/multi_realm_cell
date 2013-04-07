@@ -1104,6 +1104,99 @@ class spell_dru_t10_restoration_4p_bonus : public SpellScriptLoader
         }
 };
 
+//skyfire
+
+// Ferocious Bite
+// Spell Id: 22568
+class spell_dru_ferocious_bite : public SpellScriptLoader
+{
+    public:
+        spell_dru_ferocious_bite() : SpellScriptLoader("spell_dru_ferocious_bite") { }
+
+        class spell_dru_ferocious_bite_SpellScript : public SpellScript
+        {
+            PrepareSpellScript(spell_dru_ferocious_bite_SpellScript);
+
+            void CalculateDamage(SpellEffIndex /*effIndex*/)
+            {
+                if (Unit* caster = GetCaster())
+                {
+                    if (caster->GetTypeId() != TYPEID_PLAYER)
+                        return;
+
+                    int32 damage = GetHitDamage();
+                    float ap = caster->GetTotalAttackPowerValue(BASE_ATTACK);
+                    float multiple = ap / 410 + GetSpellInfo()->Effects[EFFECT_1].CalcValue();
+                    int32 energy = -(caster->ModifyPower(POWER_ENERGY, -30));
+                    damage += int32(energy * multiple);
+/*                    damage += int32(CalculatePctN(caster->ToPlayer()->GetComboPoints() * ap, 7));
+*/                    SetHitDamage(damage);
+                }
+            }
+
+            void Register()
+            {
+                OnEffectHitTarget += SpellEffectFn(spell_dru_ferocious_bite_SpellScript::CalculateDamage, EFFECT_0, SPELL_EFFECT_SCHOOL_DAMAGE);
+            }
+        };
+
+        SpellScript* GetSpellScript() const
+        {
+            return new spell_dru_ferocious_bite_SpellScript;
+        }
+};
+
+
+// Mark Of The Wild
+// Spell Id: 1126/
+/*
+class spell_dru_mark_of_the_wild : public SpellScriptLoader
+{
+public:
+    spell_dru_mark_of_the_wild() : SpellScriptLoader("spell_dru_mark_of_the_wild") { }
+
+    class spell_dru_mark_of_the_wild_SpellScript : public SpellScript
+    {
+        PrepareSpellScript(spell_dru_mark_of_the_wild_SpellScript);
+*/
+//      void HandleDummy(SpellEffIndex /*effIndex*/)
+/*       {
+            if (Unit* caster = GetCaster())
+            {
+                if (caster->GetTypeId() == TYPEID_PLAYER)
+                {
+                    std::list<Unit*> PartyMembers;
+                    caster->GetPartyMembers(PartyMembers);
+
+                    bool Continue = false;
+                    uint32 player = 0;
+
+                    for (std::list<Unit*>::iterator itr = PartyMembers.begin(); itr != PartyMembers.end(); ++itr) // If caster is in party with a player
+                    {
+                        ++player;
+                        if (Continue == false && player > 1)
+                            Continue = true;
+                    }
+                    if (Continue == true)
+                        caster->CastSpell(GetHitUnit(), 79061, true); // Mark of the Wild (Raid)
+                    else
+                        caster->CastSpell(GetHitUnit(), 79060, true); // Mark of the Wild (Caster)
+                }
+            }
+        }
+
+        void Register()
+        {
+            OnEffectHitTarget += SpellEffectFn(spell_dru_mark_of_the_wild_SpellScript::HandleDummy, EFFECT_0, SPELL_EFFECT_DUMMY);
+        }
+    };
+
+    SpellScript* GetSpellScript() const
+    {
+        return new spell_dru_mark_of_the_wild_SpellScript;
+    }
+};
+*/
 void AddSC_druid_spell_scripts()
 {
     new spell_dru_dash();
@@ -1130,4 +1223,7 @@ void AddSC_druid_spell_scripts()
     new spell_dru_tiger_s_fury();
     new spell_dru_typhoon();
     new spell_dru_t10_restoration_4p_bonus();
+	//skyfire
+    new spell_dru_ferocious_bite();
+ // new spell_dru_mark_of_the_wild();
 }

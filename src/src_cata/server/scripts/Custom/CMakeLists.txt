@@ -10,6 +10,9 @@
 
 set(scripts_STAT_SRCS
   ${scripts_STAT_SRCS}
+  Custom/hybrid/npc_hybrid.cpp
+  Custom/resetduel.cpp
+  Custom/login/gm_login.cpp
 )
 
 message("  -> Prepared: Custom")

@@ -49,7 +49,17 @@ enum ShamanSpells
     SPELL_SHAMAN_TOTEM_EARTHBIND_EARTHGRAB      = 64695,
     SPELL_SHAMAN_TOTEM_EARTHBIND_TOTEM          = 6474,
     SPELL_SHAMAN_TOTEM_EARTHEN_POWER            = 59566,
-    SPELL_SHAMAN_TOTEM_HEALING_STREAM_HEAL      = 52042
+    SPELL_SHAMAN_TOTEM_HEALING_STREAM_HEAL      = 52042,
+	//skyfire
+    SHAMAN_SPELL_GLYPH_OF_MANA_TIDE     = 55441,
+    SHAMAN_SPELL_MANA_TIDE_TOTEM        = 16191,
+    SHAMAN_SPELL_FIRE_NOVA_R1           = 1535,
+    SHAMAN_SPELL_FIRE_NOVA_TRIGGERED_R1 = 8349,
+    SHAMAN_SPELL_EARTHQUAKE_KNOCKDOWN   = 77505,
+
+    //For Earthen Power
+    SHAMAN_TOTEM_SPELL_EARTHBIND_TOTEM  = 6474, //Spell casted by totem
+    SHAMAN_TOTEM_SPELL_EARTHEN_POWER    = 59566 //Spell witch remove snare effect
 };
 
 enum ShamanSpellIcons
@@ -645,6 +655,160 @@ class spell_sha_thunderstorm : public SpellScriptLoader
         }
 };
 
+//skyfire
+
+
+// 16191 - Mana Tide
+class spell_sha_mana_tide : public SpellScriptLoader
+{
+public:
+    spell_sha_mana_tide() : SpellScriptLoader("spell_sha_mana_tide") { }
+
+    class spell_sha_mana_tide_AuraScript : public AuraScript
+    {
+        PrepareAuraScript(spell_sha_mana_tide_AuraScript);
+
+        bool Validate(SpellInfo const* /*spellEntry*/)
+        {
+            if (!sSpellMgr->GetSpellInfo(SHAMAN_SPELL_MANA_TIDE_TOTEM))
+                return false;
+            return true;
+        }
+
+        void CalculateAmount(AuraEffect const* /*aurEff*/, int32& amount, bool& /*canBeRecalculated*/)
+        {
+            // 400% of caster's spirit
+            // Caster is totem, we need owner
+            if (Unit* owner = GetCaster()->GetOwner())
+                amount = int32(owner->GetStat(STAT_SPIRIT) * 4.0f);
+        }
+
+        void Register()
+        {
+            DoEffectCalcAmount += AuraEffectCalcAmountFn(spell_sha_mana_tide_AuraScript::CalculateAmount, EFFECT_0, SPELL_AURA_MOD_STAT);
+        }
+    };
+
+    AuraScript* GetAuraScript() const
+    {
+        return new spell_sha_mana_tide_AuraScript();
+    }
+};
+
+// 51474 - Astral shift
+class spell_sha_astral_shift : public SpellScriptLoader
+{
+public:
+    spell_sha_astral_shift() : SpellScriptLoader("spell_sha_astral_shift") { }
+
+    class spell_sha_astral_shift_AuraScript : public AuraScript
+    {
+        PrepareAuraScript(spell_sha_astral_shift_AuraScript);
+
+        uint32 absorbPct;
+
+        bool Load()
+        {
+            absorbPct = GetSpellInfo()->Effects[EFFECT_0].CalcValue(GetCaster());
+            return true;
+        }
+
+        void CalculateAmount(AuraEffect const* /*aurEff*/, int32& amount, bool& /*canBeRecalculated*/)
+        {
+            // Set absorbtion amount to unlimited
+            amount = -1;
+        }
+
+//      void Absorb(AuraEffect* /*aurEff*/, DamageInfo& dmgInfo, uint32& absorbAmount)
+/*       {
+            // reduces all damage taken while stun, fear or silence
+            if (GetTarget()->GetUInt32Value(UNIT_FIELD_FLAGS) & (UNIT_FLAG_FLEEING | UNIT_FLAG_SILENCED) || (GetTarget()->GetUInt32Value(UNIT_FIELD_FLAGS) & (UNIT_FLAG_STUNNED) && GetTarget()->HasAuraWithMechanic(1<<MECHANIC_STUN)))
+              absorbAmount = CalculatePctN(dmgInfo.GetDamage(), absorbPct);
+        }
+*/
+        void Register()
+        {
+            DoEffectCalcAmount += AuraEffectCalcAmountFn(spell_sha_astral_shift_AuraScript::CalculateAmount, EFFECT_0, SPELL_AURA_SCHOOL_ABSORB);
+//          OnEffectAbsorb += AuraEffectAbsorbFn(spell_sha_astral_shift_AuraScript::Absorb, EFFECT_0);
+        }
+    };
+
+    AuraScript* GetAuraScript() const
+    {
+        return new spell_sha_astral_shift_AuraScript();
+    }
+};
+
+// 73920 - Healing Rain
+class spell_sha_healing_rain : public SpellScriptLoader
+{
+public:
+    spell_sha_healing_rain() : SpellScriptLoader("spell_sha_healing_rain") { }
+
+    class spell_sha_healing_rain_AuraScript : public AuraScript
+    {
+        PrepareAuraScript(spell_sha_healing_rain_AuraScript);
+
+        void OnTick(AuraEffect const* /*aurEff*/)
+        {
+            if (DynamicObject* dynObj = GetCaster()->GetDynObject(73920))
+                GetCaster()->CastSpell(dynObj->GetPositionX(), dynObj->GetPositionY(), dynObj->GetPositionZ(), 73921, true);
+        }
+
+        void Register()
+        {
+            OnEffectPeriodic += AuraEffectPeriodicFn(spell_sha_healing_rain_AuraScript::OnTick, EFFECT_1, SPELL_AURA_PERIODIC_DUMMY);
+        }
+    };
+
+    AuraScript* GetAuraScript() const
+    {
+        return new spell_sha_healing_rain_AuraScript();
+    }
+};
+
+// 77478 - Earthquake
+class spell_sha_earthquake : public SpellScriptLoader
+{
+public:
+    spell_sha_earthquake() : SpellScriptLoader("spell_sha_earthquake") { }
+
+    class spell_sha_earthquake_SpellScript : public SpellScript
+    {
+        PrepareSpellScript(spell_sha_earthquake_SpellScript);
+
+        int32 chance;
+
+        bool Validate(SpellInfo const* /*spellEntry*/)
+        {
+            if (!sSpellStore.LookupEntry(SHAMAN_SPELL_EARTHQUAKE_KNOCKDOWN))
+                return false;
+            return true;
+        }
+
+        bool Load()
+        {
+            chance = GetSpellInfo()->Effects[EFFECT_1].CalcValue(GetCaster());
+            return true;
+        }
+
+        void HandleScriptEffect(SpellEffIndex /*effIndex*/)
+        {
+            if (roll_chance_i(chance))
+                GetCaster()->CastSpell(GetHitUnit(), SHAMAN_SPELL_EARTHQUAKE_KNOCKDOWN, true);
+        }
+
+        void Register()
+        {
+            OnEffectHitTarget += SpellEffectFn(spell_sha_earthquake_SpellScript::HandleScriptEffect, EFFECT_1, SPELL_EFFECT_SCRIPT_EFFECT);
+        }
+    };
+
+    SpellScript* GetSpellScript() const
+    {
+        return new spell_sha_earthquake_SpellScript();
+    }
+};
 void AddSC_shaman_spell_scripts()
 {
     new spell_sha_ancestral_awakening_proc();
@@ -660,4 +824,9 @@ void AddSC_shaman_spell_scripts()
     new spell_sha_lava_lash();
     new spell_sha_mana_tide_totem();
     new spell_sha_thunderstorm();
+	//skyfire
+	new spell_sha_mana_tide();
+    new spell_sha_astral_shift();
+    new spell_sha_healing_rain();
+    new spell_sha_earthquake();
 }

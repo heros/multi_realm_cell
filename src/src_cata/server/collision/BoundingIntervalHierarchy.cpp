@@ -17,12 +17,7 @@
  */
 
 #include "BoundingIntervalHierarchy.h"
-/* fix
-#if defined __APPLE__
-  #define isnan std::isnan
-#elif defined __CYGWIN__
-  #define isnan std::isnan
-*/
+
 #ifdef _MSC_VER
   #define isnan _isnan
 #else

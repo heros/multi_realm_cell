@@ -48,7 +48,9 @@ enum DeathKnightSpells
     SPELL_DK_UNHOLY_PRESENCE                    = 48265,
     SPELL_DK_IMPROVED_UNHOLY_PRESENCE_TRIGGERED = 63622,
     SPELL_DK_ITEM_SIGIL_VENGEFUL_HEART          = 64962,
-    SPELL_DK_ITEM_T8_MELEE_4P_BONUS             = 64736
+    SPELL_DK_ITEM_T8_MELEE_4P_BONUS             = 64736,
+	//skyfire
+	SPELL_DK_NECROTIC_STRIKE                    = 73975
 };
 
 enum DeathKnightSpellIcons
@@ -1005,6 +1007,125 @@ class spell_dk_will_of_the_necropolis : public SpellScriptLoader
         }
 };
 
+//skyfire
+/*
+class spell_dk_necrotic_strike : public SpellScriptLoader
+{
+public:
+    spell_dk_necrotic_strike() : SpellScriptLoader("spell_dk_necrotic_strike") { }
+
+    class spell_dk_necrotic_strike_SpellScript : public SpellScript
+    {
+        PrepareSpellScript(spell_dk_necrotic_strike_SpellScript);
+
+*/
+//        bool Validate(SpellEntry const* /*spellEntry*/)
+/*        {
+            return sSpellStore.LookupEntry(SPELL_DK_NECROTIC_STRIKE);
+        }
+
+        void HandleBeforeHit()
+        {
+            if (Unit* target = GetHitUnit())
+            {
+                if (!target->HasAura(73975))
+                  target->SetHealAbsorb(0.0f);
+            }
+        }
+
+        void HandleAfterHit()
+        {
+            if (Unit* target = GetHitUnit())
+            {
+                float absorb = GetCaster()->GetTotalAttackPowerValue(BASE_ATTACK) * 0.75f + target->GetHealAbsorb();
+                target->SetHealAbsorb(absorb);
+            }
+        }
+
+        void Register()
+        {
+            BeforeHit += SpellHitFn(spell_dk_necrotic_strike_SpellScript::HandleBeforeHit);
+            AfterHit += SpellHitFn(spell_dk_necrotic_strike_SpellScript::HandleAfterHit);
+        }
+    };
+
+    SpellScript *GetSpellScript() const
+    {
+        return new spell_dk_necrotic_strike_SpellScript();
+    }
+};
+*/
+// Festering Strike
+// Spell Id: 85948
+class spell_dk_festering_strike : public SpellScriptLoader
+{
+    public:
+        spell_dk_festering_strike() : SpellScriptLoader("spell_dk_festering_strike") { }
+
+        class spell_dk_festering_strike_SpellScript : public SpellScript
+        {
+            PrepareSpellScript(spell_dk_festering_strike_SpellScript);
+
+            void HandleScript(SpellEffIndex /*eff*/)
+            {
+                if (Unit* target = GetHitUnit())
+                {
+                    uint32 addDuration = urand(2, 6);
+                    if (target->HasAura(45524)) // Chains of Ice
+                        target->GetAura(45524)->SetDuration(target->GetAura(45524)->GetDuration() + (addDuration * 1000), true);
+                    if (target->HasAura(55095)) // Frost Fever
+                        target->GetAura(55095)->SetDuration(target->GetAura(55095)->GetDuration() + (addDuration * 1000), true);
+                    if (target->HasAura(55078)) // Blood Plague
+                        target->GetAura(55078)->SetDuration(target->GetAura(55078)->GetDuration() + (addDuration * 1000), true);
+                }
+            }
+
+            void Register()
+            {
+                OnEffectHitTarget += SpellEffectFn(spell_dk_festering_strike_SpellScript::HandleScript, EFFECT_2, SPELL_EFFECT_SCRIPT_EFFECT);
+            }
+        };
+
+        SpellScript* GetSpellScript() const
+        {
+            return new spell_dk_festering_strike_SpellScript();
+        }
+};
+
+// Chains Of Ice
+// Spell Id: 45524
+class spell_dk_chains_of_ice : public SpellScriptLoader
+{
+    public:
+        spell_dk_chains_of_ice() : SpellScriptLoader("spell_dk_chains_of_ice") { }
+
+        class spell_dk_chains_of_ice_SpellScript : public SpellScript
+        {
+            PrepareSpellScript(spell_dk_chains_of_ice_SpellScript);
+
+            void HandleEffect(SpellEffIndex /*eff*/)
+            {
+                if (Unit* target = GetHitUnit())
+                {
+                    if (GetCaster()->HasAura(50041)) // Chilblains Rank 2
+                        GetCaster()->CastSpell(target, 96294, true);
+                    else if (GetCaster()->HasAura(50040)) // Chilblains Rank 1
+                        GetCaster()->CastSpell(target, 96293, true);
+                }
+            }
+
+            void Register()
+            {
+                OnEffectHitTarget += SpellEffectFn(spell_dk_chains_of_ice_SpellScript::HandleEffect, EFFECT_2, SPELL_EFFECT_SCHOOL_DAMAGE);
+            }
+        };
+
+        SpellScript* GetSpellScript() const
+        {
+            return new spell_dk_chains_of_ice_SpellScript();
+        }
+};
+
 void AddSC_deathknight_spell_scripts()
 {
     new spell_dk_anti_magic_shell_raid();
@@ -1027,4 +1148,8 @@ void AddSC_deathknight_spell_scripts()
     new spell_dk_spell_deflection();
     new spell_dk_vampiric_blood();
     new spell_dk_will_of_the_necropolis();
+	//skyfire
+//	new spell_dk_necrotic_strike();
+    new spell_dk_festering_strike();
+    new spell_dk_chains_of_ice();
 }
