@@ -17,6 +17,8 @@
 ---------------
 --April 07, 2013
 ---------------
+[53] --> 434 up
+[52] --> fix bad merge korrektions
 [52] --> korrektions
 [51] --> korrektions
 [50] --> Rewrite project
