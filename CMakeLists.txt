@@ -82,3 +82,6 @@ add_subdirectory(dep_tc)
 
 # add core sources
 add_subdirectory(src)
+
+# add sql 
+#add_subdirectory(sql)
