@@ -85,6 +85,7 @@ bool Player::UpdateStats(Stats stat)
             UpdateMaxPower(POWER_MANA);
             UpdateAllSpellCritChances();
             UpdateArmor();                                  //SPELL_AURA_MOD_RESISTANCE_OF_INTELLECT_PERCENT, only armor currently
+			UpdateSpellPower();
 			break;
         case STAT_SPIRIT:
             break;
@@ -310,7 +311,7 @@ void Player::UpdateAttackPowerAndDamage(bool ranged)
         switch (getClass())
         {
             case CLASS_HUNTER:
-                val2 = level * 2.0f + GetStat(STAT_AGILITY) - 10.0f;
+                val2 = level * 2.0f + GetStat(STAT_AGILITY) * 2.0f - 20.0f;
                 break;
             case CLASS_ROGUE:
                 val2 = level + GetStat(STAT_AGILITY) - 10.0f;
@@ -318,17 +319,22 @@ void Player::UpdateAttackPowerAndDamage(bool ranged)
                 val2 = level + GetStat(STAT_AGILITY) - 10.0f;
                 break;
             case CLASS_DRUID:
-                switch (GetShapeshiftForm())
-                {
-                    case FORM_CAT:
-                        val2 = level + GetStat(STAT_AGILITY) - 25.0f;
-                    case FORM_BEAR:
-                        val2 = level + GetStat(STAT_AGILITY) - 25.0f;
-                    default:
-                        val2 = GetStat(STAT_AGILITY) - 24.0f; break;
-                }
+        switch (GetShapeshiftForm())
+        {
+            case FORM_CAT:
+                val2 = level + GetStat(STAT_AGILITY) - 25.0f;
+				break;
+            case FORM_BEAR:
+                val2 = level + GetStat(STAT_AGILITY) - 25.0f;
+				break;
+            default:
+                val2 = GetStat(STAT_AGILITY) - 24.0f; 
+				break;
+        }
                 break;
-            default: val2 = GetStat(STAT_AGILITY) - 25.0f; break;
+            default: 
+			    val2 = GetStat(STAT_AGILITY) - 25.0f; 
+			    break;
         }
     }
     else
@@ -365,7 +371,6 @@ void Player::UpdateAttackPowerAndDamage(bool ranged)
                         val2 = (level * 2.5f) + (GetStat(STAT_STRENGTH) - 2.0f) + ((GetStat(STAT_AGILITY) * 10) - 60.0f);
                         //val2 = (level * 2.5f) + (GetStat(STAT_STRENGTH) - 8.0f) + ((GetStat(STAT_AGILITY) * 5 ) - 65.0f);
                         break;
-
                     case FORM_MOONKIN:
                         val2 = (level * 1.0f) + (GetStat(STAT_STRENGTH) - 2.0f) + ((GetStat(STAT_AGILITY) * 2 ) - 20.0f);
                         break;
