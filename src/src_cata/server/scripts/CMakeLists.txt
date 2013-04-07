@@ -1,14 +1,18 @@
-# Copyright (C) 2008-2013 TrinityCore <http://www.trinitycore.org/>
-#
-# This file is free software; as a special exception the author gives
-# unlimited permission to copy and/or distribute it, with or without
-# modifications, as long as this notice is preserved.
-#
-# This program is distributed in the hope that it will be useful, but
-# WITHOUT ANY WARRANTY, to the extent permitted by law; without even the
-# implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-
-# Enable precompiled headers when using the GCC compiler.
+# 
+# Copyright (C) Likan Mod   (https://github.com/ChaosDevLikan/)
+# Copyright (C) Prydev      (http://sourceforge.net/projects/prydevserver) 
+# Copyright (C) TrinityCore (http://www.trinitycore.org)
+# Copyright (C) MaNGOS      (http://www.getmangos.com)
+# Copyright (C) ArkCORE     (http://www.arkania.net)
+# Copyright (C) SkyFireEMU  (http://www.projectskyfire.org)
+# 
+# World of Warcraft
+# You can edit but you can not delete this copyright.
+# Genesis Emulator - Genesis Database 
+# 
+# 
+#  By Likan Developer Core C++, SQL (FUN, WoTLK, Cata Realm) of Genesis Server
+# 
 
 if( USE_SCRIPTPCH )
   include_directories(
@@ -21,6 +25,7 @@ file(GLOB_RECURSE sources_Custom Custom/*.cpp Custom/*.h)
 file(GLOB_RECURSE sources_EasternKingdoms EasternKingdoms/*.cpp EasternKingdoms/*.h)
 file(GLOB_RECURSE sources_Events Events/*.cpp Events/*.h)
 file(GLOB_RECURSE sources_Kalimdor Kalimdor/*.cpp Kalimdor/*.h)
+file(GLOB_RECURSE sources_Maelstrom Maelstrom/*.cpp Maelstrom/*.h)
 file(GLOB_RECURSE sources_Outland Outland/*.cpp Outland/*.h)
 file(GLOB_RECURSE sources_Northrend Northrend/*.cpp Northrend/*.h)
 file(GLOB_RECURSE sources_Commands Commands/*.cpp Commands/*.h)
@@ -35,6 +40,7 @@ source_group(Custom FILES ${sources_Custom})
 source_group(EasternKingdoms FILES ${sources_EasternKingdoms})
 source_group(Events FILES ${sources_Events})
 source_group(Kalimdor FILES ${sources_Kalimdor})
+source_group(Maelstrom FILES ${sources_Maelstrom})
 source_group(Outland FILES ${sources_Outland})
 source_group(Northrend FILES ${sources_Northrend})
 source_group(OutdoorPvP FILES ${sources_OutdoorPvP})
@@ -70,6 +76,7 @@ if(SCRIPTS)
   include(OutdoorPvP/CMakeLists.txt)
   include(EasternKingdoms/CMakeLists.txt)
   include(Kalimdor/CMakeLists.txt)
+  include(Maelstrom/CMakeLists.txt)
   include(Outland/CMakeLists.txt)
   include(Northrend/CMakeLists.txt)
   include(Events/CMakeLists.txt)

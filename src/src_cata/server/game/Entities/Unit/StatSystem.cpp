@@ -71,25 +71,20 @@ bool Player::UpdateStats(Stats stat)
     switch (stat)
     {
 		case STAT_STRENGTH:
-			UpdateAllRatings();
-            UpdateAllCritPercentages();
+			UpdateBlockPercentage();  
             break;
         case STAT_AGILITY:
-			UpdateAllRatings();
-            UpdateArmor();
+			UpdateArmor();
             UpdateAllCritPercentages();
-            UpdateDodgePercentage();
+            UpdateDodgePercentage(); 
             break;
         case STAT_STAMINA:
-			UpdateAllRatings();
             UpdateMaxHealth();
             break;
         case STAT_INTELLECT:
-			UpdateAllRatings();
             UpdateMaxPower(POWER_MANA);
             UpdateAllSpellCritChances();
             UpdateArmor();                                  //SPELL_AURA_MOD_RESISTANCE_OF_INTELLECT_PERCENT, only armor currently
-            UpdateSpellPower();
 			break;
         case STAT_SPIRIT:
             break;
@@ -100,7 +95,7 @@ bool Player::UpdateStats(Stats stat)
     if (stat == STAT_STRENGTH)
 	{
         UpdateAttackPowerAndDamage(false);
-	if (HasAuraTypeWithMiscvalue(SPELL_AURA_MOD_RANGED_ATTACK_POWER, stat))
+	if (HasAuraTypeWithMiscvalue(SPELL_AURA_MOD_RANGED_ATTACK_POWER_OF_STAT_PERCENT, stat))
             UpdateAttackPowerAndDamage(true);
 	}
     else if (stat == STAT_AGILITY)
@@ -111,9 +106,9 @@ bool Player::UpdateStats(Stats stat)
 	 else
     {
         // Need update (exist AP from stat auras)
-        if (HasAuraTypeWithMiscvalue(SPELL_AURA_MOD_ATTACK_POWER, stat))
+        if (HasAuraTypeWithMiscvalue(SPELL_AURA_MOD_ATTACK_POWER_OF_STAT_PERCENT, stat))
             UpdateAttackPowerAndDamage(false);
-        if (HasAuraTypeWithMiscvalue(SPELL_AURA_MOD_RANGED_ATTACK_POWER, stat))
+        if (HasAuraTypeWithMiscvalue(SPELL_AURA_MOD_ATTACK_POWER_OF_STAT_PERCENT, stat))
             UpdateAttackPowerAndDamage(true);
     }
 
@@ -176,11 +171,13 @@ bool Player::UpdateAllStats()
     UpdateAllRatings();
     UpdateAllCritPercentages();
     UpdateAllSpellCritChances();
+	UpdateDefenseBonusesMod();
     UpdateBlockPercentage();
     UpdateParryPercentage();
     UpdateDodgePercentage();
     UpdateSpellDamageAndHealingBonus();
     UpdateManaRegen();
+	UpdateMastery();
     UpdateExpertise(BASE_ATTACK);
     UpdateExpertise(OFF_ATTACK);
     RecalculateRating(CR_ARMOR_PENETRATION);
@@ -207,11 +204,14 @@ void Player::UpdateResistances(uint32 school)
 
 void Player::UpdateArmor()
 {
+	float value = 0.0f;
     UnitMods unitMod = UNIT_MOD_ARMOR;
 
-    float value = GetModifierValue(unitMod, BASE_VALUE);    // base armor (from items)
+//    float value = GetModifierValue(unitMod, BASE_VALUE);    // base armor (from items)
+    value = GetModifierValue(unitMod, BASE_VALUE);    // base armor (from items)
     value *= GetModifierValue(unitMod, BASE_PCT);           // armor percent from items
-    value += GetModifierValue(unitMod, TOTAL_VALUE);
+    value += GetStat(STAT_AGILITY) * 2.0f;                  // armor bonus from stats
+	value += GetModifierValue(unitMod, TOTAL_VALUE);
 
     //add dynamic flat mods
     AuraEffectList const& mResbyIntellect = GetAuraEffectsByType(SPELL_AURA_MOD_RESISTANCE_OF_STAT_PERCENT);
@@ -252,7 +252,7 @@ float Player::GetHealthBonusFromStamina()
     float baseStam = stamina < 20.0f ? stamina : 20.0f;
     float moreStam = stamina - baseStam;
 
-    return baseStam + (moreStam*14.0f);
+    return baseStam + (moreStam*15.0f);
 }
 
 float Player::GetManaBonusFromIntellect()
@@ -310,34 +310,25 @@ void Player::UpdateAttackPowerAndDamage(bool ranged)
         switch (getClass())
         {
             case CLASS_HUNTER:
-                val2 = level * 2.0f + GetStat(STAT_AGILITY) * 2.0f - 20.0f;
+                val2 = level * 2.0f + GetStat(STAT_AGILITY) - 10.0f;
                 break;
             case CLASS_ROGUE:
+                val2 = level + GetStat(STAT_AGILITY) - 10.0f;
             case CLASS_WARRIOR:
                 val2 = level + GetStat(STAT_AGILITY) - 10.0f;
                 break;
             case CLASS_DRUID:
                 switch (GetShapeshiftForm())
                 {
-//                    case FORM_CAT:
-//                    case FORM_BEAR:
-//                        val2 = 0.0f;
-//                       break;
-//                    default:
-//                        val2 = GetStat(STAT_AGILITY) - 10.0f;
-//                       break;
-//                }
-					case FORM_CAT:
-						val2 = level + GetStat(STAT_AGILITY) - 20.0f;
-						break;
+                    case FORM_CAT:
+                        val2 = level + GetStat(STAT_AGILITY) - 25.0f;
                     case FORM_BEAR:
-                        val2 = level + GetStat(STAT_AGILITY) - 20.0f;
-                        break;
+                        val2 = level + GetStat(STAT_AGILITY) - 25.0f;
+                    default:
+                        val2 = GetStat(STAT_AGILITY) - 24.0f; break;
                 }
                 break;
-            default:
-                val2 = GetStat(STAT_AGILITY) - 10.0f;
-                break;
+            default: val2 = GetStat(STAT_AGILITY) - 25.0f; break;
         }
     }
     else
@@ -345,31 +336,38 @@ void Player::UpdateAttackPowerAndDamage(bool ranged)
         switch (getClass())
         {
             case CLASS_WARRIOR:
+                val2 = level * 3.0f + GetStat(STAT_STRENGTH) * 2.0f - 20.0f;
+                break;
             case CLASS_PALADIN:
+                val2 = level * 3.0f + GetStat(STAT_STRENGTH) * 2.0f - 20.0f;
+                break;
             case CLASS_DEATH_KNIGHT:
-                val2 = (level * 3.0f) + (GetStat(STAT_STRENGTH) * 2.0f) - 20.0f;
+                val2 = level * 3.0f + GetStat(STAT_STRENGTH) * 2.0f - 20.0f;
                 break;
             case CLASS_ROGUE:
-                val2 = (level * 2.0f) + GetStat(STAT_STRENGTH) + GetStat(STAT_AGILITY) - 20.0f;
+                val2 = level * 2.0f + GetStat(STAT_STRENGTH) + GetStat(STAT_AGILITY) - 20.0f;
                 break;
             case CLASS_HUNTER:
-                val2 = (level * 2.0f) + GetStat(STAT_STRENGTH) + GetStat(STAT_AGILITY) - 20.0f;
+                val2 = level * 2.0f + GetStat(STAT_STRENGTH) + GetStat(STAT_AGILITY) - 20.0f;
                 break;
             case CLASS_SHAMAN:
-                val2 = (level * 2.0f) + (GetStat(STAT_STRENGTH) - 10.0f) + ((GetStat(STAT_AGILITY) * 2) - 20.0f);
+                val2 = level * 2.0f + GetStat(STAT_STRENGTH) + GetStat(STAT_AGILITY) - 20.0f;
                 break;
             case CLASS_DRUID:
             {
                 switch (GetShapeshiftForm())
                 {
                     case FORM_CAT:
-                        val2 = (level * 1.5f) + (GetStat(STAT_STRENGTH) - 20.0f) + ((GetStat(STAT_AGILITY) * 2) - 40.0f);
+                        val2 = (level * 1.0f) + (GetStat(STAT_STRENGTH) - 1.0f) + ((GetStat(STAT_AGILITY) * 10) - 85.0f);
+                        //val2 = (level * 1.5f) + (GetStat(STAT_STRENGTH) - 2.0f) + ((GetStat(STAT_AGILITY) * 11 ) - 80.0f);
                         break;
                     case FORM_BEAR:
-                        val2 = (level * 3.0f) + (GetStat(STAT_STRENGTH) - 30.0f) + ((GetStat(STAT_AGILITY) * 2) - 40.0f);
+                        val2 = (level * 2.5f) + (GetStat(STAT_STRENGTH) - 2.0f) + ((GetStat(STAT_AGILITY) * 10) - 60.0f);
+                        //val2 = (level * 2.5f) + (GetStat(STAT_STRENGTH) - 8.0f) + ((GetStat(STAT_AGILITY) * 5 ) - 65.0f);
                         break;
+
                     case FORM_MOONKIN:
-                        val2 = (level * 1.0f) + (GetStat(STAT_STRENGTH) - 10.0f) + ((GetStat(STAT_AGILITY) * 2) - 20.0f);
+                        val2 = (level * 1.0f) + (GetStat(STAT_STRENGTH) - 2.0f) + ((GetStat(STAT_AGILITY) * 2 ) - 20.0f);
                         break;
                     default:
                         val2 = GetStat(STAT_STRENGTH) * 2.0f - 20.0f;
@@ -399,7 +397,7 @@ void Player::UpdateAttackPowerAndDamage(bool ranged)
     {
         if ((getClassMask() & CLASSMASK_WAND_USERS) == 0)
         {
-            AuraEffectList const& mRAPbyStat = GetAuraEffectsByType(SPELL_AURA_MOD_RANGED_ATTACK_POWER);
+            AuraEffectList const& mRAPbyStat = GetAuraEffectsByType(SPELL_AURA_MOD_RANGED_ATTACK_POWER_OF_STAT_PERCENT);
             for (AuraEffectList::const_iterator i = mRAPbyStat.begin(); i != mRAPbyStat.end(); ++i)
             {
                 int32 temp = int32(GetStat(Stats((*i)->GetMiscValue())) * (*i)->GetAmount() / 100.0f);
@@ -412,7 +410,7 @@ void Player::UpdateAttackPowerAndDamage(bool ranged)
     }
     else
     {
-        AuraEffectList const& mAPbyStat = GetAuraEffectsByType(SPELL_AURA_MOD_ATTACK_POWER);
+        AuraEffectList const& mAPbyStat = GetAuraEffectsByType(SPELL_AURA_MOD_ATTACK_POWER_OF_STAT_PERCENT);
         for (AuraEffectList::const_iterator i = mAPbyStat.begin(); i != mAPbyStat.end(); ++i)
         {
             int32 temp = int32(GetStat(Stats((*i)->GetMiscValue())) * (*i)->GetAmount() / 100.0f);
@@ -735,7 +733,8 @@ void Player::UpdateDodgePercentage()
         150.375940f,    // Mage
         150.375940f,    // Warlock
         0.0f,           // ??
-        116.890707f     // Druid
+//        116.890707f     // Druid
+        300.890707f     // Druid
     };
 
     float diminishing = 0.0f, nondiminishing = 0.0f;
