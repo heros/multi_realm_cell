@@ -31,8 +31,8 @@
 ##############################
 
 add_subdirectory(src_cata)
-add_subdirectory(src_mop)
-add_subdirectory(src_wotlk)
+#add_subdirectory(src_mop)
+#add_subdirectory(src_wotlk)
 ##############################
 
 #if(TOOLS)
