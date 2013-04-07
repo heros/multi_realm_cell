@@ -21,8 +21,9 @@ namespace AuthHelper
 {
     static RealmBuildInfo const PostBcAcceptedClientBuilds[] =
     {
-        {16650, 5, 2, 0, ' '},
-        {16309, 5, 1, 0, ' '},
+	    {16769, 5, 2, 0, ' '},
+	    {16357, 5, 1, 0, 'a'},	
+        {16309, 5, 1, 0, ' '},	
         {16048, 5, 0, 5, ' '},
         {16016, 5, 0, 4, ' '},
         {15595, 4, 3, 4, ' '},
