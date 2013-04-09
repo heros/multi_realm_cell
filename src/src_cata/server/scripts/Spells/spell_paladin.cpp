@@ -66,24 +66,24 @@ enum PaladinSpells
     SPELL_GENERIC_ARENA_DAMPENING                = 74410,
     SPELL_GENERIC_BATTLEGROUND_DAMPENING         = 74411,
 	//skyfire
-    SPELL_PALADIN_WORD_OF_GLORY                  = 85673,//
-    SPELL_PALADIN_JUDG_BOLD_OVERTIME             = 89906,//
-    SPELL_PALADIN_SELFLESS_HEALER_PROC           = 90811,//
+    SPELL_PALADIN_WORD_OF_GLORY                  = 85673,
+    SPELL_PALADIN_JUDG_BOLD_OVERTIME             = 89906,
+    SPELL_PALADIN_SELFLESS_HEALER_PROC           = 90811,
 
-    SPELL_PALADIN_RETRI_GUARDIAN                 = 86698,//
-    SPELL_PALADIN_HOLY_GUARDIAN                  = 86669,//
-    SPELL_PALADIN_PROT_GUARDIAN                  = 86659,//
+    SPELL_PALADIN_RETRI_GUARDIAN                 = 86698,
+    SPELL_PALADIN_HOLY_GUARDIAN                  = 86669,
+    SPELL_PALADIN_PROT_GUARDIAN                  = 86659,
 
-    SPELL_DIVINE_STORM                           = 53385,//
-    SPELL_DIVINE_STORM_DUMMY                     = 54171,//?
-    SPELL_DIVINE_STORM_HEAL                      = 54172,//?
+    SPELL_DIVINE_STORM                           = 53385,
+    SPELL_DIVINE_STORM_DUMMY                     = 54171,
+    SPELL_DIVINE_STORM_HEAL                      = 54172,
 
     SPELL_PALADIN_CONSECRATION_SUMMON            = 82366,
     SPELL_PALADIN_CONSECRATION_DAMAGE            = 81297
 };
 
 // 31850 - Ardent Defender
-/*class spell_pal_ardent_defender : public SpellScriptLoader
+class spell_pal_ardent_defender : public SpellScriptLoader
 {
     public:
         spell_pal_ardent_defender() : SpellScriptLoader("spell_pal_ardent_defender") { }
@@ -123,7 +123,7 @@ enum PaladinSpells
                     // Cast healing spell, completely avoid damage
                     absorbAmount = dmgInfo.GetDamage();
 
-                    uint32 defenseSkillValue = victim->GetDefenseSkillValue();
+                    uint32 defenseSkillValue = victim->GetMaxSkillValueForLevel();
                     // Max heal when defense skill denies critical hits from raid bosses
                     // Formula: max defense at level + 140 (raiting from gear)
                     uint32 reqDefForMaxHeal  = victim->getLevel() * 5 + 140;
@@ -156,7 +156,7 @@ enum PaladinSpells
         {
             return new spell_pal_ardent_defender_AuraScript();
         }
-};*/
+};
 
 // 37877 - Blessing of Faith
 class spell_pal_blessing_of_faith : public SpellScriptLoader
@@ -971,7 +971,6 @@ class spell_pal_seal_of_righteousness : public SpellScriptLoader
             return new spell_pal_seal_of_righteousness_AuraScript();
         }
 };
-//skyfire
 
 class spell_pal_word_of_glory : public SpellScriptLoader
 {
@@ -1202,7 +1201,6 @@ public:
             return new spell_pal_judgements_of_the_bold_AuraScript();
         }
 };
-
 	
 class spell_pal_selfless_healer : public SpellScriptLoader
 {
@@ -1337,7 +1335,6 @@ public:
     }
 };
 
-
 // Shield of Righteous
 // Spell Id: 53600
 class spell_pal_shield_of_righteous : public SpellScriptLoader
@@ -1447,85 +1444,9 @@ public:
     }
 };
 
-// 31850 - Ardent Defender
-class spell_pal_ardent_defender : public SpellScriptLoader
-{
-public:
-    spell_pal_ardent_defender() : SpellScriptLoader("spell_pal_ardent_defender") { }
-
-    class spell_pal_ardent_defender_AuraScript : public AuraScript
-    {
-        PrepareAuraScript(spell_pal_ardent_defender_AuraScript);
-
-        uint32 absorbPct, healPct;
-
-        enum Spell
-        {
-            PAL_SPELL_ARDENT_DEFENDER_HEAL = 66235,
-        };
-
-        bool Load()
-        {
-            healPct = GetSpellInfo()->Effects[EFFECT_1].CalcValue();
-            absorbPct = GetSpellInfo()->Effects[EFFECT_0].CalcValue();
-            return GetUnitOwner()->ToPlayer();
-        }
-
-        void CalculateAmount(AuraEffect const* /*aurEff*/, int32& amount, bool& /*canBeRecalculated*/)
-        {
-            // Set absorbtion amount to unlimited
-            amount = -1;
-        }
-
-        void Absorb(AuraEffect* aurEff, DamageInfo& dmgInfo, uint32& absorbAmount)
-        {
-            Unit* victim = GetTarget();
-            int32 remainingHealth = victim->GetHealth() - dmgInfo.GetDamage();
-            uint32 allowedHealth = victim->CountPctFromMaxHealth(35);
-            // If damage kills us
-            if (remainingHealth <= 0 && !victim->ToPlayer()->HasSpellCooldown(PAL_SPELL_ARDENT_DEFENDER_HEAL))
-            {
-                // Cast healing spell, completely avoid damage
-                absorbAmount = dmgInfo.GetDamage();
-
-/*                uint32 defenseSkillValue = victim->GetDefenseSkillValue();
-                // Max heal when defense skill denies critical hits from raid bosses
-                // Formula: max defense at level + 140 (raiting from gear)
-                uint32 reqDefForMaxHeal  = victim->getLevel() * 5 + 140;
-                float pctFromDefense = (defenseSkillValue >= reqDefForMaxHeal)
-                    ? 1.0f
-                    : float(defenseSkillValue) / float(reqDefForMaxHeal);
-
-                int32 healAmount = int32(victim->CountPctFromMaxHealth(uint32(healPct * pctFromDefense)));
-                victim->CastCustomSpell(victim, PAL_SPELL_ARDENT_DEFENDER_HEAL, &healAmount, NULL, NULL, true, NULL, aurEff);
-                victim->ToPlayer()->AddSpellCooldown(PAL_SPELL_ARDENT_DEFENDER_HEAL, 0, time(NULL) + 120);
-            }
-            else if (remainingHealth < int32(allowedHealth))
-            {
-                // Reduce damage that brings us under 35% (or full damage if we are already under 35%) by x%
-                uint32 damageToReduce = (victim->GetHealth() < allowedHealth)
-                    ? dmgInfo.GetDamage()
-                    : allowedHealth - remainingHealth;
-                 absorbAmount = CalculatePctN(damageToReduce, absorbPct);
-  */           }
-        }
-
-        void Register()
-        {
-             DoEffectCalcAmount += AuraEffectCalcAmountFn(spell_pal_ardent_defender_AuraScript::CalculateAmount, EFFECT_0, SPELL_AURA_SCHOOL_ABSORB);
-             OnEffectAbsorb += AuraEffectAbsorbFn(spell_pal_ardent_defender_AuraScript::Absorb, EFFECT_0);
-        }
-    };
-
-    AuraScript* GetAuraScript() const
-    {
-        return new spell_pal_ardent_defender_AuraScript();
-    }
-};
-
 void AddSC_paladin_spell_scripts()
 {
-    //new spell_pal_ardent_defender();
+    new spell_pal_ardent_defender();
     new spell_pal_blessing_of_faith();
     new spell_pal_blessing_of_sanctuary();
     new spell_pal_divine_sacrifice();
@@ -1543,8 +1464,6 @@ void AddSC_paladin_spell_scripts()
     new spell_pal_sacred_shield();
     new spell_pal_templar_s_verdict();
     new spell_pal_seal_of_righteousness();
-	//skyfire
-	new spell_pal_ardent_defender();
     new spell_pal_shield_of_righteous();
     new spell_pal_judgements_of_the_bold();
     new spell_pal_word_of_glory();

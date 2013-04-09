@@ -50,7 +50,6 @@ enum WarriorSpells
     SPELL_WARRIOR_UNRELENTING_ASSAULT_TRIGGER_2     = 64850,
     SPELL_WARRIOR_VIGILANCE_PROC                    = 50725,
     SPELL_WARRIOR_VIGILANCE_REDIRECT_THREAT         = 59665,
-
     SPELL_PALADIN_BLESSING_OF_SANCTUARY             = 20911,
     SPELL_PALADIN_GREATER_BLESSING_OF_SANCTUARY     = 25899,
     SPELL_PRIEST_RENEWED_HOPE                       = 63944,
@@ -724,8 +723,6 @@ class spell_warr_vigilance_trigger : public SpellScriptLoader
         }
 };
 
-//skyfire
-
 // Victory Rush
 // Spell Id: 34428
 class spell_warr_victory_rush : public SpellScriptLoader
@@ -968,7 +965,6 @@ void AddSC_warrior_spell_scripts()
     new spell_warr_sweeping_strikes();
     new spell_warr_vigilance();
     new spell_warr_vigilance_trigger();
-	//skyfire
     new spell_warr_victory_rush();
     new spell_warr_cleave();
     new spell_warr_intercept_triggered();

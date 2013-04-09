@@ -51,7 +51,6 @@ enum HunterSpells
     SPELL_HUNTER_SNIPER_TRAINING_R1                 = 53302,
     SPELL_HUNTER_SNIPER_TRAINING_BUFF_R1            = 64418,
     SPELL_DRAENEI_GIFT_OF_THE_NAARU                 = 59543,
-	//skyfire
 	HUNTER_SPELL_KILL_COMMAND                       = 34026,
     HUNTER_SPELL_KILL_COMMAND_TRIGGER               = 83381,
     HUNTER_SPELL_FOCUS_FIRE                         = 82692,
@@ -813,8 +812,6 @@ class spell_hun_target_only_pet_and_owner : public SpellScriptLoader
         }
 };
 
-//skyfire
-
 // 1978 Serpent Sting
 class spell_hun_serpent_sting : public SpellScriptLoader
 {
@@ -1210,7 +1207,6 @@ void AddSC_hunter_spell_scripts()
     new spell_hun_sniper_training();
     new spell_hun_tame_beast();
     new spell_hun_target_only_pet_and_owner();
-	//skyfire
     new spell_hun_serpent_sting();
     new spell_hun_kill_command();
     new spell_hun_focus_fire();

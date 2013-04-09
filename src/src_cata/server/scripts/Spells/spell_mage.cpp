@@ -992,8 +992,6 @@ class spell_mage_water_elemental_freeze : public SpellScriptLoader
        }
 };
 
-//skyfire
-
 // Frost Warding
 class spell_mage_frost_warding_trigger : public SpellScriptLoader
 {
@@ -1226,7 +1224,6 @@ void AddSC_mage_spell_scripts()
     new spell_mage_replenish_mana();
     new spell_mage_summon_water_elemental();
     new spell_mage_water_elemental_freeze();
-	//skyfire
     new spell_mage_frost_warding_trigger();
 //  new spell_mage_incanters_absorbtion_absorb();
     new spell_mage_incanters_absorbtion_manashield();

@@ -50,7 +50,6 @@ enum PriestSpells
     SPELL_PRIEST_SHADOW_WORD_DEATH                  = 32409,
     SPELL_PRIEST_T9_HEALING_2P                      = 67201,
     SPELL_PRIEST_VAMPIRIC_TOUCH_DISPEL              = 64085,
-	//skyfire
 	PRIEST_SPELL_REVELATIONS                        = 88627,
     PRIEST_SPELL_RENEW                                = 139,
     PRIEST_SPELL_SANCTUARY_4YD_DUMMY                = 88667,
@@ -802,8 +801,6 @@ class spell_pri_vampiric_touch : public SpellScriptLoader
         }
 };
 
-//skyfire
-/*
 // Power Word: Fortitude
 // Spell Id: 21562
 class spell_pri_power_word_fortitude : public SpellScriptLoader
@@ -814,9 +811,9 @@ class spell_pri_power_word_fortitude : public SpellScriptLoader
         class spell_pri_power_word_fortitude_SpellScript : public SpellScript
         {
             PrepareSpellScript(spell_pri_power_word_fortitude_SpellScript);
-*/
-//          void HandleDummy(SpellEffIndex /*effIndex*/)
-/*           {
+
+          void HandleDummy(SpellEffIndex /*effIndex*/)
+           {
                 if (Unit* caster = GetCaster())
                 {
                     std::list<Unit*> PartyMembers;
@@ -839,7 +836,7 @@ class spell_pri_power_word_fortitude : public SpellScriptLoader
             return new spell_pri_power_word_fortitude_SpellScript;
         }
 };
-*/
+
 // 81208, 81206 Chakra: Serenity and Chakra: Sanctuary spell swap supressor
 class spell_pri_chakra_swap_supressor: public SpellScriptLoader
 {
@@ -1004,6 +1001,7 @@ class DistanceCheck : public std::unary_function<Unit*, bool>
     private:
         float x, y;
 };
+
 // Used to prevent the 8yd heal from occuring if the target is in the 4yd one range
 class spell_pri_chakra_sanctuary_heal_target_selector: public SpellScriptLoader
 {
@@ -1136,8 +1134,7 @@ void AddSC_priest_spell_scripts()
     new spell_pri_shadow_word_death();
     new spell_pri_shadowform();
     new spell_pri_vampiric_touch();
-	//skyfire
-//  new spell_pri_power_word_fortitude();
+    new spell_pri_power_word_fortitude();
     new spell_pri_chakra_swap_supressor();
     new spell_pri_chakra_serenity_proc();
     new spell_pri_chakra_sanctuary_heal();

@@ -50,12 +50,11 @@ enum ShamanSpells
     SPELL_SHAMAN_TOTEM_EARTHBIND_TOTEM          = 6474,
     SPELL_SHAMAN_TOTEM_EARTHEN_POWER            = 59566,
     SPELL_SHAMAN_TOTEM_HEALING_STREAM_HEAL      = 52042,
-	//skyfire
-    SHAMAN_SPELL_GLYPH_OF_MANA_TIDE     = 55441,
-    SHAMAN_SPELL_MANA_TIDE_TOTEM        = 16191,
-    SHAMAN_SPELL_FIRE_NOVA_R1           = 1535,
-    SHAMAN_SPELL_FIRE_NOVA_TRIGGERED_R1 = 8349,
-    SHAMAN_SPELL_EARTHQUAKE_KNOCKDOWN   = 77505,
+    SHAMAN_SPELL_GLYPH_OF_MANA_TIDE             = 55441,
+    SHAMAN_SPELL_MANA_TIDE_TOTEM                = 16191,
+    SHAMAN_SPELL_FIRE_NOVA_R1                   = 1535,
+    SHAMAN_SPELL_FIRE_NOVA_TRIGGERED_R1         = 8349,
+    SHAMAN_SPELL_EARTHQUAKE_KNOCKDOWN           = 77505,
 
     //For Earthen Power
     SHAMAN_TOTEM_SPELL_EARTHBIND_TOTEM  = 6474, //Spell casted by totem
@@ -655,9 +654,6 @@ class spell_sha_thunderstorm : public SpellScriptLoader
         }
 };
 
-//skyfire
-
-
 // 16191 - Mana Tide
 class spell_sha_mana_tide : public SpellScriptLoader
 {
@@ -719,17 +715,17 @@ public:
             amount = -1;
         }
 
-//      void Absorb(AuraEffect* /*aurEff*/, DamageInfo& dmgInfo, uint32& absorbAmount)
-/*       {
+      void Absorb(AuraEffect* /*aurEff*/, DamageInfo& dmgInfo, uint32& absorbAmount)
+       {
             // reduces all damage taken while stun, fear or silence
             if (GetTarget()->GetUInt32Value(UNIT_FIELD_FLAGS) & (UNIT_FLAG_FLEEING | UNIT_FLAG_SILENCED) || (GetTarget()->GetUInt32Value(UNIT_FIELD_FLAGS) & (UNIT_FLAG_STUNNED) && GetTarget()->HasAuraWithMechanic(1<<MECHANIC_STUN)))
-              absorbAmount = CalculatePctN(dmgInfo.GetDamage(), absorbPct);
+              absorbAmount /*= CalculatePctN(dmgInfo.GetDamage(), absorbPct)*/;
         }
-*/
+
         void Register()
         {
             DoEffectCalcAmount += AuraEffectCalcAmountFn(spell_sha_astral_shift_AuraScript::CalculateAmount, EFFECT_0, SPELL_AURA_SCHOOL_ABSORB);
-//          OnEffectAbsorb += AuraEffectAbsorbFn(spell_sha_astral_shift_AuraScript::Absorb, EFFECT_0);
+          OnEffectAbsorb += AuraEffectAbsorbFn(spell_sha_astral_shift_AuraScript::Absorb, EFFECT_0);
         }
     };
 
@@ -824,7 +820,6 @@ void AddSC_shaman_spell_scripts()
     new spell_sha_lava_lash();
     new spell_sha_mana_tide_totem();
     new spell_sha_thunderstorm();
-	//skyfire
 	new spell_sha_mana_tide();
     new spell_sha_astral_shift();
     new spell_sha_healing_rain();

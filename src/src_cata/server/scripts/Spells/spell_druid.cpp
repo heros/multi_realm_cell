@@ -1104,8 +1104,6 @@ class spell_dru_t10_restoration_4p_bonus : public SpellScriptLoader
         }
 };
 
-//skyfire
-
 // Ferocious Bite
 // Spell Id: 22568
 class spell_dru_ferocious_bite : public SpellScriptLoader
@@ -1146,10 +1144,9 @@ class spell_dru_ferocious_bite : public SpellScriptLoader
         }
 };
 
-
 // Mark Of The Wild
 // Spell Id: 1126/
-/*
+
 class spell_dru_mark_of_the_wild : public SpellScriptLoader
 {
 public:
@@ -1158,9 +1155,9 @@ public:
     class spell_dru_mark_of_the_wild_SpellScript : public SpellScript
     {
         PrepareSpellScript(spell_dru_mark_of_the_wild_SpellScript);
-*/
-//      void HandleDummy(SpellEffIndex /*effIndex*/)
-/*       {
+
+      void HandleDummy(SpellEffIndex /*effIndex*/)
+       {
             if (Unit* caster = GetCaster())
             {
                 if (caster->GetTypeId() == TYPEID_PLAYER)
@@ -1196,7 +1193,7 @@ public:
         return new spell_dru_mark_of_the_wild_SpellScript;
     }
 };
-*/
+
 void AddSC_druid_spell_scripts()
 {
     new spell_dru_dash();
@@ -1223,7 +1220,6 @@ void AddSC_druid_spell_scripts()
     new spell_dru_tiger_s_fury();
     new spell_dru_typhoon();
     new spell_dru_t10_restoration_4p_bonus();
-	//skyfire
     new spell_dru_ferocious_bite();
- // new spell_dru_mark_of_the_wild();
+    new spell_dru_mark_of_the_wild();
 }

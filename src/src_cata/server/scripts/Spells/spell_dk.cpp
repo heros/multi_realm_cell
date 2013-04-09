@@ -49,7 +49,6 @@ enum DeathKnightSpells
     SPELL_DK_IMPROVED_UNHOLY_PRESENCE_TRIGGERED = 63622,
     SPELL_DK_ITEM_SIGIL_VENGEFUL_HEART          = 64962,
     SPELL_DK_ITEM_T8_MELEE_4P_BONUS             = 64736,
-	//skyfire
 	SPELL_DK_NECROTIC_STRIKE                    = 73975
 };
 
@@ -1007,7 +1006,6 @@ class spell_dk_will_of_the_necropolis : public SpellScriptLoader
         }
 };
 
-//skyfire
 /*
 class spell_dk_necrotic_strike : public SpellScriptLoader
 {
@@ -1148,7 +1146,6 @@ void AddSC_deathknight_spell_scripts()
     new spell_dk_spell_deflection();
     new spell_dk_vampiric_blood();
     new spell_dk_will_of_the_necropolis();
-	//skyfire
 //	new spell_dk_necrotic_strike();
     new spell_dk_festering_strike();
     new spell_dk_chains_of_ice();

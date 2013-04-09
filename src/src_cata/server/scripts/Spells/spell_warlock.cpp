@@ -61,7 +61,6 @@ enum WarlockSpells
     SPELL_WARLOCK_SOULSHATTER                       = 32835,
     SPELL_WARLOCK_UNSTABLE_AFFLICTION               = 30108,
     SPELL_WARLOCK_UNSTABLE_AFFLICTION_DISPEL        = 31117,
-	//skyfire
 	WARLOCK_DRAIN_SOUL                              = 79264,
     WARLOCK_NETHER_WARD                             = 91713
 };
@@ -1020,8 +1019,6 @@ class spell_warl_unstable_affliction : public SpellScriptLoader
         }
 };
 
-//skyfire
-
 // Fear
 // Spell Id: 5782
 class spell_warl_fear : public SpellScriptLoader
@@ -1186,7 +1183,6 @@ void AddSC_warlock_spell_scripts()
     new spell_warl_siphon_life();
     new spell_warl_soulshatter();
     new spell_warl_unstable_affliction();
-	//skyfire
     new spell_warl_fear();
     new spell_warl_drain_life();
     new spell_warl_drain_soul();
