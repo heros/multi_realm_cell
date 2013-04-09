@@ -5680,6 +5680,17 @@ void Player::LeaveLFGChannel()
     }
 }
 
+//void Player::UpdateDefense()
+//{
+//    uint32 defense_skill_gain = sWorld->getIntConfig(CONFIG_SKILL_GAIN_DEFENSE);
+
+//    if (UpdateSkill(SKILL_DEFENSE, defense_skill_gain))
+//    {
+        // update dependent from defense skill part
+//        UpdateDefenseBonusesMod();
+//    }
+//}
+
 void Player::HandleBaseModValue(BaseModGroup modGroup, BaseModType modType, float amount, bool apply)
 {
     if (modGroup >= BASEMOD_END || modType >= MOD_END)
@@ -5706,7 +5717,8 @@ void Player::HandleBaseModValue(BaseModGroup modGroup, BaseModType modType, floa
         case CRIT_PERCENTAGE:              UpdateCritPercentage(BASE_ATTACK);                          break;
         case RANGED_CRIT_PERCENTAGE:       UpdateCritPercentage(RANGED_ATTACK);                        break;
         case OFFHAND_CRIT_PERCENTAGE:      UpdateCritPercentage(OFF_ATTACK);                           break;
-        default: break;
+        case SHIELD_BLOCK_VALUE:           UpdateShieldBlockValue();                                   break;        
+		default: break;
     }
 }
 
@@ -5738,6 +5750,15 @@ float Player::GetTotalBaseModValue(BaseModGroup modGroup) const
     return m_auraBaseMod[modGroup][FLAT_MOD] * m_auraBaseMod[modGroup][PCT_MOD];
 }
 
+uint32 Player::GetShieldBlockValue() const
+{
+    float value = (m_auraBaseMod[SHIELD_BLOCK_VALUE][FLAT_MOD] + GetStat(STAT_STRENGTH) * 0.5f - 10)*m_auraBaseMod[SHIELD_BLOCK_VALUE][PCT_MOD];
+
+    value = (value < 0) ? 0 : value;
+
+    return uint32(value);
+}
+
 float Player::GetMeleeCritFromAgility()
 {
     uint8 level = getLevel();
@@ -5760,7 +5781,8 @@ void Player::GetDodgeFromAgility(float &diminishing, float &nondiminishing)
     // Table for base dodge values
     const float dodge_base[MAX_CLASSES] =
     {
-         0.037580f, // Warrior
+	//patch
+/*         0.037580f, // Warrior
          0.036520f, // Paladin
         -0.054500f, // Hunter
         -0.005900f, // Rogue
@@ -5770,7 +5792,18 @@ void Player::GetDodgeFromAgility(float &diminishing, float &nondiminishing)
          0.034575f, // Mage
          0.020350f, // Warlock
          0.0f,      // ??
-         0.049510f  // Druid
+         0.049510f  // Druid */
+         0.036640f, // Warrior
+         0.034943f, // Paladi
+        -0.040873f, // Hunter
+         0.020957f, // Rogue
+         0.034178f, // Priest
+         0.036640f, // DK
+         0.021080f, // Shaman
+         0.036587f, // Mage
+         0.024211f, // Warlock
+         0.0f,      // ??
+         0.056097f  // Druid		 
     };
     // Crit/agility to dodge/agility coefficient multipliers; 3.2.0 increased required agility by 15%
     const float crit_to_dodge[MAX_CLASSES] =

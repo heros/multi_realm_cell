@@ -32,6 +32,27 @@
 #include "Opcodes.h"
 #include "WorldSession.h"
 
+#include "AchievementMgr.h"
+#include "Battleground.h"
+#include "Bag.h"
+#include "Common.h"
+#include "DatabaseEnv.h"
+#include "DBCEnums.h"
+#include "GroupReference.h"
+#include "ItemPrototype.h"
+#include "Item.h"
+#include "MapReference.h"
+#include "NPCHandler.h"
+#include "Pet.h"
+#include "QuestDef.h"
+#include "ReputationMgr.h"
+#include "Util.h"  
+#include "WorldSession.h"
+#include "Group.h"
+
+// for template
+#include "SpellMgr.h"
+
 #include <string>
 #include <vector>
 
@@ -1954,7 +1975,9 @@ class Player : public Unit, public GridObject<Player>
         void UpdateSpellPower();
         void UpdateMaxHealth();
         void UpdateMaxPower(Powers power);
+		void ApplyFeralAPBonus(int32 amount, bool apply);
         void UpdateAttackPowerAndDamage(bool ranged = false);
+		void UpdateShieldBlockValue();
         void UpdateDamagePhysical(WeaponAttackType attType);
         void ApplySpellPowerBonus(int32 amount, bool apply);
         void UpdateSpellDamageAndHealingBonus();
@@ -2139,6 +2162,7 @@ class Player : public Unit, public GridObject<Player>
         void UpdateCorpseReclaimDelay();
         void SendCorpseReclaimDelay(bool load = false);
 
+		uint32 GetShieldBlockValue() const;                 // overwrite Unit version (virtual)
         uint32 GetBlockPercent() { return GetUInt32Value(PLAYER_SHIELD_BLOCK); }
         bool CanParry() const { return m_canParry; }
         void SetCanParry(bool value);

@@ -1347,10 +1347,10 @@ void Unit::DealMeleeDamage(CalcDamageInfo* damageInfo, bool durabilityLoss)
         // there is a newbie protection, at level 10 just 7% base chance; assuming linear function
         if (victim->getLevel() < 30)
             Probability = 0.65f * victim->getLevel() + 0.5f;
-
+	
         uint32 VictimDefense = victim->GetMaxSkillValueForLevel(this);
         uint32 AttackerMeleeSkill = GetMaxSkillValueForLevel();
-
+		
         Probability *= AttackerMeleeSkill/(float)VictimDefense*0.16;
 
         if (Probability < 0)
@@ -1902,7 +1902,7 @@ MeleeHitOutcome Unit::RollMeleeOutcomeAgainst (const Unit* victim, WeaponAttackT
 
     int32 attackerMaxSkillValueForLevel = GetMaxSkillValueForLevel(victim);
     int32 victimMaxSkillValueForLevel = victim->GetMaxSkillValueForLevel(this);
-
+	
     // bonus from skills is 0.04%
     int32    skillBonus  = 4 * (attackerMaxSkillValueForLevel - victimMaxSkillValueForLevel);
     int32    sum = 0, tmp = 0;
@@ -2175,16 +2175,16 @@ int32 Unit::GetMechanicResistChance(const SpellInfo* spell)
     return resist_mech;
 }
 
-bool Unit::CanUseAttackType(uint8 attacktype) const
-{
-    switch (attacktype)
-    {
-        case BASE_ATTACK: return !HasFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISARMED);
-        case OFF_ATTACK: return !HasFlag(UNIT_FIELD_FLAGS_2, UNIT_FLAG2_DISARM_OFFHAND);
-        case RANGED_ATTACK: return !HasFlag(UNIT_FIELD_FLAGS_2, UNIT_FLAG2_DISARM_RANGED);
-    }
-    return true;
-}
+//bool Unit::CanUseAttackType(uint8 attacktype) const
+//{
+//    switch (attacktype)
+//    {
+//        case BASE_ATTACK: return !HasFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISARMED);
+//        case OFF_ATTACK: return !HasFlag(UNIT_FIELD_FLAGS_2, UNIT_FLAG2_DISARM_OFFHAND);
+//        case RANGED_ATTACK: return !HasFlag(UNIT_FIELD_FLAGS_2, UNIT_FLAG2_DISARM_RANGED);
+//    }
+//    return true;
+//}
 
 // Melee based spells hit result calculations
 SpellMissInfo Unit::MeleeSpellHitResult(Unit* victim, SpellInfo const* spell)
@@ -2486,10 +2486,10 @@ SpellMissInfo Unit::SpellHitResult(Unit* victim, SpellInfo const* spell, bool Ca
     return SPELL_MISS_NONE;
 }
 
-uint32 Unit::GetUnitMeleeSkill(Unit const* target) const
-{
-    return (target ? getLevelForTarget(target) : getLevel()) * 5;
-}
+//uint32 Unit::GetUnitMeleeSkill(Unit const* target) const
+//{
+//    return (target ? getLevelForTarget(target) : getLevel()) * 5;
+//}
 
 float Unit::GetUnitDodgeChance() const
 {
@@ -7797,6 +7797,10 @@ void Unit::setPowerType(Powers new_powertype)
         case POWER_ENERGY:
             SetMaxPower(POWER_ENERGY, GetCreatePowers(POWER_ENERGY));
             break;
+		case POWER_HAPPINESS:
+            SetMaxPower(POWER_HAPPINESS, GetCreatePowers(POWER_HAPPINESS));
+            SetPower(POWER_HAPPINESS, GetCreatePowers(POWER_HAPPINESS));
+            break;
     }
 }
 
@@ -12293,6 +12297,7 @@ bool Unit::HandleStatModifier(UnitMods unitMod, UnitModifierType modifierType, f
         case UNIT_MOD_RAGE:
         case UNIT_MOD_FOCUS:
         case UNIT_MOD_ENERGY:
+        case UNIT_MOD_HAPPINESS:
         case UNIT_MOD_RUNE:
         case UNIT_MOD_RUNIC_POWER:          UpdateMaxPower(GetPowerTypeByAuraGroup(unitMod));          break;
 
@@ -12302,6 +12307,11 @@ bool Unit::HandleStatModifier(UnitMods unitMod, UnitModifierType modifierType, f
         case UNIT_MOD_RESISTANCE_FROST:
         case UNIT_MOD_RESISTANCE_SHADOW:
         case UNIT_MOD_RESISTANCE_ARCANE:   UpdateResistances(GetSpellSchoolByAuraGroup(unitMod));      break;
+
+		                                   UpdateAttackPowerAndDamage();         break;
+        case UNIT_MOD_ATTACK_POWER_RANGED_POS:
+        case UNIT_MOD_ATTACK_POWER_RANGED_NEG:
+                                           UpdateAttackPowerAndDamage(true);     break;
 
         case UNIT_MOD_ATTACK_POWER:        UpdateAttackPowerAndDamage();         break;
         case UNIT_MOD_ATTACK_POWER_RANGED: UpdateAttackPowerAndDamage(true);     break;
@@ -12412,6 +12422,7 @@ Powers Unit::GetPowerTypeByAuraGroup(UnitMods unitMod) const
         case UNIT_MOD_RAGE:        return POWER_RAGE;
         case UNIT_MOD_FOCUS:       return POWER_FOCUS;
         case UNIT_MOD_ENERGY:      return POWER_ENERGY;
+		case UNIT_MOD_HAPPINESS:   return POWER_HAPPINESS;
         case UNIT_MOD_RUNE:        return POWER_RUNES;
         case UNIT_MOD_RUNIC_POWER: return POWER_RUNIC_POWER;
         default:
@@ -12492,6 +12503,10 @@ void Unit::SetHealth(uint32 val)
             if (owner && (owner->GetTypeId() == TYPEID_PLAYER) && owner->ToPlayer()->GetGroup())
                 owner->ToPlayer()->SetGroupUpdateFlag(GROUP_UPDATE_FLAG_PET_CUR_HP);
         }
+		
+		// Update the pet's character sheet with happiness damage bonus
+        if (pet->getPetType() == HUNTER_PET &&  POWER_HAPPINESS)
+            pet->UpdateDamagePhysical(BASE_ATTACK);
     }
 }
 
@@ -12626,32 +12641,39 @@ int32 Unit::GetCreatePowers(Powers power) const
 {
     switch (power)
     {
-        case POWER_MANA:
-            return GetCreateMana();
+	    case POWER_MANA:
+            if (getClass() == CLASS_HUNTER || getClass() == CLASS_WARRIOR || getClass() == CLASS_ROGUE || getClass() == CLASS_DEATH_KNIGHT)
+                return false;
+            else
+                return GetCreateMana();
         case POWER_RAGE:
             return 1000;
         case POWER_FOCUS:
-            if (GetTypeId() == TYPEID_PLAYER && getClass() == CLASS_HUNTER)
+            if (GetTypeId() == TYPEID_PLAYER && (ToPlayer()->getClass() == CLASS_HUNTER))
                 return 100;
             return (GetTypeId() == TYPEID_PLAYER || !((Creature const*)this)->isPet() || ((Pet const*)this)->getPetType() != HUNTER_PET ? 0 : 100);
         case POWER_ENERGY:
             return 100;
+        case POWER_HAPPINESS:
+            return (GetTypeId() == TYPEID_PLAYER || !((Creature const*)this)->isPet() || ((Pet const*)this)->getPetType() != HUNTER_PET ? 0 : 1050000);
         case POWER_RUNIC_POWER:
             return 1000;
         case POWER_RUNES:
             return 0;
-        case POWER_SOUL_SHARDS:
-            return 3;
+//		case POWER_SOULSHARDS:
+//            if (GetTypeId() == TYPEID_PLAYER && (ToPlayer()->getClass() == CLASS_WARLOCK))
+//            return 3;
         case POWER_ECLIPSE:
+            if (GetTypeId() == TYPEID_PLAYER && (ToPlayer()->getClass() == CLASS_DRUID))
             return 100;
         case POWER_HOLY_POWER:
-            return 3;
-        case POWER_HEALTH:
+            if (GetTypeId() == TYPEID_PLAYER && (ToPlayer()->getClass() == CLASS_PALADIN))
+            return 0;
+		case POWER_HEALTH:
             return 0;
         default:
             break;
-    }
-
+	}
     return 0;
 }
 

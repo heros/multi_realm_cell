@@ -19,6 +19,14 @@
 #ifndef __UNIT_H
 #define __UNIT_H
 
+#include "Common.h"
+#include "Object.h"
+#include "Opcodes.h"
+#include "SpellAuraDefines.h"
+#include "UpdateFields.h"
+#include "SharedDefines.h"
+#include "ThreatManager.h"
+#include "HostileRefManager.h"
 #include "EventProcessor.h"
 #include "FollowerReference.h"
 #include "FollowerRefManager.h"
@@ -27,7 +35,12 @@
 #include "Object.h"
 #include "SpellAuraDefines.h"
 #include "ThreatManager.h"
-
+#include "DBCStructure.h"
+#include "SpellInfo.h"
+#include "Path.h"
+#include "WorldPacket.h"
+#include "Timer.h"
+#include <list>
 #define WORLD_TRIGGER   12999
 
 enum SpellInterruptFlags
@@ -414,7 +427,7 @@ enum UnitMods
     UNIT_MOD_RAGE,
     UNIT_MOD_FOCUS,
     UNIT_MOD_ENERGY,
-    UNIT_MOD_UNUSED,                                        // Old UNIT_MOD_HAPPINESS
+    UNIT_MOD_HAPPINESS,                                        // Old UNIT_MOD_HAPPINESS
     UNIT_MOD_RUNE,
     UNIT_MOD_RUNIC_POWER,
     UNIT_MOD_SOUL_SHARDS,
@@ -428,6 +441,10 @@ enum UnitMods
     UNIT_MOD_RESISTANCE_FROST,
     UNIT_MOD_RESISTANCE_SHADOW,
     UNIT_MOD_RESISTANCE_ARCANE,
+	UNIT_MOD_ATTACK_POWER_POS,
+    UNIT_MOD_ATTACK_POWER_NEG,
+    UNIT_MOD_ATTACK_POWER_RANGED_POS,
+    UNIT_MOD_ATTACK_POWER_RANGED_NEG,
     UNIT_MOD_ATTACK_POWER,
     UNIT_MOD_ATTACK_POWER_RANGED,
     UNIT_MOD_DAMAGE_MAINHAND,
@@ -1461,11 +1478,23 @@ class Unit : public WorldObject
         float GetUnitMissChance(WeaponAttackType attType)     const;
         float GetUnitCriticalChance(WeaponAttackType attackType, const Unit* victim) const;
         int32 GetMechanicResistChance(const SpellInfo* spell);
-        bool CanUseAttackType(uint8 attacktype) const;
+		bool CanUseAttackType (uint8 attacktype) const
+        {
+        switch (attacktype)
+        {
+        case BASE_ATTACK:
+            return !HasFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISARMED);
+        case OFF_ATTACK:
+            return !HasFlag(UNIT_FIELD_FLAGS_2, UNIT_FLAG2_DISARM_OFFHAND);
+        case RANGED_ATTACK:
+            return !HasFlag(UNIT_FIELD_FLAGS_2, UNIT_FLAG2_DISARM_RANGED);
+        }
+        return true;
+        }
+		virtual uint32 GetBlockPercent() { return 30; };
+		virtual uint32 GetShieldBlockValue () { return 30; };
 
-        virtual uint32 GetBlockPercent() { return 30; }
-
-        uint32 GetUnitMeleeSkill(Unit const* target = NULL) const;
+		uint32 GetUnitMeleeSkill(Unit const* target = NULL) const;
 
         float GetWeaponProcChance() const;
         float GetPPMProcChance(uint32 WeaponSpeed, float PPM,  const SpellInfo* spellProto) const;
@@ -1873,12 +1902,6 @@ class Unit : public WorldObject
 
         bool isInFrontInMap(Unit const* target, float distance, float arc = M_PI) const;
         bool isInBackInMap(Unit const* target, float distance, float arc = M_PI) const;
-
-		// player or player's pet resilience (-1%), cap 100%
-        //uint32 GetMeleeDamageReduction(uint32 damage) const { return GetCombatRatingDamageReduction(CR_CRIT_TAKEN_MELEE, 2.0f, 100.0f, damage); }
-        //uint32 GetRangedDamageReduction(uint32 damage) const { return GetCombatRatingDamageReduction(CR_CRIT_TAKEN_RANGED, 2.0f, 100.0f, damage); }
-        //uint32 GetSpellDamageReduction(uint32 damage) const { return GetCombatRatingDamageReduction(CR_CRIT_TAKEN_SPELL, 2.0f, 100.0f, damage); }
-        //uint32 GetPlayerDamageReduction(uint32 damage) const { return GetCombatRatingDamageReduction(CR_RESILIENCE_PLAYER_DAMAGE_TAKEN, 1.0f, 100.0f, damage); }
 
         // Visibility system
         bool IsVisible() const;
