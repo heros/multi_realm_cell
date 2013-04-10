@@ -73,9 +73,9 @@ namespace AuthHelper
         return false;
     }
 
-    bool IsAcceptedClientBuild(int build)
+	bool IsAcceptedClientBuild(int build)
     {
-        return (IsPostBCAcceptedClientBuild(build) || IsPreBCAcceptedClientBuild(build));
+        return ( IsPostBCAcceptedClientBuild(build) || IsPreBCAcceptedClientBuild(build));
     }
 
     RealmBuildInfo const* GetBuildInfo(int build)

@@ -760,6 +760,14 @@ void LoadDBCStores(const std::string& dataPath)
         !sGemPropertiesStore.LookupEntry(2250) ||     // last gem property added in 4.3.4 (15595)
         !sMapStore.LookupEntry(980)            ||     // last map added in 4.3.4 (15595)
         !sSpellStore.LookupEntry(121820)       )      // last spell added in 4.3.4 (15595)
+
+//	if (!sAreaStore.LookupEntry(6539)              ||       // last area (areaflag) added in 5.1.0
+//        !sCharTitlesStore.LookupEntry(319)         ||       // last char title added in 5.1.0
+//        !sGemPropertiesStore.LookupEntry(2402)     ||       // last gem property added in 5.1.0
+        //!sItemExtendedCostStore.LookupEntry(3400)  ||       // last item extended cost added in 4.0.6a
+//        !sMapStore.LookupEntry(1076)                ||       // last map added in 5.1.0
+//        !sSpellStore.LookupEntry(131203)            )        // last added spell in 5.1.0
+
     {
         sLog->outError(LOG_FILTER_GENERAL, "You have _outdated_ DBC files. Please extract correct versions from current using client.");
         exit(1);
@@ -881,6 +889,8 @@ uint32 GetMaxLevelForExpansion(uint32 expansion)
             return 80;
         case CONTENT_81_85:
             return 85;
+//		case CONTENT_85_90;
+//            return 90;
         default:
             break;
     }

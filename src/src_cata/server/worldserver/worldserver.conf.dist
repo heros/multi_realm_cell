@@ -63,7 +63,7 @@ RealmID = 1
 #        Example:     "@prefix@/share/trinitycore"
 #        Default:     "."
 
-DataDir = "."
+DataDir = "data_434/"
 
 #
 #    LogsDir
@@ -90,7 +90,7 @@ LogsDir = "logy_world/"
 #                     "127.0.0.1;3306;trinity;trinity;characters" - (CharacterDatabaseInfo)
 
 LoginDatabaseInfo     = "127.0.0.1;3306;root;root;auth_434"
-WorldDatabaseInfo     = "127.0.0.1;3306;root;root;world_434"
+WorldDatabaseInfo     = "127.0.0.1;3306;root;root;world_434_0_3"
 CharacterDatabaseInfo = "127.0.0.1;3306;root;root;characters_434"
 
 #
@@ -275,7 +275,7 @@ PlayerSave.Stats.SaveOnlyOnLogout = 1
 #        Default:     0 - (Disabled)
 #                     1 - (Enabled)
 
-mmap.enablePathFinding = 0
+mmap.enablePathFinding = 1
 
 #
 #    vmap.enableLOS
@@ -285,8 +285,8 @@ mmap.enablePathFinding = 0
 #                     1 - (Enabled, vmap.enableHeight)
 #                     0 - (Disabled)
 
-vmap.enableLOS    = 0
-vmap.enableHeight = 0
+vmap.enableLOS    = 1
+vmap.enableHeight = 1
 
 #
 #    vmap.enableIndoorCheck
@@ -294,7 +294,7 @@ vmap.enableHeight = 0
 #        Default:     1 - (Enabled)
 #                     0 - (Disabled, somewhat less CPU usage)
 
-vmap.enableIndoorCheck = 0
+vmap.enableIndoorCheck = 1
 
 #
 #    DetectPosCollision
@@ -603,9 +603,10 @@ DeclinedNames = 0
 #    Expansion
 #        Description: Allow server to use content from expansions. Checks for expansion-related
 #                     map files, client compatibility and class/race character creation.
-#        Default:     3 - (Expansion 3)
-#                     2 - (Expansion 2)
-#                     1 - (Expansion 1)
+#        Default:     4 - (Expansion: MoP)
+#                     3 - (Expansion: Cata)
+#                     2 - (Expansion: WoLK)
+#                     1 - (Expansion: TBC)
 #                     0 - (Disabled, Ignore and disable expansion content (maps, races, classes)
 
 Expansion = 3
