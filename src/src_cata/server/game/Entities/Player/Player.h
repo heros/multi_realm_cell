@@ -1223,6 +1223,12 @@ struct PlayerTalentInfo
     uint8 ActiveSpec;
     uint8 SpecsCount;
 
+	uint8 _activeSpec;
+    uint8 _specsCount;
+    uint32 _branchSpec[MAX_TALENT_SPECS];              // tabId of the main talent bran
+    uint32 m_talentSpec[MAX_TALENT_SPECS];              // S[1, MAX_TALENT_TABS] { (numTalentsInTab << (tabPageIndex*8) }
+    uint32 m_freeTalentPoints;
+
 private:
     PlayerTalentInfo(PlayerTalentInfo const&);
 };
@@ -1807,6 +1813,12 @@ class Player : public Unit, public GridObject<Player>
         void LearnPetTalent(uint64 petGuid, uint32 talentId, uint32 talentRank);
         bool AddTalent(uint32 spellId, uint8 spec, bool learning);
         bool HasTalent(uint32 spell_id, uint8 spec) const;
+
+		void SetTalentBranchSpec(uint32 branchSpec, uint8 spec);
+        uint32 GetTalentBranchSpec(uint8 spec) const { return _branchSpec[spec]; }
+        void RecalculateMasteryAuraEffects(uint32 branch);
+        void UpdateMasteryAuras(uint32 branch);
+
         uint32 CalculateTalentsPoints() const;
 
         // Dual Spec
@@ -2014,6 +2026,11 @@ class Player : public Unit, public GridObject<Player>
         void UpdateMeleeHitChances();
         void UpdateRangedHitChances();
         void UpdateSpellHitChances();
+		void UpdateMasteryPercentage();
+
+		float GetMasteryPoints() { return CalculateMasteryPoints(m_baseRatingValue[CR_MASTERY]); }
+        float CalculateMasteryPoints(int32 curr_rating)  { return float(curr_rating * 0.0055779569892473); }
+        int32 CalculateMasteryRating(float curr_mastery) { return int32(curr_mastery / 0.0055779569892473); }
 
         void UpdateAllSpellCritChances();
         void UpdateSpellCritChance(uint32 school);
@@ -2167,6 +2184,7 @@ class Player : public Unit, public GridObject<Player>
         bool CanParry() const { return m_canParry; }
         void SetCanParry(bool value);
         bool CanBlock() const { return m_canBlock; }
+		bool CanMastery() const { return HasAuraType(SPELL_AURA_MASTERY); }
         void SetCanBlock(bool value);
         bool CanTitanGrip() const { return m_canTitanGrip; }
         void SetCanTitanGrip(bool value) { m_canTitanGrip = value; }
@@ -2730,11 +2748,20 @@ class Player : public Unit, public GridObject<Player>
 
         PlayerTalentInfo* _talentMgr;
 
+		uint8 _activeSpec;
+        uint8 _specsCount;
+        uint32 _branchSpec[MAX_TALENT_SPECS];              // tabId of the main talent bran
+        uint32 m_talentSpec[MAX_TALENT_SPECS];              // S[1, MAX_TALENT_TABS] { (numTalentsInTab << (tabPageIndex*8) }
+        uint32 m_freeTalentPoints;
+
+
         ActionButtonList m_actionButtons;
 
         float m_auraBaseMod[BASEMOD_END][MOD_END];
         int16 m_baseRatingValue[MAX_COMBAT_RATING];
+
         uint32 m_baseSpellPower;
+		uint32 m_spellPowerFromIntellect;
         uint32 m_baseManaRegen;
         uint32 m_baseHealthRegen;
         int32 m_spellPenetrationItemMod;

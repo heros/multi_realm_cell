@@ -27643,3 +27643,63 @@ Pet* Player::SummonPet(uint32 entry, float x, float y, float z, float ang, PetTy
 
     return pet;
 }
+
+void Player::UpdateMasteryAuras(uint32 branch)
+{
+    bool canHaveMastery = HasAuraType(SPELL_AURA_MASTERY);
+    TalentTabEntry const* tab = sTalentTabStore.LookupEntry(branch);
+
+    if(!tab)
+        return;
+
+    if(!canHaveMastery)
+    {
+        // Remove all mastery spells
+        for (int i = 0; i < MAX_MASTERY_SPELLS; i ++)
+            if (tab->MasterySpellId[i] && HasSpell(tab->MasterySpellId[i]))
+            {
+                RemoveAura(tab->MasterySpellId[i]);
+                removeSpell(tab->MasterySpellId[i]);
+            }
+        return;
+    }
+
+    for (int i = 0; i < MAX_MASTERY_SPELLS; i ++)
+    {
+        if (tab->MasterySpellId[i] && !HasSpell(tab->MasterySpellId[i]))
+        {
+            sLog->outDebug(LOG_FILTER_SPELLS_AURAS, "Learn mastery %u to player %s", tab->MasterySpellId[i], GetName());
+            learnSpell(tab->MasterySpellId[i], true);
+            CastSpell(this, tab->MasterySpellId[i], true); // Need to cast it
+        }
+    }
+
+    // Now remove all the mastery spells for all branch except this one
+    for (uint32 i = 0; i < sTalentTabStore.GetNumRows(); ++i)
+    {
+        if (branch != i)
+            if (TalentTabEntry const* tabi = sTalentTabStore.LookupEntry(i))
+                for (uint32 j = 0; j < MAX_MASTERY_SPELLS; j++)
+                    if (tabi->MasterySpellId[j] && HasSpell(tabi->MasterySpellId[j]))
+                    {
+                        RemoveAura(tab->MasterySpellId[i]);
+                        removeSpell(tabi->MasterySpellId[j]);
+                    }
+    }
+}
+
+void Player::RecalculateMasteryAuraEffects(uint32 branch)
+{
+    TalentTabEntry const* tab = sTalentTabStore.LookupEntry(branch);
+
+    if(!tab)
+        return;
+
+    for (int i = 0; i < MAX_MASTERY_SPELLS; i ++)
+    {
+        if (tab->MasterySpellId[i])
+            if (Aura* aura = GetAura(tab->MasterySpellId[i]))
+                aura->RecalculateAmountOfEffects();
+    }
+}
+

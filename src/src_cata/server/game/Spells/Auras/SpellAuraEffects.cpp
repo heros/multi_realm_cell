@@ -376,7 +376,7 @@ pAuraEffectHandler AuraEffectHandler[TOTAL_AURAS]=
     &AuraEffect::HandleNoImmediateEffect,                         //315 SPELL_AURA_UNDERWATER_WALKING todo
     &AuraEffect::HandleNoImmediateEffect,                         //316 unused (4.3.4) old SPELL_AURA_PERIODIC_HASTE
     &AuraEffect::HandleNULL,                                      //317 SPELL_AURA_MOD_SPELL_POWER_PCT
-    &AuraEffect::HandleNULL,                                      //318 SPELL_AURA_MASTERY
+    &AuraEffect::HandleAuraModMastery,                            //318 SPELL_AURA_MASTERY
     &AuraEffect::HandleModMeleeSpeedPct,                          //319 SPELL_AURA_MOD_MELEE_HASTE_3
     &AuraEffect::HandleAuraModRangedHaste,                        //320 SPELL_AURA_MOD_RANGED_HASTE_2
     &AuraEffect::HandleNULL,                                      //321 SPELL_AURA_321
@@ -3649,6 +3649,19 @@ void AuraEffect::HandleModBaseResistance(AuraApplication const* aurApp, uint8 mo
             if (GetMiscValue() & (1<<i))
                 target->HandleStatModifier(UnitMods(UNIT_MOD_RESISTANCE_START + i), TOTAL_VALUE, float(GetAmount()), apply);
     }
+}
+
+void AuraEffect::HandleAuraModMastery(AuraApplication const* aurApp, uint8 mode, bool apply) const
+{
+    Unit* target = aurApp->GetTarget();
+
+    if (!target || target->GetTypeId() != TYPEID_PLAYER)
+        return;
+
+    int32 rating = target->ToPlayer()->CalculateMasteryRating(GetAmount());
+    target->ToPlayer()->ApplyRatingMod(CR_MASTERY, rating, apply);
+
+    target->ToPlayer()->UpdateMasteryPercentage();
 }
 
 void AuraEffect::HandleModTargetResistance(AuraApplication const* aurApp, uint8 mode, bool apply) const

@@ -173,6 +173,7 @@ bool Player::UpdateAllStats()
         UpdateMaxPower(Powers(i));
 
     UpdateAllRatings();
+	UpdateMasteryPercentage();
     UpdateAllCritPercentages();
     UpdateAllSpellCritChances();
 	UpdateDefenseBonusesMod();
@@ -238,14 +239,13 @@ void Player::UpdateSpellPower()
 {
 	//me
 	uint32 spellPowerFromIntellect = uint32(GetStat(STAT_INTELLECT) - GetCreateStat(STAT_INTELLECT));
-	uint32 _spellPowerFromIntellect = uint32(GetStat(STAT_INTELLECT) - GetCreateStat(STAT_INTELLECT));
 
     //apply only the diff between the last and the new value.
-    ApplyModUInt32Value(PLAYER_FIELD_MOD_HEALING_DONE_POS, spellPowerFromIntellect - _spellPowerFromIntellect, true);
+    ApplyModUInt32Value(PLAYER_FIELD_MOD_HEALING_DONE_POS, spellPowerFromIntellect - m_spellPowerFromIntellect, true);
     for (int i = SPELL_SCHOOL_HOLY; i < MAX_SPELL_SCHOOL; ++i)
-        ApplyModUInt32Value(PLAYER_FIELD_MOD_DAMAGE_DONE_POS + i, spellPowerFromIntellect - _spellPowerFromIntellect, true);
+    ApplyModUInt32Value(PLAYER_FIELD_MOD_DAMAGE_DONE_POS + i, spellPowerFromIntellect - m_spellPowerFromIntellect, true);
 
-    _spellPowerFromIntellect = spellPowerFromIntellect;
+    m_spellPowerFromIntellect = spellPowerFromIntellect;
 }
 
 float Player::GetHealthBonusFromStamina()
@@ -809,6 +809,22 @@ void Player::UpdateSpellCritChance(uint32 school)
     SetFloatValue(PLAYER_SPELL_CRIT_PERCENTAGE1 + school, crit);
 }
 
+void Player::UpdateMasteryPercentage()
+{
+    // No mastery
+    float value = 0.0f;
+    if (CanMastery())
+    {
+        value = 0.0f;
+        // Mastery from SPELL_AURA_MASTERY aura
+        value += GetTotalAuraModifier(SPELL_AURA_MASTERY);
+        // Mastery from rating
+        value += GetRatingBonusValue(CR_MASTERY);
+        value = value < 0.0f ? 0.0f : value;
+    }
+    SetFloatValue(PLAYER_MASTERY, value);
+}
+
 void Player::UpdateArmorPenetration(int32 amount)
 {
     // Store Rating Value
@@ -956,6 +972,15 @@ void Player::_RemoveAllStatBonuses()
 
     UpdateAllStats();
 }
+
+/*void Player::UpdateMastery()
+{
+    if (HasAuraType(SPELL_AURA_MASTERY))
+    {
+        SetInt32Value(PLAYER_FIELD_COMBAT_RATING_1 + CR_MASTERY, _baseRatingValue[CR_MASTERY]);
+        SetFloatValue(PLAYER_MASTERY, GetMasteryPoints());
+    }
+}*/
 
 /*#######################################
 ########                         ########
