@@ -1,25 +1,18 @@
-/* Copyright (C) 2006 - 2012 ScriptDev2 <http://www.scriptdev2.com/>
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
+/*
+ * Copyright (C) Likan Mod   (https://github.com/ChaosDevLikan/)
+ * Copyright (C) Prydev      (http://sourceforge.net/projects/prydevserver) 
+ * Copyright (C) TrinityCore (http://www.trinitycore.org)
+ * Copyright (C) MaNGOS      (http://www.getmangos.com)
+ * Copyright (C) ArkCORE     (http://www.arkania.net)
+ * Copyright (C) SkyFireEMU  (http://www.projectskyfire.org)
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * World of Warcraft
+ * You can edit but you can not delete this copyright.
+ * Genesis Emulator - Genesis Database 
  *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ * By Likan Developer Core C++, SQL (FUN, WoTLK, Cata Realm) of Genesis Server
  */
-
-/* ScriptData
-SDName: boss_cookie
-SD%Complete:
-SDComment:
-SDCategory: Boss
-EndScriptData */
 
 #include "pchdef.h"
 

@@ -31,5 +31,6 @@ void AddMaelstromScripts();
 void AddBattlegroundScripts();
 void AddOutdoorPvPScripts();
 void AddCustomScripts();
+void AddModsScripts();
 
 #endif

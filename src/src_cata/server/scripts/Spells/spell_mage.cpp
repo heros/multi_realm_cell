@@ -1,25 +1,19 @@
 /*
- * Copyright (C) 2008-2013 TrinityCore <http://www.trinitycore.org/>
+ * Copyright (C) Likan Mod   (https://github.com/ChaosDevLikan/)
+ * Copyright (C) Prydev      (http://sourceforge.net/projects/prydevserver) 
+ * Copyright (C) TrinityCore (http://www.trinitycore.org)
+ * Copyright (C) MaNGOS      (http://www.getmangos.com)
+ * Copyright (C) ArkCORE     (http://www.arkania.net)
+ * Copyright (C) SkyFireEMU  (http://www.projectskyfire.org)
  *
- * This program is free software; you can redistribute it and/or modify it
- * under the terms of the GNU General Public License as published by the
- * Free Software Foundation; either version 2 of the License, or (at your
- * option) any later version.
+ * World of Warcraft
+ * You can edit but you can not delete this copyright.
+ * Genesis Emulator - Genesis Database 
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
- * more details.
  *
- * You should have received a copy of the GNU General Public License along
- * with this program. If not, see <http://www.gnu.org/licenses/>.
+ * By Likan Developer Core C++, SQL (FUN, WoTLK, Cata Realm) of Genesis Server
  */
 
-/*
- * Scripts for spells with SPELLFAMILY_MAGE and SPELLFAMILY_GENERIC spells used by mage players.
- * Ordered alphabetically using scriptname.
- * Scriptnames of files in this file should be prefixed with "spell_mage_".
- */
 
 #include "Player.h"
 #include "ScriptMgr.h"

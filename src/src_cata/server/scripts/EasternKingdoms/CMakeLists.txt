@@ -1,17 +1,21 @@
-# Copyright (C) 2008-2013 TrinityCore <http://www.trinitycore.org/>
-#
-# This file is free software; as a special exception the author gives
-# unlimited permission to copy and/or distribute it, with or without
-# modifications, as long as this notice is preserved.
-#
-# This program is distributed in the hope that it will be useful, but
-# WITHOUT ANY WARRANTY, to the extent permitted by law; without even the
-# implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+# 
+# Copyright (C) Likan Mod   (https://github.com/ChaosDevLikan/)
+# Copyright (C) Prydev      (http://sourceforge.net/projects/prydevserver) 
+# Copyright (C) TrinityCore (http://www.trinitycore.org)
+# Copyright (C) MaNGOS      (http://www.getmangos.com)
+# Copyright (C) ArkCORE     (http://www.arkania.net)
+# Copyright (C) SkyFireEMU  (http://www.projectskyfire.org)
+# 
+# World of Warcraft
+# You can edit but you can not delete this copyright.
+# Genesis Emulator - Genesis Database 
+# 
+# 
+#  By Likan Developer Core C++, SQL (FUN, WoTLK, Cata Realm) of Genesis Server
+# 
 
 set(scripts_STAT_SRCS
   ${scripts_STAT_SRCS}
-  EasternKingdoms/zone_ghostlands.cpp
-  EasternKingdoms/zone_eversong_woods.cpp
   EasternKingdoms/AlteracValley/boss_galvangar.cpp
   EasternKingdoms/AlteracValley/boss_balinda.cpp
   EasternKingdoms/AlteracValley/boss_drekthar.cpp
@@ -34,7 +38,6 @@ set(scripts_STAT_SRCS
   EasternKingdoms/Scholomance/boss_lorekeeper_polkelt.cpp
   EasternKingdoms/Scholomance/boss_ras_frostwhisper.cpp
   EasternKingdoms/Scholomance/boss_kirtonos_the_herald.cpp
-  EasternKingdoms/zone_isle_of_queldanas.cpp
   EasternKingdoms/ZulGurub/boss_grilek.cpp
   EasternKingdoms/ZulGurub/boss_hazzarah.cpp
   EasternKingdoms/ZulGurub/boss_jindo_the_godbreaker.cpp
@@ -46,12 +49,9 @@ set(scripts_STAT_SRCS
   EasternKingdoms/ZulGurub/boss_zanzil.cpp
   EasternKingdoms/ZulGurub/instance_zulgurub.cpp
   EasternKingdoms/ZulGurub/zulgurub.h
-  EasternKingdoms/zone_wetlands.cpp
-  EasternKingdoms/zone_arathi_highlands.cpp
   EasternKingdoms/Gnomeregan/instance_gnomeregan.cpp
   EasternKingdoms/Gnomeregan/gnomeregan.cpp
   EasternKingdoms/Gnomeregan/gnomeregan.h
-  EasternKingdoms/zone_redridge_mountains.cpp
   EasternKingdoms/BlackrockDepths/boss_high_interrogator_gerstahn.cpp
   EasternKingdoms/BlackrockDepths/boss_gorosh_the_dervish.cpp
   EasternKingdoms/BlackrockDepths/blackrock_depths.cpp
@@ -65,12 +65,10 @@ set(scripts_STAT_SRCS
   EasternKingdoms/BlackrockDepths/blackrock_depths.h
   EasternKingdoms/BlackrockDepths/boss_emperor_dagran_thaurissan.cpp
   EasternKingdoms/BlackrockDepths/boss_magmus.cpp
-  EasternKingdoms/zone_ironforge.cpp
   EasternKingdoms/ScarletEnclave/chapter2.cpp
   EasternKingdoms/ScarletEnclave/chapter5.cpp
   EasternKingdoms/ScarletEnclave/chapter1.cpp
   EasternKingdoms/ScarletEnclave/zone_the_scarlet_enclave.cpp
-  EasternKingdoms/zone_eastern_plaguelands.cpp
   EasternKingdoms/MoltenCore/boss_gehennas.cpp
   EasternKingdoms/MoltenCore/boss_lucifron.cpp
   EasternKingdoms/MoltenCore/boss_golemagg.cpp
@@ -97,7 +95,6 @@ set(scripts_STAT_SRCS
   EasternKingdoms/Stratholme/boss_postmaster_malown.cpp
   EasternKingdoms/Stratholme/stratholme.h
   EasternKingdoms/Stratholme/stratholme.cpp
-  EasternKingdoms/zone_tirisfal_glades.cpp
   EasternKingdoms/SunkenTemple/sunken_temple.cpp
   EasternKingdoms/SunkenTemple/sunken_temple.h
   EasternKingdoms/SunkenTemple/instance_sunken_temple.cpp
@@ -113,7 +110,6 @@ set(scripts_STAT_SRCS
   EasternKingdoms/Uldaman/uldaman.h
   EasternKingdoms/Uldaman/instance_uldaman.cpp
   EasternKingdoms/Uldaman/boss_archaedas.cpp
-  EasternKingdoms/zone_swamp_of_sorrows.cpp
   EasternKingdoms/BlackrockSpire/boss_pyroguard_emberseer.cpp
   EasternKingdoms/BlackrockSpire/boss_drakkisath.cpp
   EasternKingdoms/BlackrockSpire/boss_warmaster_voone.cpp
@@ -137,12 +133,10 @@ set(scripts_STAT_SRCS
   EasternKingdoms/SunwellPlateau/boss_brutallus.cpp
   EasternKingdoms/SunwellPlateau/sunwell_plateau.cpp
   EasternKingdoms/SunwellPlateau/boss_felmyst.cpp
-  EasternKingdoms/zone_stranglethorn_vale.cpp
   EasternKingdoms/Deadmines/deadmines.h
   EasternKingdoms/Deadmines/deadmines.cpp
   EasternKingdoms/Deadmines/boss_mr_smite.cpp
   EasternKingdoms/Deadmines/instance_deadmines.cpp
-  EasternKingdoms/zone_duskwood.cpp
   EasternKingdoms/ScarletMonastery/boss_azshir_the_sleepless.cpp
   EasternKingdoms/ScarletMonastery/boss_mograine_and_whitemane.cpp
   EasternKingdoms/ScarletMonastery/boss_bloodmage_thalnos.cpp
@@ -155,13 +149,9 @@ set(scripts_STAT_SRCS
   EasternKingdoms/ScarletMonastery/boss_arcanist_doan.cpp
   EasternKingdoms/ScarletMonastery/boss_herod.cpp
   EasternKingdoms/ScarletMonastery/boss_scorn.cpp
-  EasternKingdoms/zone_undercity.cpp
-  EasternKingdoms/zone_silvermoon_city.cpp
-  EasternKingdoms/zone_loch_modan.cpp
   EasternKingdoms/ShadowfangKeep/shadowfang_keep.cpp
   EasternKingdoms/ShadowfangKeep/instance_shadowfang_keep.cpp
   EasternKingdoms/ShadowfangKeep/shadowfang_keep.h
-  EasternKingdoms/zone_burning_steppes.cpp
   EasternKingdoms/BlackwingLair/boss_chromaggus.cpp
   EasternKingdoms/BlackwingLair/boss_razorgore.cpp
   EasternKingdoms/BlackwingLair/boss_firemaw.cpp
@@ -172,8 +162,6 @@ set(scripts_STAT_SRCS
   EasternKingdoms/BlackwingLair/boss_nefarian.cpp
   EasternKingdoms/BlackwingLair/boss_flamegor.cpp
   EasternKingdoms/BlackwingLair/boss_victor_nefarius.cpp
-  EasternKingdoms/zone_blasted_lands.cpp
-  EasternKingdoms/zone_stormwind_city.cpp
   EasternKingdoms/ZulAman/boss_halazzi.cpp
   EasternKingdoms/ZulAman/boss_hexlord.cpp
   EasternKingdoms/ZulAman/boss_zuljin.cpp
@@ -183,11 +171,6 @@ set(scripts_STAT_SRCS
   EasternKingdoms/ZulAman/boss_nalorakk.cpp
   EasternKingdoms/ZulAman/zulaman.cpp
   EasternKingdoms/ZulAman/zulaman.h
-  EasternKingdoms/zone_hinterlands.cpp
-  EasternKingdoms/zone_western_plaguelands.cpp
-  EasternKingdoms/zone_alterac_mountains.cpp
-  EasternKingdoms/zone_westfall.cpp
-  EasternKingdoms/zone_silverpine_forest.cpp
   EasternKingdoms/Karazhan/instance_karazhan.cpp
   EasternKingdoms/Karazhan/boss_nightbane.cpp
   EasternKingdoms/Karazhan/karazhan.cpp
@@ -201,6 +184,29 @@ set(scripts_STAT_SRCS
   EasternKingdoms/Karazhan/boss_moroes.cpp
   EasternKingdoms/Karazhan/boss_terestian_illhoof.cpp
   EasternKingdoms/Karazhan/karazhan.h
+  EasternKingdoms/Zones/zone_ghostlands.cpp
+  EasternKingdoms/Zones/zone_eversong_woods.cpp
+  EasternKingdoms/Zones/zone_isle_of_queldanas.cpp
+  EasternKingdoms/Zones/zone_wetlands.cpp
+  EasternKingdoms/Zones/zone_arathi_highlands.cpp
+  EasternKingdoms/Zones/zone_redridge_mountains.cpp
+  EasternKingdoms/Zones/zone_ironforge.cpp
+  EasternKingdoms/Zones/zone_eastern_plaguelands.cpp
+  EasternKingdoms/Zones/zone_tirisfal_glades.cpp
+  EasternKingdoms/Zones/zone_swamp_of_sorrows.cpp
+  EasternKingdoms/Zones/zone_stranglethorn_vale.cpp
+  EasternKingdoms/Zones/zone_duskwood.cpp
+  EasternKingdoms/Zones/zone_undercity.cpp
+  EasternKingdoms/Zones/zone_silvermoon_city.cpp
+  EasternKingdoms/Zones/zone_loch_modan.cpp
+  EasternKingdoms/Zones/zone_burning_steppes.cpp
+  EasternKingdoms/Zones/zone_blasted_lands.cpp
+  EasternKingdoms/Zones/zone_stormwind_city.cpp
+  EasternKingdoms/Zones/zone_hinterlands.cpp
+  EasternKingdoms/Zones/zone_western_plaguelands.cpp
+  EasternKingdoms/Zones/zone_alterac_mountains.cpp
+  EasternKingdoms/Zones/zone_westfall.cpp
+  EasternKingdoms/Zones/zone_silverpine_forest.cpp
 )
 
 message("  -> Prepared: Eastern Kingdoms")
