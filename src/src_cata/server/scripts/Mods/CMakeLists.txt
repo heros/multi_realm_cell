@@ -18,7 +18,7 @@ set(scripts_STAT_SRCS
   ${scripts_STAT_SRCS}
 #  Mods/....cpp
   Mods/hybrid/npc_hybrid.cpp
-  Mods/login/gm_login.cpp
+#  Mods/login/gm_login.cpp
 
 )
 

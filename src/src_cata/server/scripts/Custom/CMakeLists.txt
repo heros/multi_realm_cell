@@ -16,8 +16,8 @@
 
 set(scripts_STAT_SRCS
   ${scripts_STAT_SRCS}
-  Custom/resetduel.cpp
-  Custom/chat/World_Chat.cpp
+#  Custom/resetduel.cpp
+#  Custom/chat/World_Chat.cpp
 )
 
 message("  -> Prepared: Custom")

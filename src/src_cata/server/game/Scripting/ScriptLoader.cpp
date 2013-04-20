@@ -633,7 +633,7 @@ void AddSC_chat_log();
 
 //Mods
 void AddSC_npc_hybrid();
-void AddSC_gm_login();
+//void AddSC_gm_login();
 
 #endif
 
@@ -1314,21 +1314,21 @@ void AddBattlegroundScripts()
 
 #ifdef SCRIPTS
 /* This is where custom scripts' loading functions should be declared. */
-    void AddSC_OnDuelEnd();
-	void AddSC_World_Chat();
+    //void AddSC_OnDuelEnd();
+	//void AddSC_World_Chat();
 #endif
 
 void AddCustomScripts()
 {
 #ifdef SCRIPTS
     /* This is where custom scripts should be added. */
-    AddSC_OnDuelEnd();
-	AddSC_World_Chat();
+    //AddSC_OnDuelEnd();
+	//AddSC_World_Chat();
 #endif
 }
 
 void AddModsScripts()
 {
     AddSC_npc_hybrid();
-	AddSC_gm_login();
+	//AddSC_gm_login();
 }
