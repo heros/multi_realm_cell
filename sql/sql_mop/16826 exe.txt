@@ -1,0 +1,113 @@
+//nevest hack coodes for crack 16826, 520 is:
+
+################################################
+#Version info                                  #
+################################################
+
+1 VERSIONINFO
+FILEVERSION 5,2,0,16826
+PRODUCTVERSION 5,2,0,0
+FILEOS 0x4
+FILETYPE 0x1
+{
+BLOCK "StringFileInfo"
+{
+	BLOCK "000004b0"
+	{
+		VALUE "Comments", ""
+		VALUE "CompanyName", "Blizzard Entertainment"
+		VALUE "FileDescription", "World of Warcraft Retail"
+		VALUE "FileVersion", "5, 2, 0, 16826"
+		VALUE "InternalName", "World of Warcraft"
+		VALUE "LegalCopyright", "Copyright © 2004"
+		VALUE "LegalTrademarks", ""
+		VALUE "OriginalFilename", "WoW.exe"
+		VALUE "PrivateBuild", ""
+		VALUE "ProductName", "World of Warcraft"
+		VALUE "ProductVersion", "Version 5.2"
+		VALUE "SpecialBuild", ""
+	}
+}
+
+BLOCK "VarFileInfo"
+{
+	VALUE "Translation", 0x0000 0x04B0
+}
+}
+
+################################################
+#24                                            #
+################################################
+
+<assembly xmlns="urn:schemas-microsoft-com:asm.v1" manifestVersion="1.0">
+  <trustInfo xmlns="urn:schemas-microsoft-com:asm.v3">
+    <security>
+      <requestedPrivileges>
+        <requestedExecutionLevel level="asInvoker" uiAccess="false"></requestedExecutionLevel>
+      </requestedPrivileges>
+    </security>
+  </trustInfo>
+</assembly>
+
+################################################
+#BLIZZARDCOMPOMENT                             #
+################################################
+
+<?xml version='1.0' standalone='yes'?>
+<componentinfo format="2">
+  <component>
+    <name>Game</name>
+    <product>WoW</product>
+    <version>16826</version>
+  </component>
+</componentinfo>
+
+################################################
+#Data                                          #
+################################################
+
+<?xml version="1.0" encoding="utf-16"?>
+<GameDefinitionFile xmlns:baseTypes="urn:schemas-microsoft-com:GamesExplorerBaseTypes.v1" xmlns="urn:schemas-microsoft-com:GameDescription.v1">
+    <GameDefinition gameID="{f4594233-9743-4353-a498-640413f67844}">
+        <Name>World of Warcraftô</Name>
+        <Description />
+        <ReleaseDate>2008-11-13</ReleaseDate>
+        <Genres>
+            <Genre>MMORPG</Genre>
+        </Genres>
+        <Ratings>
+            <Rating ratingSystemID="{768BD93D-63BE-46A9-8994-0B53C4B5248F}" ratingID="{18CD34B7-7AA3-42b9-A303-5A729B2FF228}">
+                <Descriptor descriptorID="{ABE23B46-7F9F-495b-B4A9-87F41743727F}" />
+                <Descriptor descriptorID="{B54162A2-F67F-46dc-9ED5-F6067520EC94}" />
+                <Descriptor descriptorID="{7E0BC004-F80B-402d-A1FC-5FCDFF04DAB1}" />
+                <Descriptor descriptorID="{BE562A5F-2A80-4c28-9752-74C696E2ABAF}" />
+            </Rating>
+        </Ratings>
+        <Version>
+            <VersionFile path="WoW.exe" />
+        </Version>
+        <WindowsSystemPerformanceRating minimum="1" recommended="3.5" />
+        <Developers>
+            <Developer URI="http://www.blizzard.com">Blizzard Entertainment, Inc.</Developer>
+        </Developers>
+        <Publishers>
+            <Publisher URI="http://www.blizzard.com">Blizzard Entertainment, Inc.</Publisher>
+        </Publishers>
+        <GameExecutables>
+            <GameExecutable path="launcher.exe" />
+            <GameExecutable path="wow.exe" />
+        </GameExecutables>
+    </GameDefinition>
+</GameDefinitionFile>
+
+################################################
+#BLIZZARDKEY                                   #
+################################################
+
+00BCBFDC  06 02 00 00 00 24 00 00 52 53 41 31 00 02 00 00   ïïïïï$ïïRSA1ïïïï
+00BCBFEC  01 00 01 00 37 D8 6A ED A4 9E 34 30 E4 18 C1 4B   ïïïï7ÿjÌ§û40‰ï¡K
+00BCBFFC  B1 9F EE 90 62 42 C5 68 CB 8C B7 51 AD 57 75 16   ±üÓêbB≈hÀå∑Q≠Wuï
+00BCC00C  92 0A 0E EB FA F8 1B 37 49 7C DD 47 DA 5E 02 8D   íïïÎ˙¯ï7I|›G⁄^ïç
+00BCC01C  96 75 21 27 59 04 AC B1 0C B9 23 05 CC 82 B8 BF   ñu!'Yï¨±ïπ#ïÃÇ∏ø
+00BCC02C  04 77 62                                          ïwb
+             

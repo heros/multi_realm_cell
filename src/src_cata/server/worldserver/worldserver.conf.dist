@@ -90,7 +90,7 @@ LogsDir = "logy_world/"
 #                     "127.0.0.1;3306;trinity;trinity;characters" - (CharacterDatabaseInfo)
 
 LoginDatabaseInfo     = "127.0.0.1;3306;root;root;auth_434"
-WorldDatabaseInfo     = "127.0.0.1;3306;root;root;world_434_0_3"
+WorldDatabaseInfo     = "127.0.0.1;3306;root;root;world_434_0_5"
 CharacterDatabaseInfo = "127.0.0.1;3306;root;root;characters_434"
 
 #

@@ -1,3 +1,4 @@
+
 #include "ScriptPCH.h"
 
 class Reset_OnDuelEnd : public PlayerScript
