@@ -33,6 +33,8 @@ enum Opcodes
     NULL_OPCODE                                       = 0,
     COMPRESSED_OPCODE_MASK                            = 0x8000,
 
+	//client
+
     CMSG_ACCEPT_LEVEL_GRANT                           = 0x0205,
     CMSG_ACCEPT_TRADE                                 = 0x7110,
     CMSG_ACTIVATETAXI                                 = 0x6E06,
@@ -584,6 +586,9 @@ enum Opcodes
     CMSG_WORLD_TELEPORT                               = 0x24B2,
     CMSG_WRAP_ITEM                                    = 0x4F06,
     CMSG_ZONEUPDATE                                   = 0x4F37,
+
+	//client move
+
     MSG_AUCTION_HELLO                                 = 0x2307,
     MSG_CHANNEL_START                                 = 0x0A15, // SMSG only?
     MSG_CHANNEL_UPDATE                                = 0x2417, // SMSG only?
@@ -665,6 +670,9 @@ enum Opcodes
     MSG_TABARDVENDOR_ACTIVATE                         = 0x6926,
     MSG_TALENT_WIPE_CONFIRM                           = 0x0107,
     MSG_VERIFY_CONNECTIVITY                           = 0x4F57,
+
+	//server
+
     SMSG_ACCOUNT_DATA_TIMES                           = 0x4B05,
     SMSG_ACCOUNT_INFO_RESPONSE                        = 0x10A7,
     SMSG_ACCOUNT_RESTRICTED_WARNING                   = 0x51A7,

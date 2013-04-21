@@ -14,49 +14,19 @@
 ##############################################################################
 
 
----------------
---Apr 21, 2013
----------------
 
+
+
+[71] --> up
 [70] --> Full most playable TDB ,Core
-
----------------
---Apr 20, 2013
----------------
-
 [69] --> tele from 434 and 520
 [68] --> realmlist up
 [67] --> merge , up TDB , hack codes
-
----------------
---Apr 18, 2013
----------------
-
 [66] --> rebase from home
-
----------------
---Apr 11, 2013
----------------
-
 [65] --> Work on mastery %
-
----------------
---Apr 10, 2013
----------------
-
 [64] --> fix crash , Mop Cata up  future
-
----------------
---Apr 09, 2013
----------------
-
 [63] --> little forward in spells
 [62] --> big patch full of old and new techniques
-
----------------
---Apr 07, 2013
----------------
-
 [61] --> many fixes world
 [60] --> fix break in stats
 [59] --> fix merge
@@ -70,10 +40,6 @@
 [52] --> korrektions
 [51] --> korrektions
 [50] --> Rewrite project
-
----------------
---Mar 13, 2013
----------------
 [49] --> very big flower in sql 
 [48] --> some update 
 [47] --> fixed compilation 
@@ -86,25 +52,13 @@
 [40] --> Server up 
 [39] --> sql from tc
 [38] --> newest update from tc 
-
----------------
---Mar 08, 2013
----------------
 [37] --> beta cata core 
-
----------------
---Mar 07, 2013
----------------
 [36] --> hybrid
 [35] --> tools
 [34] --> tele
 [33] --> Some patches
 [32] --> Some tools 
 [31] --> some ends 
-
----------------
---Mar 02, 2013
----------------
 [30] --> korrektions
 [29] --> inserted 
 [28] --> korrektions
@@ -117,10 +71,6 @@
 [21] --> Rewriting the project 
 [20] --> fix beta compilator
 [19] --> compile tools
-
----------------
---Mar 02, 2013
----------------
 [18] --> genrev
 [17] --> tools
 [16] --> cell enable 
