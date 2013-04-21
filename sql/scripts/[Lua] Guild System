@@ -1,0 +1,290 @@
+--[[
+
+	Guild System.
+	By Grandelf.
+
+]]--
+
+local file = io.open("scripts/GuildData.lua", "a") -- Dont change this line.
+
+-- Commands
+local GUILD_BUYZONE = "#guild buyzone"
+local GUILD_SELLZONE = "#guild sellzone"
+local GUILD_GUILDINFO = "#guild guildinfo"
+local GUILD_ZONEINFO = "#guild zoneinfo"
+local GUILD_SETPORT = "#guild setport"
+local GUILD_TELEPORT = "#guild teleport" 
+local GUILD_BUFF = "#guild buff"
+local GUILD_INFO = "#guild commands"
+
+-- Some price options.
+local GUILD_BUYPRICE = 10000
+local GUILD_SELLPRICE = 10000
+
+--[[
+
+	Add the area ids of the area's that the players can't buy in this table.
+	NOTE: You need to add the AREA ID'S not the zone id's.
+	
+	You dont need to add instance/raid area id's. 
+	All instances and raids are already blocked.
+
+]]--
+local ForbiddenAreas = {
+	1741, -- Gurubashi Tribune
+	2177, -- Gurubashi Ring
+}
+
+function GuildChatCommands(event, player, message)
+	if (string.lower(message) == GUILD_BUYZONE) and (player:IsInGuild()) then
+		if (player:GetGuildLeader() == player:GetName()) then
+			if not (IsZoneOwned(player:GetAreaId())) then
+				if not (IsAreaForbidden(player)) then
+					if (player:GetCoinage() >= GUILD_BUYPRICE) then
+						if not GHT[tostring(player:GetGuildName())] then
+							file:write("GHT[\""..tostring(player:GetGuildName()).."\"] = {areaA = 0, M = 0, X = 0, Y = 0, Z = 0}\n")
+							file:flush()
+						end	
+						if (ReturnInfo(player:GetGuildName()).areaA == 0) then
+							EditLine(ReturnString(player, player:GetAreaId(), 0, 0, 0, 0))
+							player:DealGoldCost(GUILD_BUYPRICE)
+							player:SendBroadcastMessage("|cFF00FFFF[Guild System]:|cFF008000 You succesfully bought this zone!")
+							SendGuildMessage(player, "This guild now owns zone: "..player:GetAreaId())
+						else
+							player:SendBroadcastMessage("|cFF00FFFF[Guild System]:|cFF008000 Your guild already owns a zone.")
+						end
+					else
+						player:SendBroadcastMessage("|cFF00FFFF[Guild System]:|cFF008000 You dont have enough gold to buy this zone.")
+					end	
+				else
+					player:SendBroadcastMessage("|cFF00FFFF[Guild System]:|cFF008000 You can't buy a forbidden zone.")
+				end	
+			elseif (IsZoneOwned(player:GetAreaId()) == tostring(player:GetGuildName())) then
+				player:SendBroadcastMessage("|cFF00FFFF[Guild System]:|cFF008000 Your guild already owns this zone.")
+			else	
+				player:SendBroadcastMessage("|cFF00FFFF[Guild System]:|cFF008000 This zone is already owned by another guild.")
+			end
+		else
+			player:SendBroadcastMessage("|cFF00FFFF[Guild System]:|cFF008000 You are not the guild leader.")
+		end
+		return 0;
+	end	
+	if (string.lower(message) == GUILD_SELLZONE) and (player:IsInGuild()) then
+		if (player:GetGuildLeader() == player:GetName()) then
+			if (ReturnInfo(player:GetGuildName())) then
+				if (ReturnInfo(player:GetGuildName()).areaA == player:GetAreaId()) then
+					EditLine(ReturnString(player, 0, 0, 0, 0, 0))
+					player:DealGoldMerit(GUILD_SELLPRICE)
+					player:SendBroadcastMessage("|cFF00FFFF[Guild System]:|cFF008000 You succesfully sold this zone.")
+					RefreshData()
+				else
+					player:SendBroadcastMessage("|cFF00FFFF[Guild System]:|cFF008000 Your guild doesn't own this zone and therefor you can't use this command here.")
+				end	
+			else
+				player:SendBroadcastMessage("|cFF00FFFF[Guild System]:|cFF008000 Your guild doesn't own this zone and therefor you can't use this command here.")
+			end	
+		else
+			player:SendBroadcastMessage("|cFF00FFFF[Guild System]:|cFF008000 You are not the guild leader.")
+		end
+		return 0;
+	end
+	if (message:find(GUILD_GUILDINFO.." ") == 1) then	
+		local guild = message:gsub(GUILD_GUILDINFO.." ", "")
+		if (ReturnGuildZone(guild)) and (ReturnGuildZone(guild) ~= 0) then
+			player:SendBroadcastMessage("|cFF00FFFF[Guild System]:|cFF008000 This guild owns zone: "..ReturnGuildZone(guild).."")
+		else
+			player:SendBroadcastMessage("|cFF00FFFF[Guild System]:|cFF008000 This guild doesn't exist or doesn't have a zone.")
+		end
+		return 0;
+	end		
+	if (string.lower(message) == GUILD_ZONEINFO) then
+		if (IsZoneOwned(player:GetAreaId())) then
+			player:SendBroadcastMessage("|cFF00FFFF[Guild System]:|cFF008000 ZoneId: "..player:GetAreaId()..".")
+			player:SendBroadcastMessage("|cFF00FFFF[Guild System]:|cFF008000 Status: Zone owned by guild: "..IsZoneOwned(player:GetAreaId())..".")
+		elseif (IsAreaForbidden(player)) then
+			player:SendBroadcastMessage("|cFF00FFFF[Guild System]:|cFF008000 ZoneId: "..player:GetAreaId()..".")
+			player:SendBroadcastMessage("|cFF00FFFF[Guild System]:|cFF008000 Status: Not for sale.")
+		else
+			player:SendBroadcastMessage("|cFF00FFFF[Guild System]:|cFF008000 ZoneId: "..player:GetAreaId()..".")
+			player:SendBroadcastMessage("|cFF00FFFF[Guild System]:|cFF008000 Status: For sale.")
+		end	
+		return 0;
+	end	
+	if (string.lower(message) == GUILD_SETPORT) and (player:IsInGuild()) then
+		if (player:GetGuildLeader() == player:GetName()) then
+			if (ReturnInfo(player:GetGuildName()).areaA == player:GetAreaId()) then
+				EditLine(ReturnString(player, ReturnInfo(player:GetGuildName()).areaA, player:GetMapId(), player:GetX(), player:GetY(), player:GetZ()))
+				player:SendBroadcastMessage("|cFF00FFFF[Guild System]:|cFF008000 Your guildmembers and you can now teleport here by using "..GUILD_TELEPORT..".")
+				SendGuildMessage(player, "The guildmaster has set a new teleportation point. You can go there by using "..GUILD_TELEPORT..".")
+			else
+				player:SendBroadcastMessage("|cFF00FFFF[Guild System]:|cFF008000 Your guild doesn't own this zone and therefor you can't use this command here.")
+			end
+		else
+			player:SendBroadcastMessage("|cFF00FFFF[Guild System]:|cFF008000 You are not the guild leader.")
+		end
+		return 0;
+	end	
+	if (string.lower(message) == GUILD_TELEPORT) and (player:IsInGuild()) then
+		if (ReturnInfo(player:GetGuildName()).areaA ~= 0) then
+			if (ReturnInfo(player:GetGuildName()).X ~= 0) then
+				player:Teleport(ReturnInfo(player:GetGuildName()).M, ReturnInfo(player:GetGuildName()).X, ReturnInfo(player:GetGuildName()).Y, ReturnInfo(player:GetGuildName()).Z)
+			elseif (player:GetGuildLeader() == player:GetName()) then
+				player:SendBroadcastMessage("|cFF00FFFF[Guild System]:|cFF008000 You haven't set a teleportation point yet.")
+			else
+				player:SendBroadcastMessage("|cFF00FFFF[Guild System]:|cFF008000 Your guild master hasn't set a teleportation point yet.")
+			end
+		else
+			player:SendBroadcastMessage("|cFF00FFFF[Guild System]:|cFF008000 Your guild does not have a zone.")
+		end
+		return 0;
+	end
+	if (string.lower(message) == GUILD_BUFF)	and (player:IsInGuild()) then
+		if (ReturnInfo(player:GetGuildName()).areaA == player:GetAreaId()) then
+			player:CastSpell(56525) -- Blessing of Kings
+			player:CastSpell(48162) -- Prayer of Fortitude
+			player:CastSpell(48074) -- Prayer of Spirit
+			player:CastSpell(48470) -- Gift of the Wild
+			player:CastSpell(53307) -- Thorns
+		else
+			player:SendBroadcastMessage("You can only use this in your own zone.")
+		end
+		return 0;	
+	end
+	if (string.lower(message) == GUILD_INFO) and (player:IsInGuild()) then
+		player:SendBroadcastMessage("|cFFFF0000Guild commands available for you:")
+		if (player:GetGuildLeader() == player:GetName()) then
+			player:SendBroadcastMessage("|cFF00FFFF"..GUILD_BUYZONE.." - |cFF008000Command to buy the zone you are at.")
+			player:SendBroadcastMessage("|cFF00FFFF"..GUILD_SELLZONE.." - |cFF008000Command to sell a zone you are at.")
+			player:SendBroadcastMessage("|cFF00FFFF"..GUILD_SETPORT.." - |cFF008000Command to set a teleportation point at your position. It has to be in your own zone.")
+		end
+		player:SendBroadcastMessage("|cFF00FFFF"..GUILD_GUILDINFO.." - |cFF008000Command to check what zone another guild has. Usage: "..GUILD_GUILDINFO.." guildname.")
+		player:SendBroadcastMessage("|cFF00FFFF"..GUILD_ZONEINFO.." - |cFF008000Command to check the status of the zone you are at.")
+		player:SendBroadcastMessage("|cFF00FFFF"..GUILD_TELEPORT.." - |cFF008000Command to teleport to your zone.")
+		player:SendBroadcastMessage("|cFF00FFFF"..GUILD_BUFF.." - |cFF008000Command to buff yourself. You have to be in your guilds zone in order to use it.")
+		return 0;	
+	end	
+end		
+
+
+
+--[[
+
+	functions related to the data file.
+
+]]--
+
+function EditLine(Line, Nline)
+	RefreshData()
+	local text = ""
+	for line in io.lines("scripts/GuildData.lua") do
+		if (Line ~= line) then
+			text = text..line.."\n"
+		end
+	end
+	local f = io.open("scripts/GuildData.lua", "w+")
+	f:write(text)
+	f:close()
+	file:write(Nline)
+	file:flush()
+end
+
+function ReturnString(plr, zone, m, x, y, z)
+	Line = "GHT[\""..tostring(plr:GetGuildName()).."\"] = {areaA = "..ReturnInfo(plr:GetGuildName()).areaA..", M = "..ReturnInfo(plr:GetGuildName()).M..", X = "..ReturnInfo(plr:GetGuildName()).X..", Y = "..ReturnInfo(plr:GetGuildName()).Y..", Z = "..ReturnInfo(plr:GetGuildName()).Z.."}"
+	Nline = "GHT[\""..tostring(plr:GetGuildName()).."\"] = {areaA = "..zone..", M = "..m..", X = "..x..", Y = "..y..", Z = "..z.."}\n"
+	return Line, Nline
+end	
+
+--[[
+
+	Some return functions.
+
+]]--
+
+function ReturnInfo(guild)
+	RefreshData()
+	for k, v in pairs(GHT) do
+		if (k == tostring(guild)) then
+			return v;
+		end
+	end
+	return false;
+end	
+
+function IsZoneOwned(zone)
+	RefreshData()
+	for k, v in pairs(GHT) do
+		if (v.areaA == zone) then
+			return k;
+		end
+	end
+	return false;
+end	
+
+function ReturnGuildZone(guild)
+	for k, v in pairs(GHT) do
+		if (k == tostring(guild)) then
+			return v.areaA
+		end
+	end
+	return false;
+end	
+
+function IsAreaForbidden(plr)
+	for _, v in pairs(ForbiddenAreas) do
+		if (v == plr:GetAreaId()) or (plr:GetInstanceID() ~= nil) then
+			return true;
+		end
+	end
+	return false;
+end
+
+--[[
+
+	Msg functions
+
+]]--
+			
+function GetOnlineGuildMembers(plr)
+	local tbl = {}
+	for _, v in pairs(GetPlayersInWorld()) do
+		if (v:IsInGuild() == true) and (v:GetGuildName() == plr:GetGuildName()) then
+			table.insert(tbl, v)
+		end
+	end
+	if (table.getn(tbl) > 0) then
+		return tbl;
+	end
+	return false;	
+end
+
+function SendGuildMessage(plr, msg)
+	if (GetOnlineGuildMembers(plr) ~= false) then
+		for _, v in pairs(GetOnlineGuildMembers(plr)) do
+			v:SendBroadcastMessage("|cFF00FFFF[Guild System]:|cFF008000 "..msg)
+		end
+	end	
+end	
+
+--[[
+
+	function to renew the data.
+
+]]--
+	
+function RefreshData()
+	dofile("scripts/GuildData.lua")
+end
+
+--[[ 
+
+	Just to make sure the main table exists.
+
+]]--
+	
+if not GHT then -- Script runs for first time.
+	file:write("GHT = {}\n")
+	file:flush()
+	RefreshData()
+end
+
+RegisterServerHook(16, "GuildChatCommands")

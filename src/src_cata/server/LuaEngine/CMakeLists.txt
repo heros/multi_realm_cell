@@ -14,6 +14,8 @@ if( USE_COREPCH )
 endif()
 
 file(GLOB sources_localdir *.cpp *.h)
+ 
+source_group(localdir FILES ${sources_localdir})
 
 set(LuaEngine_STAT_SRCS
   ${LuaEngine_STAT_SRCS}
