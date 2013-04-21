@@ -100,11 +100,3 @@ add_library(collision STATIC
 if (USE_COREPCH)
   add_cxx_pch(collision ${collision_STAT_PCH_HDR} ${collision_STAT_PCH_SRC})
 endif ()
-
-#if( USE_COREPCH )
-#  if(CMAKE_COMPILER_IS_GNUCXX)
-#    add_precompiled_header(collision ${CMAKE_CURRENT_SOURCE_DIR}/PrecompiledHeaders/collisionPCH.h)
-#  elseif(MSVC)
-#    add_native_precompiled_header(collision ${CMAKE_CURRENT_SOURCE_DIR}/PrecompiledHeaders/collisionPCH)
-#  endif()
-#endif()

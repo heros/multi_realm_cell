@@ -1,0 +1,49 @@
+##############################################################################
+#                            UnitMethods                                     #
+##############################################################################
+
+--spells
+//sEluna->PushUnsigned(L, player->resetTalentsCost());
+//player->resetTalents(no_cost);
+--pvp
+//sEluna->PushUnsigned(L, player->GetHonorPoints());
+//sEluna->PushUnsigned(L, player->GetArenaPoints());
+//player->ModifyArenaPoints(amount);
+//player->ModifyHonorPoints(amount);
+//sEluna->PushUnsigned(L, player->GetPhaseMaskForSpawn());
+//player->SetArenaPoints(arenaP);
+//player->SetHonorPoints(honorP);
+--mail
+//WorldPacket data(SMSG_SHOW_MAILBOX, 8);
+        
+//data << uint64(object->GetGUID());
+        
+//player->GetSession()->HandleGetMailList(data);
+--movement
+//player->SetMovement((PlayerMovementType)pType);
+
+
+##############################################################################
+#                            GlobalMethods                                   #
+##############################################################################
+
+//if (!sObjectMgr->IsVendorItemValid(entry, item, maxcount, incrtime, extendedcost))
+//WorldPacket* _packet = new WorldPacket(opcode, size);
+            
+//sEluna->PushPacket(L, _packet);
+
+
+##############################################################################
+#                            ItemMethods                                     #
+##############################################################################
+//sEluna->PushBoolean(L, item->IsWeaponVellum());
+//sEluna->PushBoolean(L, item->IsArmorVellum());
+
+
+##############################################################################
+#                            LuaEngine                                       #
+##############################################################################
+//sTaxiPathNodeEntriesByPath.nodeEntries[nodeId] = nodeEntry;
+
+
+find the or include :)

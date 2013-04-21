@@ -39,6 +39,7 @@
 #include "Util.h"
 #include "ScriptMgr.h"
 #include "AccountMgr.h"
+#include "HookMgr.h"
 
 void WorldSession::HandleMessagechatOpcode(WorldPacket& recvData)
 {

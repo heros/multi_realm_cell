@@ -1315,7 +1315,7 @@ void AddBattlegroundScripts()
 #ifdef SCRIPTS
 /* This is where custom scripts' loading functions should be declared. */
     //void AddSC_OnDuelEnd();
-	//void AddSC_World_Chat();
+	void AddSC_cs_world_chat();
 #endif
 
 void AddCustomScripts()
@@ -1323,7 +1323,7 @@ void AddCustomScripts()
 #ifdef SCRIPTS
     /* This is where custom scripts should be added. */
     //AddSC_OnDuelEnd();
-	//AddSC_World_Chat();
+	AddSC_cs_world_chat();
 #endif
 }
 

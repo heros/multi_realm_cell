@@ -47,6 +47,7 @@
 #include "World.h"
 #include "WorldPacket.h"
 #include "WorldSession.h"
+#include "HookMgr.h"
 
 class LoginQueryHolder : public SQLQueryHolder
 {

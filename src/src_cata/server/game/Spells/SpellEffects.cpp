@@ -67,6 +67,7 @@
 #include "Guild.h"
 #include "GuildMgr.h"
 #include "ReputationMgr.h"
+#include "HookMgr.h"
 
 pEffect SpellEffects[TOTAL_SPELL_EFFECTS]=
 {

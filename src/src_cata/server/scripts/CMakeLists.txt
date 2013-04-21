@@ -120,6 +120,8 @@ include_directories(
   ${CMAKE_SOURCE_DIR}/src/src_cata/server/collision
   ${CMAKE_SOURCE_DIR}/src/src_cata/server/collision/Management
   ${CMAKE_SOURCE_DIR}/src/src_cata/server/collision/Models
+  ${CMAKE_SOURCE_DIR}/src/src_cata/server/LuaEngine
+  ${CMAKE_SOURCE_DIR}/dep_tc/lualib
   ${CMAKE_SOURCE_DIR}/src/src_cata/server/shared
   ${CMAKE_SOURCE_DIR}/src/src_cata/server/shared/Database
   ${CMAKE_SOURCE_DIR}/src/src_cata/server/game/Accounts

@@ -29,6 +29,7 @@
 #include "SpellInfo.h"
 #include "DB2Stores.h"
 #include <vector>
+#include "HookMgr.h"
 
 void WorldSession::HandleSplitItemOpcode(WorldPacket& recvData)
 {

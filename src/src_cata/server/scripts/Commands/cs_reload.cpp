@@ -40,6 +40,7 @@ EndScriptData */
 #include "TicketMgr.h"
 #include "WardenCheckMgr.h"
 #include "WaypointManager.h"
+#include "LuaEngine.h"
 
 class reload_commandscript : public CommandScript
 {
@@ -154,6 +155,7 @@ public:
             { "waypoint_data",                SEC_ADMINISTRATOR, true,  &HandleReloadWpCommand,                         "", NULL },
             { "vehicle_accessory",            SEC_ADMINISTRATOR, true,  &HandleReloadVehicleAccessoryCommand,           "", NULL },
             { "vehicle_template_accessory",   SEC_ADMINISTRATOR, true,  &HandleReloadVehicleTemplateAccessoryCommand,   "", NULL },
+            { "eluna",                        SEC_ADMINISTRATOR, true,  &HandleReloadElunaLuaEngine,                    "", NULL },
             { NULL,                           0,                 false, NULL,                                           "", NULL }
         };
         static ChatCommand commandTable[] =
@@ -1195,6 +1197,12 @@ public:
         return true;
     }
 
+    static bool HandleReloadElunaLuaEngine(ChatHandler* handler, const char* /*args*/)
+    {
+        sEluna->StartEluna(true);
+        handler->SendSysMessage("Reloaded Eluna Nova Engine");
+        return true;
+    }
 
     static bool HandleReloadPhaseDefinitionsCommand(ChatHandler* handler, const char* /*args*/)
     {

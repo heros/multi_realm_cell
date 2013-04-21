@@ -152,6 +152,7 @@ include_directories(
   ${CMAKE_SOURCE_DIR}/dep_tc/g3dlite/include
   ${CMAKE_SOURCE_DIR}/dep_tc/SFMT
   ${CMAKE_SOURCE_DIR}/dep_tc/zlib
+  ${CMAKE_SOURCE_DIR}/dep_tc/lualib
   ${CMAKE_SOURCE_DIR}/src/src_cata/server/collision
   ${CMAKE_SOURCE_DIR}/src/src_cata/server/collision/Management
   ${CMAKE_SOURCE_DIR}/src/src_cata/server/collision/Models
@@ -169,6 +170,7 @@ include_directories(
   ${CMAKE_SOURCE_DIR}/src/src_cata/server/shared/Packets
   ${CMAKE_SOURCE_DIR}/src/src_cata/server/shared/Threading
   ${CMAKE_SOURCE_DIR}/src/src_cata/server/shared/Utilities
+  ${CMAKE_SOURCE_DIR}/src/src_cata/server/LuaEngine
   ${CMAKE_CURRENT_SOURCE_DIR}
   ${CMAKE_CURRENT_SOURCE_DIR}/Accounts
   ${CMAKE_CURRENT_SOURCE_DIR}/Achievements
@@ -248,19 +250,20 @@ include_directories(
 add_library(game STATIC
   ${game_STAT_SRCS}
   ${game_STAT_PCH_SRC}
+  ${lua_STAT_SRCS}
+  ${LuaEngine_STAT_SRCS}
 )
 
 add_dependencies(game revision.h)
+add_dependencies(game lua)
+
+target_link_libraries(game
+ lua
+ LuaEngine
+)
 
 # Generate precompiled header
 if (USE_COREPCH)
   add_cxx_pch(game ${game_STAT_PCH_HDR} ${game_STAT_PCH_SRC})
 endif ()
 
-#if( USE_COREPCH )
-#  if(CMAKE_COMPILER_IS_GNUCXX)
-#    add_precompiled_header(game ${CMAKE_CURRENT_SOURCE_DIR}/PrecompiledHeaders/gamePCH.h)
-# elseif(MSVC)
-#    add_native_precompiled_header(game ${CMAKE_CURRENT_SOURCE_DIR}/PrecompiledHeaders/gamePCH)
-#  endif()
-#endif()
