@@ -1,1 +1,0 @@
-INSERT INTO `playercreateinfo_item` VALUES (0, 0, 199999, 5);
